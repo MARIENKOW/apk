@@ -1,0 +1,6 @@
+enum FileEntityType {
+    AVATAR
+    LANDING_ICON
+    LANDING_LOGO
+    LANDING_BACKGROUND
+}

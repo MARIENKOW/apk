@@ -1,0 +1,23 @@
+model Landing {
+    id          String   @id @default(uuid())
+    metaTitle   String?
+    logoHeight  Int      @default(40)
+    color       String
+    phone       String
+    btnName     String
+    title       String
+    subtitle    String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    iconId       String? @unique
+    icon         Image?  @relation("LandingIcon", fields: [iconId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+    logoId       String  @unique
+    logo         Image   @relation("LandingLogo", fields: [logoId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+    backgroundId String  @unique
+    background   Image   @relation("LandingBackground", fields: [backgroundId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+    @@map("landings")
+}

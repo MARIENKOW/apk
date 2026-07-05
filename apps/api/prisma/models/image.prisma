@@ -1,0 +1,20 @@
+// Добавить в schema.prisma
+model Image {
+    id         String          @id @default(uuid())
+    entityType FileEntityType // определяет папку и уровень доступа
+    filename   String          // UUID.webp / UUID.jpg
+    mimeType   String          // image/webp / image/jpeg
+    path       String?
+    width      Int
+    admin Admin? // обратная связь — без неё Prisma не скомпилирует
+    video Video? // обратная связь — без неё Prisma не скомпилирует
+    landingIcon       Landing? @relation("LandingIcon")
+    landingLogo       Landing? @relation("LandingLogo")
+    landingBackground Landing? @relation("LandingBackground")
+    height     Int
+    size       Int             // байты
+    createdAt  DateTime        @default(now())
+    
+
+    @@index([entityType])
+}
