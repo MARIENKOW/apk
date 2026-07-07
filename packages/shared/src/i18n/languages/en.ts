@@ -158,6 +158,27 @@ export const en: MessageStructure = {
         main: {
             name: "Home",
         },
+        token: {
+            name: "Home",
+            title: "Block heading",
+            subtitle: "Subheading with a short explanation",
+            description:
+                "An additional line of text explaining the details of the offer for the user.",
+            benefit: "Benefit item {n}",
+            button: "Button",
+        },
+        check: {
+            name: "Check",
+            title: "Explanation heading",
+            description:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat, duis aute irure dolor.",
+            troubleTitle: "If something went wrong",
+            troubleSubtitle: "Follow the steps below to solve the problem",
+            step: "Step {n}",
+            verify: "Verify",
+            download: "Download",
+            close: "Close",
+        },
         register: {
             name: "Register",
             feedback: {
