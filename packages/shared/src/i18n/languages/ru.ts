@@ -26,6 +26,7 @@ import {
     LANDING_LOGO_HEIGHT_MAX,
     LANDING_BTN_NAME_MIN_LENGTH,
     LANDING_BTN_NAME_MAX_LENGTH,
+    DOWNLOAD_FILE_CONFIG,
 } from "../../form/constants";
 import { formatBytes } from "../../utils";
 
@@ -66,6 +67,9 @@ export const ru = {
             },
             landingImage: {
                 tooLarge: `Максимально допустимый размер файла: ${formatBytes(LANDING_IMAGE_CONFIG.maxFileSizeBytes)}`,
+            },
+            download: {
+                tooLarge: `Максимально допустимый размер файла: ${formatBytes(DOWNLOAD_FILE_CONFIG.maxFileSizeBytes)}`,
             },
             unsupportedType: "Данный формат не поддерживается",
             unreadable: "Не удалось прочитать файл",
@@ -240,6 +244,23 @@ export const ru = {
                         deleted: "Доступ удалён",
                         noteUpdated: "Заметка обновлена",
                     },
+                },
+            },
+            file: {
+                name: "APK",
+                title: "APK для скачивания",
+                description:
+                    "Загрузите APK — пользователи смогут его скачать. Можно заменить или удалить.",
+                empty: "APK ещё не загружен",
+                dropHint: "Перетащите APK сюда или нажмите",
+                actions: {
+                    upload: "Загрузить APK",
+                    replace: "Заменить",
+                    delete: "Удалить",
+                },
+                feedback: {
+                    uploaded: "APK загружен",
+                    deleted: "APK удалён",
                 },
             },
             blog: {

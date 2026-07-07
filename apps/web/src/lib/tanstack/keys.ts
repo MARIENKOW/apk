@@ -34,3 +34,7 @@ export const tokenKeys = {
     lists: () => [...tokenKeys.all, "list"] as const,
     list: (params: TokenParams) => [...tokenKeys.lists(), params] as const,
 };
+
+export const appFileKeys = {
+    all: ["app-file"] as const,
+};

@@ -1,0 +1,12 @@
+// Одиночный файл для скачивания, управляемый из админки.
+// Любой тип файла. Единственность обеспечивается логикой сервиса.
+model AppFile {
+    id           String   @id @default(uuid())
+    filename     String // UUID + расширение оригинала, хранится на диске
+    originalName String // исходное имя файла как загрузил админ
+    mimeType     String
+    size         Int // байты
+    createdAt    DateTime @default(now())
+
+    @@map("app_files")
+}

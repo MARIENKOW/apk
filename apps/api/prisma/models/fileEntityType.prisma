@@ -3,4 +3,5 @@ enum FileEntityType {
     LANDING_ICON
     LANDING_LOGO
     LANDING_BACKGROUND
+    DOWNLOAD
 }

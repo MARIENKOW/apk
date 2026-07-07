@@ -27,6 +27,7 @@ import {
     LANDING_LOGO_HEIGHT_MAX,
     LANDING_BTN_NAME_MIN_LENGTH,
     LANDING_BTN_NAME_MAX_LENGTH,
+    DOWNLOAD_FILE_CONFIG,
 } from "../../form/constants";
 import { formatBytes } from "../../utils";
 
@@ -67,6 +68,9 @@ export const en: MessageStructure = {
             },
             landingImage: {
                 tooLarge: `Maximum allowed file size: ${formatBytes(LANDING_IMAGE_CONFIG.maxFileSizeBytes)}`,
+            },
+            download: {
+                tooLarge: `Maximum allowed file size: ${formatBytes(DOWNLOAD_FILE_CONFIG.maxFileSizeBytes)}`,
             },
             unsupportedType: "This format is not supported",
             unreadable: "Failed to read the file",
@@ -240,6 +244,23 @@ export const en: MessageStructure = {
                         deleted: "Access deleted",
                         noteUpdated: "Note updated",
                     },
+                },
+            },
+            file: {
+                name: "APK",
+                title: "APK for download",
+                description:
+                    "Upload an APK — users will be able to download it. You can replace or delete it.",
+                empty: "No APK uploaded yet",
+                dropHint: "Drag an APK here or click",
+                actions: {
+                    upload: "Upload APK",
+                    replace: "Replace",
+                    delete: "Delete",
+                },
+                feedback: {
+                    uploaded: "APK uploaded",
+                    deleted: "APK deleted",
                 },
             },
             blog: {

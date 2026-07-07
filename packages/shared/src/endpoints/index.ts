@@ -91,6 +91,10 @@ export const ENDPOINT = {
         note: { path: "note" },
         verify: { path: "verify" },
     },
+    file: {
+        path: "file",
+        current: { path: "current" },
+    },
 } as const;
 
 type EdpointConfigType = typeof ENDPOINT;

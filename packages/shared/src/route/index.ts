@@ -30,6 +30,7 @@ export const ROUTE = {
     admins: { path: "admins" },
     invitations: { path: "invitations" },
     invitation: { path: "invitation" },
+    file: { path: "file" },
   },
   check: {
     path: "check",

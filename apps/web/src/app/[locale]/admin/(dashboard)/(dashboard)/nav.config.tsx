@@ -4,6 +4,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PeopleIcon from "@mui/icons-material/People";
 import WebIcon from "@mui/icons-material/Web";
 import KeyIcon from "@mui/icons-material/Key";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import { AdminDto } from "@myorg/shared/dto";
 
 export const NAV_GROUPS: (role: AdminDto["role"]) => NavGroup[] = (role) => [
@@ -27,6 +28,14 @@ export const NAV_GROUPS: (role: AdminDto["role"]) => NavGroup[] = (role) => [
                     safe: [FULL_PATH_ROUTE.admin.tokens.path],
                 },
                 icon: <KeyIcon />,
+            },
+            {
+                label: "pages.admin.file.name",
+                href: FULL_PATH_ROUTE.admin.file.path,
+                activeLink: {
+                    safe: [FULL_PATH_ROUTE.admin.file.path],
+                },
+                icon: <InsertDriveFileOutlinedIcon />,
             },
         ],
     },

@@ -41,6 +41,10 @@ export const AVATAR_CONFIG: ImageValidationConfig = {
     maxFileSizeBytes: 50 * 1024 * 1024, // 50MB
     allowedMimeTypes: ALLOWED_IMAGE_MIME_TYPES,
 };
+// Одиночный файл для скачивания — любой тип, ограничение только по размеру
+export const DOWNLOAD_FILE_CONFIG = {
+    maxFileSizeBytes: 5 * 1024 * 1024, // 100MB
+};
 export const BLOG_IMAGE_CONFIG: ImageValidationConfig = {
     maxFileSizeBytes: 50 * 1024 * 1024, // 50MB
     allowedMimeTypes: ALLOWED_IMAGE_MIME_TYPES,

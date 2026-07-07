@@ -14,6 +14,7 @@ export const FILE_CONFIG: Record<FileEntityType, FileEntityConfig> = {
         folder: "landing/background",
         private: false,
     },
+    [FileEntityType.DOWNLOAD]: { folder: "download", private: false },
 };
 
 export const FILE_PUBLIC: FileEntityConfig[] = Object.entries(FILE_CONFIG)

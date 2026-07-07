@@ -14,6 +14,7 @@ import { AdminInvitationModule } from "@/modules/admin/invitation/adminInvitatio
 import { AdminManagementModule } from "@/modules/admin/management/adminManagement.module";
 import { LandingModule } from "@/modules/landing/landing.module";
 import { TokenModule } from "@/modules/token/token.module";
+import { AppFileModule } from "@/modules/file/appFile.module";
 @Module({
     imports: [
         CoreModule,
@@ -23,6 +24,7 @@ import { TokenModule } from "@/modules/token/token.module";
         LandingModule,
         TokenModule,
         FileModule,
+        AppFileModule,
         AdminInvitationModule,
         AdminManagementModule,
         I18nModule.forRoot({
