@@ -3,7 +3,8 @@ import ThemeChange from "@/components/common/ThemeChange";
 import { ContainerComponent } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import { getThemeMode } from "@/theme/themeMode";
-import { Box, Button, Toolbar } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
+import { StyledButton } from "@/components/ui/StyledButton";
 import { getTranslations } from "next-intl/server";
 import { FULL_PATH_ROUTE, ROUTE } from "@myorg/shared/route";
 import AuthNavigationAdmin from "@/components/features/auth/admin/AuthNavigation.admin";
@@ -34,7 +35,7 @@ export default async function HeaderAdmin() {
                 >
                     {admin ? (
                         <Link href={FULL_PATH_ROUTE.admin.path}>
-                            <Button>{t("pages.admin.name")}</Button>
+                            <StyledButton>{t("pages.admin.name")}</StyledButton>
                         </Link>
                     ) : (
                         <Box />

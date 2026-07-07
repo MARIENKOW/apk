@@ -19,7 +19,7 @@ const THEME_CONFIG: ThemeOptions = {
     },
   },
   typography: {
-    fontFamily: "Roboto, Arial, sans-serif",
+    fontFamily: "var(--font-onest), Arial, sans-serif",
     fontSize: 13,
     allVariants: {
       letterSpacing: 1.2,

@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import { StyledButton } from "@/components/ui/StyledButton";
 
 export default function DownloadButton({
     url,
@@ -10,13 +10,12 @@ export default function DownloadButton({
     label: string;
     disabled?: boolean;
 }) {
-    // Обычная ссылка на attachment-эндпоинт: браузер стримит файл на диск
-    // (в память не грузит), имя берёт из Content-Disposition. Без JS.
+    // Button с href рендерится как <a> и ведёт на attachment-эндпоинт:
+    // браузер стримит файл на диск (в память не грузит), имя берёт из
+    // Content-Disposition. Без JS.
     return (
-        <Button
-            component="a"
+        <StyledButton
             href={disabled ? undefined : url}
-            download
             disabled={disabled}
             variant="contained"
             color="primary"
@@ -31,6 +30,6 @@ export default function DownloadButton({
             }}
         >
             {label}
-        </Button>
+        </StyledButton>
     );
 }

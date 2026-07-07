@@ -1,6 +1,7 @@
 import { ContainerComponent } from "@/components/ui/Container";
 import { StyledTypography } from "@/components/ui/StyledTypography";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
+import { StyledButton } from "@/components/ui/StyledButton";
 import { getTranslations } from "next-intl/server";
 import { API_CLIENT_BASE_URL } from "@/utils/api/urls.client";
 import { FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
@@ -88,7 +89,7 @@ export default async function Page() {
 
           <CheckSteps steps={steps} closeLabel={t("close")} />
 
-          <Button
+          <StyledButton
             variant="outlined"
             color="primary"
             fullWidth
@@ -98,7 +99,7 @@ export default async function Page() {
             }}
           >
             {t("verify")}
-          </Button>
+          </StyledButton>
         </Box>
 
         {/* Кнопка «Скачать» — потоковая загрузка через attachment-эндпоинт */}

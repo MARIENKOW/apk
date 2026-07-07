@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Onest } from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
@@ -23,6 +23,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
     variable: "--font-geist-mono",
     subsets: ["latin"],
+});
+
+// Onest — геометрический гротеск с полной кириллицей.
+const onest = Onest({
+    variable: "--font-onest",
+    subsets: ["latin", "cyrillic"],
 });
 
 export const metadata: Metadata = {
@@ -55,7 +61,7 @@ export default async function RootLayout({
                     flexDirection: "column",
                     minHeight: "100dvh",
                 }}
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} ${onest.variable} antialiased`}
             >
                 <GoogleOAuthProvider
                     clientId={process.env.GOOGLE_CLIENT_ID as string}
