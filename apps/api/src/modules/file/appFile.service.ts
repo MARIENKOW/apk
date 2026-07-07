@@ -1,5 +1,6 @@
 import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import * as fs from "fs/promises";
+import { createReadStream, ReadStream } from "fs";
 import * as path from "path";
 import { randomUUID } from "crypto";
 
@@ -37,6 +38,17 @@ export class AppFileService {
             orderBy: { createdAt: "desc" },
         });
         return file ? this.map(file) : null;
+    }
+
+    // Поток файла + метаданные для скачивания (Content-Disposition в контроллере).
+    async getDownload(): Promise<{ stream: ReadStream; file: AppFile }> {
+        const file = await this.prisma.appFile.findFirst({
+            orderBy: { createdAt: "desc" },
+        });
+        if (!file) throw new NotFoundException();
+
+        const filePath = path.join(resolveFolder(ENTITY), file.filename);
+        return { stream: createReadStream(filePath), file };
     }
 
     async upload(file: Express.Multer.File): Promise<FileDto> {

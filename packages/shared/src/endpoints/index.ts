@@ -94,6 +94,7 @@ export const ENDPOINT = {
     file: {
         path: "file",
         current: { path: "current" },
+        download: { path: "download" },
     },
 } as const;
 

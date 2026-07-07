@@ -2,10 +2,11 @@ import { FileDto } from "@myorg/shared/dto";
 import { FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-const { path } = FULL_PATH_ENDPOINT.file;
+const { path, current } = FULL_PATH_ENDPOINT.file;
 
 export default class FileService {
   get: () => Promise<AxiosResponse<FileDto | null>>;
+  current: () => Promise<AxiosResponse<FileDto | null>>;
   upload: (
     { file }: { file: File },
     options: AxiosRequestConfig,
@@ -16,6 +17,9 @@ export default class FileService {
     this.get = () => {
       return api.get<FileDto | null>(path);
     };
+
+    // Публичный текущий файл (для страницы скачивания).
+    this.current = () => api.get<FileDto | null>(current.path);
 
     this.upload = ({ file }, options) => {
       const formData = new FormData();

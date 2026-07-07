@@ -1,12 +1,28 @@
 import { ContainerComponent } from "@/components/ui/Container";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { Box, Button } from "@mui/material";
-import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { getTranslations } from "next-intl/server";
+import { API_CLIENT_BASE_URL } from "@/utils/api/urls.client";
+import { FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
+import FileService from "@/services/file/file.service";
+import { $apiAdminAxiosServer } from "@/utils/api/admin/axios.admin.server";
 import CheckSteps, { CheckStep } from "./CheckSteps";
+import DownloadButton from "./DownloadButton";
+
+const { current } = new FileService($apiAdminAxiosServer);
 
 export default async function Page() {
   const t = await getTranslations("pages.check");
+  let file = null;
+  let errFile: unknown = false;
+  try {
+    const { data } = await current();
+    file = data;
+  } catch (error) {
+    errFile = error || true;
+  }
+
+  const downloadUrl = `${API_CLIENT_BASE_URL}${FULL_PATH_ENDPOINT.file.download.path}`;
 
   // Скриншоты подставим позже — пока пустые слоты.
   const steps: CheckStep[] = [
@@ -73,7 +89,7 @@ export default async function Page() {
           <CheckSteps steps={steps} closeLabel={t("close")} />
 
           <Button
-            variant='outlined'
+            variant="outlined"
             color="primary"
             fullWidth
             disableElevation
@@ -85,22 +101,12 @@ export default async function Page() {
           </Button>
         </Box>
 
-        {/* Кнопка «Скачать» */}
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          startIcon={<FileDownloadOutlinedIcon />}
-          sx={{
-            borderRadius: 3,
-            py: 1.75,
-            fontSize: 16,
-            fontWeight: 700,
-            textTransform: "none",
-          }}
-        >
-          {t("download")}
-        </Button>
+        {/* Кнопка «Скачать» — потоковая загрузка через attachment-эндпоинт */}
+        <DownloadButton
+          url={downloadUrl}
+          label={t("download")}
+          disabled={!file || !!errFile}
+        />
       </Box>
     </ContainerComponent>
   );
