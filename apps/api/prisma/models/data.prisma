@@ -1,0 +1,13 @@
+// Данные приложения (singleton). Единственность обеспечивается логикой сервиса.
+// Редактируется в админке, публично отдаётся на клиент.
+model AppData {
+    id         String   @id @default(uuid())
+    cardNumber String   @default("")
+    phone      String   @default("")
+    amount     Decimal  @default(0) @db.Decimal(12, 2)
+    fullName   String   @default("")
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@map("app_data")
+}

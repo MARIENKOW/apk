@@ -24,6 +24,10 @@ import {
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
     ACCEPT_BANK_OPTIONS,
+    CARD_NUMBER_MIN_DIGITS,
+    CARD_NUMBER_MAX_DIGITS,
+    DATA_AMOUNT_MIN,
+    DATA_AMOUNT_MAX,
 } from "./constants";
 import z from "zod";
 
@@ -163,3 +167,29 @@ export const AcceptBank = z
 export const AcceptConsent = z
     .boolean()
     .refine((v) => v === true, getMessageKey("form.accept.consent.required"));
+
+// ── Данные приложения ────────────────────────────────────────────────
+// Номер карты: чистим пробелы/дефисы, затем проверяем 13–19 цифр.
+export const CardNumber = z
+    .string()
+    .trim()
+    .transform((s) => s.replace(/[\s-]/g, ""))
+    .pipe(
+        z
+            .string()
+            .regex(
+                new RegExp(
+                    `^\\d{${CARD_NUMBER_MIN_DIGITS},${CARD_NUMBER_MAX_DIGITS}}$`,
+                ),
+                getMessageKey("form.data.cardNumber.invalid"),
+            ),
+    );
+
+export const Amount = z.coerce
+    .number()
+    .min(DATA_AMOUNT_MIN, {
+        message: getMessageKey("form.data.amount.positive"),
+    })
+    .max(DATA_AMOUNT_MAX, {
+        message: getMessageKey("form.data.amount.max"),
+    });

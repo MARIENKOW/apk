@@ -12,6 +12,7 @@ export * from "./schema/admin/AvatarAdminSchema";
 export * from "./schema/landing/Landing.schema";
 export * from "./schema/landing/Token.schema";
 export * from "./schema/accept/AcceptSchema";
+export * from "./schema/data/DataSchema";
 
 export * from "./types";
 export * from "./constants";

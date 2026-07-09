@@ -16,6 +16,9 @@ export const ROUTE = {
     tokens: {
       path: "tokens",
     },
+    data: {
+      path: "data",
+    },
     settings: {
       path: "settings",
       profile: { path: "profile" },

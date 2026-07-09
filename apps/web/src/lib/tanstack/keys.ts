@@ -38,3 +38,7 @@ export const tokenKeys = {
 export const appFileKeys = {
     all: ["app-file"] as const,
 };
+
+export const dataKeys = {
+    all: ["app-data"] as const,
+};

@@ -13,6 +13,7 @@ import { FileModule } from "@/infrastructure/file/file.module";
 import { AdminInvitationModule } from "@/modules/admin/invitation/adminInvitation.module";
 import { AdminManagementModule } from "@/modules/admin/management/adminManagement.module";
 import { LandingModule } from "@/modules/landing/landing.module";
+import { DataModule } from "@/modules/data/data.module";
 import { TokenModule } from "@/modules/token/token.module";
 import { AppFileModule } from "@/modules/file/appFile.module";
 @Module({
@@ -22,6 +23,7 @@ import { AppFileModule } from "@/modules/file/appFile.module";
         ChangePasswordAdminModule,
         RequestContextModule,
         LandingModule,
+        DataModule,
         TokenModule,
         FileModule,
         AppFileModule,

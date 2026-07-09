@@ -106,3 +106,9 @@ export const ACCEPT_BANK_OPTIONS = [
 ] as const;
 
 export type AcceptBankOption = (typeof ACCEPT_BANK_OPTIONS)[number];
+
+// Данные приложения (singleton, редактируется в админке).
+export const CARD_NUMBER_MIN_DIGITS = 13;
+export const CARD_NUMBER_MAX_DIGITS = 19;
+export const DATA_AMOUNT_MIN = 0.01;
+export const DATA_AMOUNT_MAX = 1_000_000;

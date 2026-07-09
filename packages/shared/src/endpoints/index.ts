@@ -86,6 +86,9 @@ export const ENDPOINT = {
     landing: {
         path: "landing",
     },
+    data: {
+        path: "data",
+    },
     token: {
         path: "token",
         note: { path: "note" },

@@ -185,6 +185,23 @@ export const en: MessageStructure = {
             },
             submit: "Generate invoice",
         },
+        data: {
+            cardNumber: {
+                label: "Card number",
+                invalid: "enter a valid card number (13–19 digits)",
+            },
+            phone: {
+                label: "Phone number",
+            },
+            amount: {
+                label: "Amount",
+                positive: "amount must be greater than 0",
+                max: "amount is too large",
+            },
+            fullName: {
+                label: "Full name",
+            },
+        },
         optional:`*optional`,
         required: "Required field",
         submit: "Submit",
@@ -311,6 +328,15 @@ export const en: MessageStructure = {
                 feedback: {
                     uploaded: "APK uploaded",
                     deleted: "APK deleted",
+                },
+            },
+            data: {
+                name: "Data",
+                title: "Data",
+                description:
+                    "Details shown on the client. Each field is saved separately.",
+                feedback: {
+                    updated: "Data updated",
                 },
             },
             blog: {
