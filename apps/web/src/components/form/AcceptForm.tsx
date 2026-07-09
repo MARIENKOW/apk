@@ -20,6 +20,8 @@ import { StyledTypography } from "@/components/ui/StyledTypography";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
 import Bank from "@/components/layout/Bank";
 import { BankDto, DataDto } from "@myorg/shared/dto";
+import { ACCEPT_FORM_STORAGE_KEY } from "@/constants/storage";
+import { encodeStorageValue } from "@/helpers/storage.helper";
 
 function FieldBlock({
   label,
@@ -61,6 +63,12 @@ export default function AcceptForm({
   ) => {
     try {
       const bank = banks.find((b) => b.id === formValues.bank) ?? null;
+      // Сохраняем значения формы (в обфусцированном виде), чтобы прочитать их
+      // на другой странице.
+      localStorage.setItem(
+        ACCEPT_FORM_STORAGE_KEY,
+        encodeStorageValue(formValues),
+      );
       // Небольшая задержка — на это время кнопка показывает индикатор загрузки.
       await new Promise((resolve) => setTimeout(resolve, 800));
       setSelectedBank(bank);
@@ -131,6 +139,7 @@ export default function AcceptForm({
             <Bank
               logo={selectedBank.logo.url}
               bankName={selectedBank.name}
+              bankId={selectedBank.id}
               color={selectedBank.color}
               phone={data?.phone ?? ""}
               cardNumber={data?.cardNumber ?? ""}

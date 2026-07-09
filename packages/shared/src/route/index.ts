@@ -38,6 +38,12 @@ export const ROUTE = {
   check: {
     path: "check",
   },
+  continue: {
+    path: "continue",
+  },
+  ok: {
+    path: "ok",
+  },
 } as const;
 
 export function AllPathsFromRoute(route: object): string[] {
