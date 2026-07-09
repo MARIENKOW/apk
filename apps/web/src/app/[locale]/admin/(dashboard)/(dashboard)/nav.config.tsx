@@ -12,18 +12,18 @@ export const NAV_GROUPS: (role: AdminDto["role"]) => NavGroup[] = (role) => [
     {
         items: [
             {
-                label: "pages.admin.landing.name",
-                href: FULL_PATH_ROUTE.admin.landing.path,
+                label: "pages.admin.bank.name",
+                href: FULL_PATH_ROUTE.admin.bank.path,
                 activeLink: {
                     strict: [
                         FULL_PATH_ROUTE.admin.path,
                     ],
-                    safe: [FULL_PATH_ROUTE.admin.landing.path],
+                    safe: [FULL_PATH_ROUTE.admin.bank.path],
                 },
                 icon: <WebIcon />,
             },
             {
-                label: "pages.admin.landing.token.name",
+                label: "pages.admin.bank.token.name",
                 href: FULL_PATH_ROUTE.admin.tokens.path,
                 activeLink: {
                     safe: [FULL_PATH_ROUTE.admin.tokens.path],

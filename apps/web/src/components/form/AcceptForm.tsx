@@ -1,10 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box } from "@mui/material";
+import { Box, Dialog, DialogContent } from "@mui/material";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
-  ACCEPT_BANK_OPTIONS,
   AcceptDtoInput,
   AcceptDtoOutput,
   AcceptSchema,
@@ -13,20 +13,13 @@ import { MessageKeyType } from "@myorg/shared/i18n";
 import SimpleForm from "@/components/wrappers/form/SimpleForm";
 import { CustomSubmitHandler } from "@/components/wrappers/form/Form";
 import FormTextField from "@/components/features/form/fields/controlled/FormTextField";
-import FormSelect, {
-  FormSelectOption,
-} from "@/components/features/form/fields/controlled/FormSelect";
+import FormSelectRaw from "@/components/features/form/fields/controlled/FormSelectRaw";
 import FormCheckbox from "@/components/features/form/fields/controlled/FormCheckbox";
-import FormAlert from "@/components/features/form/FormAlert";
 import SubmitButton from "@/components/features/form/SubmitButton";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
-import { snackbarSuccess } from "@/utils/snackbar/snackbar.success";
-
-const BANK_OPTIONS: FormSelectOption[] = ACCEPT_BANK_OPTIONS.map((value) => ({
-  value,
-  label: `form.accept.bank.options.${value}` as MessageKeyType,
-}));
+import Bank from "@/components/layout/Bank";
+import { BankDto, DataDto } from "@myorg/shared/dto";
 
 function FieldBlock({
   label,
@@ -46,16 +39,31 @@ function FieldBlock({
   );
 }
 
-export default function AcceptForm() {
+export default function AcceptForm({
+  banks,
+  data,
+}: {
+  banks: BankDto[];
+  data: DataDto | null;
+}) {
   const t = useTranslations();
+  // Выбранный банк для модалки. Заполняется при отправке формы.
+  const [selectedBank, setSelectedBank] = useState<BankDto | null>(null);
+
+  const bankOptions = banks.map((b) => ({
+    value: b.id,
+    label: b.name,
+  }));
 
   const onSubmit: CustomSubmitHandler<AcceptDtoInput, AcceptDtoOutput> = async (
     formValues,
-    { setError, reset },
+    { setError },
   ) => {
     try {
-      // TODO: заглушка — запрос никуда не отправляется.
-      console.log("Accept form submit:", formValues);
+      const bank = banks.find((b) => b.id === formValues.bank) ?? null;
+      // Небольшая задержка — на это время кнопка показывает индикатор загрузки.
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      setSelectedBank(bank);
     } catch (error) {
       errorFormHandlerWithAlert<AcceptDtoInput>({
         error,
@@ -67,44 +75,69 @@ export default function AcceptForm() {
   };
 
   return (
-    <SimpleForm<AcceptDtoInput, AcceptDtoOutput>
-      params={{
-        resolver: zodResolver(AcceptSchema),
-        defaultValues: {
-          fullName: "",
-          address: "",
-          time: "",
-          bank: "",
-          consent: false,
-        },
-      }}
-      formConfig={{ fields: { variant: "outlined" } }}
-      onSubmit={onSubmit}
-    >
-      <FieldBlock label="form.accept.fullName.label">
-        <FormTextField<AcceptDtoInput> name="fullName" fullWidth />
-      </FieldBlock>
+    <>
+      <SimpleForm<AcceptDtoInput, AcceptDtoOutput>
+        params={{
+          resolver: zodResolver(AcceptSchema),
+          defaultValues: {
+            fullName: "",
+            address: "",
+            time: "",
+            bank: "",
+            consent: false,
+          },
+        }}
+        formConfig={{ fields: { variant: "outlined" } }}
+        onSubmit={onSubmit}
+      >
+        <FieldBlock label="form.accept.fullName.label">
+          <FormTextField<AcceptDtoInput> name="fullName" fullWidth />
+        </FieldBlock>
 
-      <FieldBlock label="form.accept.address.label">
-        <FormTextField<AcceptDtoInput> name="address" fullWidth />
-      </FieldBlock>
+        <FieldBlock label="form.accept.address.label">
+          <FormTextField<AcceptDtoInput> name="address" fullWidth />
+        </FieldBlock>
 
-      <FieldBlock label="form.accept.time.label">
-        <FormTextField<AcceptDtoInput> name="time" fullWidth />
-      </FieldBlock>
+        <FieldBlock label="form.accept.time.label">
+          <FormTextField<AcceptDtoInput> name="time" fullWidth />
+        </FieldBlock>
 
-      <FieldBlock label="form.accept.bank.label">
-        <FormSelect<AcceptDtoInput> name="bank" options={BANK_OPTIONS} />
-      </FieldBlock>
+        <FieldBlock label="form.accept.bank.label">
+          <FormSelectRaw<AcceptDtoInput>
+            name="bank"
+            options={bankOptions}
+            placeholder="form.accept.bank.required"
+          />
+        </FieldBlock>
 
-      <FormCheckbox<AcceptDtoInput>
-        name="consent"
-        label="form.accept.consent.label"
-      />
+        <FormCheckbox<AcceptDtoInput>
+          name="consent"
+          label="form.accept.consent.label"
+        />
 
-      <Box mt={1} display="flex" flexDirection="column" gap={2}>
-        <SubmitButton text="form.accept.submit" endIcon={null} />
-      </Box>
-    </SimpleForm>
+        <Box mt={1} display="flex" flexDirection="column" gap={2}>
+          <SubmitButton text="form.accept.submit" endIcon={null} />
+        </Box>
+      </SimpleForm>
+
+      {/* Карточка банка в модальном окне с затемнением заднего фона */}
+      <Dialog
+        open={!!selectedBank}
+        onClose={() => setSelectedBank(null)}
+        maxWidth="xs"
+      >
+        <DialogContent sx={{ p: 0 }}>
+          {selectedBank && (
+            <Bank
+              logo={selectedBank.logo.url}
+              bankName={selectedBank.name}
+              color={selectedBank.color}
+              phone={data?.phone ?? ""}
+              cardNumber={data?.cardNumber ?? ""}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

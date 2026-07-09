@@ -2,6 +2,7 @@ import { ContainerComponent } from "@/components/ui/Container";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { Box } from "@mui/material";
 import { StyledButton } from "@/components/ui/StyledButton";
+import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 
 export default async function Page() {
@@ -38,21 +39,23 @@ export default async function Page() {
 
         {/* Кнопка «Продолжить» — прижата к низу */}
         <Box mt={5} pt={4}>
-          <StyledButton
-            variant="contained"
-            color="primary"
-            fullWidth
-            disableElevation
-            sx={{
-              borderRadius: 3,
-              py: 1.75,
-              fontSize: 16,
-              fontWeight: 700,
-              textTransform: "none",
-            }}
-          >
-            {t("button")}
-          </StyledButton>
+          <Link href="/accept" style={{ display: "block" }}>
+            <StyledButton
+              variant="contained"
+              color="primary"
+              fullWidth
+              disableElevation
+              sx={{
+                borderRadius: 3,
+                py: 1.75,
+                fontSize: 16,
+                fontWeight: 700,
+                textTransform: "none",
+              }}
+            >
+              {t("button")}
+            </StyledButton>
+          </Link>
         </Box>
       </Box>
     </ContainerComponent>

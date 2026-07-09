@@ -19,7 +19,7 @@ export default async function TokenPage() {
                             key: uuid.v4(),
                         },
                         {
-                            name: t("pages.admin.landing.token.name"),
+                            name: t("pages.admin.bank.token.name"),
                             href: FULL_PATH_ROUTE.admin.tokens.path,
                             key: uuid.v4(),
                         },

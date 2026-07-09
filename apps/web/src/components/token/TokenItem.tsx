@@ -37,7 +37,7 @@ export default function TokenItem({ token }: { token: TokenDto }) {
                         variant="caption"
                         color="text.disabled"
                         format={(d, locale) =>
-                            t("pages.admin.landing.token.createdAt", {
+                            t("pages.admin.bank.token.createdAt", {
                                 time: smartDate({ date: d, locale }),
                             })
                         }
@@ -46,7 +46,7 @@ export default function TokenItem({ token }: { token: TokenDto }) {
 
                 <CopyToClipboard
                     value={token.url}
-                    successMessage={t("pages.admin.landing.token.linkCopied")}
+                    successMessage={t("pages.admin.bank.token.linkCopied")}
                 />
 
                 <Box flex={1} mt={1.5}>

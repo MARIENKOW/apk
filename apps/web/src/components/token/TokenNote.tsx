@@ -58,7 +58,7 @@ export function TokenNote({ token }: { token: TokenDto }) {
             }}
         >
             <NoteAddIcon fontSize="small" />
-            {t("pages.admin.landing.token.actions.addNote")}
+            {t("pages.admin.bank.token.actions.addNote")}
         </Box>
     );
 }

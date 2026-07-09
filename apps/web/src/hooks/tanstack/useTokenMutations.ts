@@ -60,7 +60,7 @@ export function useCreateToken() {
             service.create(body).then((r) => r.data),
         onMutate: () => cancel(),
         onSuccess: () => {
-            snackbarSuccess(t("pages.admin.landing.token.feedback.created"));
+            snackbarSuccess(t("pages.admin.bank.token.feedback.created"));
         },
         onError: (error) => errorHandler({ error, t }),
         onSettled: () => sync(),
@@ -76,7 +76,7 @@ export function useDeleteToken() {
         onMutate: () => cancel(),
         onSuccess: (_, id) => {
             remove(id);
-            snackbarSuccess(t("pages.admin.landing.token.feedback.deleted"));
+            snackbarSuccess(t("pages.admin.bank.token.feedback.deleted"));
         },
         onError: (error) => errorHandler({ error, t }),
         onSettled: () => sync(),

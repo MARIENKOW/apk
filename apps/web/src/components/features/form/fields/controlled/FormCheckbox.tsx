@@ -42,7 +42,7 @@ export default function FormCheckbox<T extends FieldValues>({
                         />
                         <StyledTypography
                             variant="body2"
-                            color={error ? "error" : "text.secondary"}
+                            color={ "text.secondary"}
                         >
                             {t(label)}
                         </StyledTypography>

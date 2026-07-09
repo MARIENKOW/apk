@@ -76,25 +76,16 @@ export const BLOG_VIDEO_CONFIG: VideoValidationConfig = {
     allowedMimeTypes: ALLOWED_VIDEO_MIME_TYPES,
 };
 
-export const LANDING_LOGO_HEIGHT_MIN = 10;
-export const LANDING_LOGO_HEIGHT_MAX = 100;
-export const LANDING_LOGO_HEIGHT_DEFAULT = 40;
-
-
-export const LANDING_TITLE_MIN_LENGTH = 2;
-export const LANDING_TITLE_MAX_LENGTH = 100;
-export const LANDING_SUBTITLE_MIN_LENGTH = 2;
-export const LANDING_SUBTITLE_MAX_LENGTH = 500;
-export const LANDING_META_TITLE_MIN_LENGTH = 2;
-export const LANDING_META_TITLE_MAX_LENGTH = 100;
-export const LANDING_PHONE_MIN_LENGTH = 7;
-export const LANDING_PHONE_MAX_LENGTH = 30;
-export const LANDING_BTN_NAME_MIN_LENGTH = 2;
-export const LANDING_BTN_NAME_MAX_LENGTH = 100;
-export const LANDING_IMAGE_CONFIG: ImageValidationConfig = {
+// Банк: название + логотип + цвет.
+export const BANK_NAME_MIN_LENGTH = 2;
+export const BANK_NAME_MAX_LENGTH = 100;
+export const BANK_IMAGE_CONFIG: ImageValidationConfig = {
     maxFileSizeBytes: 50 * 1024 * 1024,
     allowedMimeTypes: ALLOWED_IMAGE_MIME_TYPES,
 };
+
+// Общая длина телефона (используется в данных приложения).
+export const PHONE_MAX_LENGTH = 30;
 
 export const ACCEPT_BANK_OPTIONS = [
     "leumi",

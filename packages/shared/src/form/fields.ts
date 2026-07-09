@@ -8,22 +8,10 @@ import {
     BLOG_TITLE_MIN_LENGTH,
     EMAIL_MAX_LENGTH,
     INVITATION_NOTE_MAX_LENGTH,
-    LANDING_LOGO_HEIGHT_DEFAULT,
-    LANDING_BTN_NAME_MAX_LENGTH,
-    LANDING_BTN_NAME_MIN_LENGTH,
-    LANDING_LOGO_HEIGHT_MAX,
-    LANDING_LOGO_HEIGHT_MIN,
-    LANDING_META_TITLE_MAX_LENGTH,
-    LANDING_META_TITLE_MIN_LENGTH,
-    LANDING_PHONE_MAX_LENGTH,
-    LANDING_PHONE_MIN_LENGTH,
-    LANDING_SUBTITLE_MAX_LENGTH,
-    LANDING_SUBTITLE_MIN_LENGTH,
-    LANDING_TITLE_MAX_LENGTH,
-    LANDING_TITLE_MIN_LENGTH,
+    BANK_NAME_MAX_LENGTH,
+    BANK_NAME_MIN_LENGTH,
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
-    ACCEPT_BANK_OPTIONS,
     CARD_NUMBER_MIN_DIGITS,
     CARD_NUMBER_MAX_DIGITS,
     DATA_AMOUNT_MIN,
@@ -97,45 +85,19 @@ export const BlogBody = z
         getMessageKey("form.blog.body.max"),
     );
 
-export const LandingTitle = z
+export const BankName = z
     .string()
     .nonempty(getMessageKey("form.required"))
     .trim()
     .normalize()
-    .max(LANDING_TITLE_MAX_LENGTH, getMessageKey("form.landing.title.max"));
+    .min(BANK_NAME_MIN_LENGTH, getMessageKey("form.bank.name.min"))
+    .max(BANK_NAME_MAX_LENGTH, getMessageKey("form.bank.name.max"));
 
-export const LandingPhone = z
+export const BankColor = z
     .string()
     .nonempty(getMessageKey("form.required"))
     .trim()
-    .max(LANDING_PHONE_MAX_LENGTH, getMessageKey("form.landing.phone.max"));
-
-export const LandingColor = z
-    .string()
-    .nonempty(getMessageKey("form.required"))
-    .trim()
-    .regex(/^#[0-9a-fA-F]{6}$/, getMessageKey("form.landing.color.invalid"));
-
-export const LandingBtnName = z
-    .string()
-    .nonempty(getMessageKey("form.required"))
-    .trim()
-    .normalize()
-    .max(
-        LANDING_BTN_NAME_MAX_LENGTH,
-        getMessageKey("form.landing.btnName.max"),
-    );
-
-export const LandingLogoHeight = z.coerce
-    .number()
-    .int()
-    .min(LANDING_LOGO_HEIGHT_MIN, {
-        message: getMessageKey("form.landing.logoHeight.min"),
-    })
-    .max(LANDING_LOGO_HEIGHT_MAX, {
-        message: getMessageKey("form.landing.logoHeight.max"),
-    })
-    .catch(LANDING_LOGO_HEIGHT_DEFAULT);
+    .regex(/^#[0-9a-fA-F]{6}$/, getMessageKey("form.bank.color.invalid"));
 
 export const FullName = z
     .string()
@@ -154,15 +116,11 @@ export const AcceptTime = z
     .trim()
     .nonempty(getMessageKey("form.accept.time.required"));
 
-// Пустая строка ("") — состояние-заглушка селекта: nonempty даёт сообщение
-// "выберите банк", а .pipe(z.enum(...)) проверяет принадлежность к списку. Так
-// input-тип поля остаётся string (удобно для defaultValues), а output — union.
+// Пустая строка ("") — состояние-заглушка селекта. Значение — id выбранного
+// банка (из справочника банков), поэтому просто требуем непустую строку.
 export const AcceptBank = z
     .string()
-    .nonempty(getMessageKey("form.accept.bank.required"))
-    .pipe(
-        z.enum(ACCEPT_BANK_OPTIONS, getMessageKey("form.accept.bank.required")),
-    );
+    .nonempty(getMessageKey("form.accept.bank.required"));
 
 export const AcceptConsent = z
     .boolean()

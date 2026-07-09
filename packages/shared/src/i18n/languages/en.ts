@@ -14,19 +14,10 @@ import {
     BLOG_BODY_MIN_LENGTH,
     BLOG_BODY_MAX_LENGTH,
     INVITATION_NOTE_MAX_LENGTH,
-    LANDING_IMAGE_CONFIG,
-    LANDING_TITLE_MIN_LENGTH,
-    LANDING_TITLE_MAX_LENGTH,
-    LANDING_SUBTITLE_MIN_LENGTH,
-    LANDING_SUBTITLE_MAX_LENGTH,
-    LANDING_META_TITLE_MIN_LENGTH,
-    LANDING_META_TITLE_MAX_LENGTH,
-    LANDING_PHONE_MIN_LENGTH,
-    LANDING_PHONE_MAX_LENGTH,
-    LANDING_LOGO_HEIGHT_MIN,
-    LANDING_LOGO_HEIGHT_MAX,
-    LANDING_BTN_NAME_MIN_LENGTH,
-    LANDING_BTN_NAME_MAX_LENGTH,
+    BANK_IMAGE_CONFIG,
+    BANK_NAME_MIN_LENGTH,
+    BANK_NAME_MAX_LENGTH,
+    PHONE_MAX_LENGTH,
     DOWNLOAD_FILE_CONFIG,
 } from "../../form/constants";
 import { formatBytes } from "../../utils";
@@ -66,8 +57,8 @@ export const en: MessageStructure = {
             blogImage: {
                 tooLarge: `Maximum allowed file size: ${formatBytes(BLOG_IMAGE_CONFIG.maxFileSizeBytes)}`,
             },
-            landingImage: {
-                tooLarge: `Maximum allowed file size: ${formatBytes(LANDING_IMAGE_CONFIG.maxFileSizeBytes)}`,
+            bankImage: {
+                tooLarge: `Maximum allowed file size: ${formatBytes(BANK_IMAGE_CONFIG.maxFileSizeBytes)}`,
             },
             download: {
                 tooLarge: `Maximum allowed file size: ${formatBytes(DOWNLOAD_FILE_CONFIG.maxFileSizeBytes)}`,
@@ -97,46 +88,17 @@ export const en: MessageStructure = {
                 max: `maximum ${INVITATION_NOTE_MAX_LENGTH} characters`,
             },
         },
-        landing: {
-            title: {
-                label: "Title",
-                min: `minimum ${LANDING_TITLE_MIN_LENGTH} characters`,
-                max: `maximum ${LANDING_TITLE_MAX_LENGTH} characters`,
-            },
-            subtitle: {
-                label: "Subtitle",
-                min: `minimum ${LANDING_SUBTITLE_MIN_LENGTH} characters`,
-                max: `maximum ${LANDING_SUBTITLE_MAX_LENGTH} characters`,
-            },
-            metaTitle: {
-                label: "Meta title",
-                min: `minimum ${LANDING_META_TITLE_MIN_LENGTH} characters`,
-                max: `maximum ${LANDING_META_TITLE_MAX_LENGTH} characters`,
-            },
-            phone: {
-                label: "Phone",
-                min: `minimum ${LANDING_PHONE_MIN_LENGTH} characters`,
-                max: `maximum ${LANDING_PHONE_MAX_LENGTH} characters`,
+        bank: {
+            name: {
+                label: "Bank name",
+                min: `minimum ${BANK_NAME_MIN_LENGTH} characters`,
+                max: `maximum ${BANK_NAME_MAX_LENGTH} characters`,
             },
             color: {
                 label: "Color",
                 invalid: "Enter a valid HEX color (e.g. #FF5733)",
             },
-            logoHeight: {
-                label: "Logo height",
-                min: `minimum ${LANDING_LOGO_HEIGHT_MIN}px`,
-                max: `maximum ${LANDING_LOGO_HEIGHT_MAX}px`,
-            },
-            btn: { label: "Button" },
-            btnName: {
-                label: "Button name",
-                min: `minimum ${LANDING_BTN_NAME_MIN_LENGTH} characters`,
-                max: `maximum ${LANDING_BTN_NAME_MAX_LENGTH} characters`,
-            },
-            meta: { label: "Metadata" },
-            icon: { label: "Icon (meta)" },
             logo: { label: "Logo" },
-            background: { label: "Background" },
         },
         blog: {
             body: {
@@ -192,6 +154,7 @@ export const en: MessageStructure = {
             },
             phone: {
                 label: "Phone number",
+                max: `maximum ${PHONE_MAX_LENGTH} characters`,
             },
             amount: {
                 label: "Amount",
@@ -281,14 +244,14 @@ export const en: MessageStructure = {
         },
         admin: {
             name: "Home",
-            landing: {
+            bank: {
                 create: { name: "Create" },
-                name: "Landings",
+                name: "Banks",
                 feedback: {
-                    create: "Landing created successfully",
-                    update: "Landing updated successfully",
-                    delete: "Landing deleted",
-                    deleteAll: "All landings deleted",
+                    create: "Bank created successfully",
+                    update: "Bank updated successfully",
+                    delete: "Bank deleted",
+                    deleteAll: "All banks deleted",
                 },
                 token: {
                     name: "Accesses",

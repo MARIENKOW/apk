@@ -4,8 +4,8 @@ export const ROUTE = {
   path: "",
   admin: {
     path: "admin",
-    landing: {
-      path: "landing",
+    bank: {
+      path: "bank",
       create: {
         path: "create",
       },

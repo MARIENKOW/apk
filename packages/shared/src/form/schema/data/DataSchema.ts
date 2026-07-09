@@ -4,7 +4,7 @@ import {
     CARD_NUMBER_MAX_DIGITS,
     CARD_NUMBER_MIN_DIGITS,
     DATA_AMOUNT_MAX,
-    LANDING_PHONE_MAX_LENGTH,
+    PHONE_MAX_LENGTH,
 } from "../../constants";
 
 // Данные приложения (singleton). Обязательных полей нет — любое поле можно
@@ -17,7 +17,7 @@ const DataFullName = z.string().trim().normalize();
 const DataPhone = z
     .string()
     .trim()
-    .max(LANDING_PHONE_MAX_LENGTH, getMessageKey("form.landing.phone.max"));
+    .max(PHONE_MAX_LENGTH, getMessageKey("form.data.phone.max"));
 
 // Номер карты — чистим пробелы/дефисы; пусто ок, иначе 13–19 цифр.
 const DataCardNumber = z

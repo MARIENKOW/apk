@@ -8,7 +8,7 @@ export * from "./VideoDto";
 export * from "./AdminInvitationDto";
 export * from "./AdminInvitationAcceptDto";
 export * from "./AdminManagementDto";
-export * from "./LandingDto";
+export * from "./BankDto";
 export * from "./TokenDto";
 export * from "./FileDto";
 export * from "./DataDto";

@@ -83,8 +83,9 @@ export const ENDPOINT = {
             path: "admin",
         },
     },
-    landing: {
-        path: "landing",
+    bank: {
+        path: "bank",
+        public: { path: "public" },
     },
     data: {
         path: "data",

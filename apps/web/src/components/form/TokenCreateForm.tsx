@@ -47,7 +47,7 @@ export default function TokenCreateForm({ onCancel }: Props) {
                 fields: { variant: "outlined" },
                 submit: {
                     variant: "contained",
-                    text: "pages.admin.landing.token.actions.create",
+                    text: "pages.admin.bank.token.actions.create",
                 },
             }}
         >
@@ -59,7 +59,7 @@ export default function TokenCreateForm({ onCancel }: Props) {
                     <Box display="flex" flexDirection="column" gap={2}>
                         <FormTextField<CreateTokenDtoInput>
                             name="note"
-                            label="pages.admin.landing.token.form.note"
+                            label="pages.admin.bank.token.form.note"
                             multiline
                             helperText={t("form.optional")}
                             rows={2}

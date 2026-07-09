@@ -38,7 +38,7 @@ export default function TokenComponent() {
             >
                 <Box display="flex" alignItems="center" gap={1}>
                     <StyledTypography variant="h5" fontWeight={700}>
-                        {t("pages.admin.landing.token.name")}
+                        {t("pages.admin.bank.token.name")}
                         {data?.meta.total ? ` · ${data.meta.total}` : ""}
                     </StyledTypography>
                     <StyledTooltip title={t("common.refresh")} placement="top">
@@ -63,7 +63,7 @@ export default function TokenComponent() {
                     </StyledTooltip>
                 </Box>
                 <StyledButton variant="contained" onClick={() => setCreateOpen(true)}>
-                    {t("pages.admin.landing.token.actions.create")}
+                    {t("pages.admin.bank.token.actions.create")}
                 </StyledButton>
             </Box>
 
@@ -84,7 +84,7 @@ export default function TokenComponent() {
 
             <StyledDialog open={createOpen} onClose={() => setCreateOpen(false)} fullWidth>
                 <DialogTitle sx={{ pb: 1 }}>
-                    {t("pages.admin.landing.token.form.title")}
+                    {t("pages.admin.bank.token.form.title")}
                 </DialogTitle>
                 <DialogContent sx={{ pt: "7px !important" }}>
                     <TokenCreateForm onCancel={() => setCreateOpen(false)} />

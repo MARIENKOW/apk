@@ -12,7 +12,7 @@ import { ChangePasswordAdminModule } from "@/modules/admin/ChangePasswordCode/ch
 import { FileModule } from "@/infrastructure/file/file.module";
 import { AdminInvitationModule } from "@/modules/admin/invitation/adminInvitation.module";
 import { AdminManagementModule } from "@/modules/admin/management/adminManagement.module";
-import { LandingModule } from "@/modules/landing/landing.module";
+import { BankModule } from "@/modules/bank/bank.module";
 import { DataModule } from "@/modules/data/data.module";
 import { TokenModule } from "@/modules/token/token.module";
 import { AppFileModule } from "@/modules/file/appFile.module";
@@ -22,7 +22,7 @@ import { AppFileModule } from "@/modules/file/appFile.module";
         AuthAdminModule,
         ChangePasswordAdminModule,
         RequestContextModule,
-        LandingModule,
+        BankModule,
         DataModule,
         TokenModule,
         FileModule,

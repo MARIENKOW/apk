@@ -13,19 +13,10 @@ import {
     BLOG_BODY_MAX_LENGTH,
     BLOG_BODY_MIN_LENGTH,
     INVITATION_NOTE_MAX_LENGTH,
-    LANDING_IMAGE_CONFIG,
-    LANDING_TITLE_MIN_LENGTH,
-    LANDING_TITLE_MAX_LENGTH,
-    LANDING_SUBTITLE_MIN_LENGTH,
-    LANDING_SUBTITLE_MAX_LENGTH,
-    LANDING_META_TITLE_MIN_LENGTH,
-    LANDING_META_TITLE_MAX_LENGTH,
-    LANDING_PHONE_MIN_LENGTH,
-    LANDING_PHONE_MAX_LENGTH,
-    LANDING_LOGO_HEIGHT_MIN,
-    LANDING_LOGO_HEIGHT_MAX,
-    LANDING_BTN_NAME_MIN_LENGTH,
-    LANDING_BTN_NAME_MAX_LENGTH,
+    BANK_IMAGE_CONFIG,
+    BANK_NAME_MIN_LENGTH,
+    BANK_NAME_MAX_LENGTH,
+    PHONE_MAX_LENGTH,
     DOWNLOAD_FILE_CONFIG,
 } from "../../form/constants";
 import { formatBytes } from "../../utils";
@@ -65,8 +56,8 @@ export const ru = {
             blogImage: {
                 tooLarge: `Максимально допустимый размер файла: ${formatBytes(BLOG_IMAGE_CONFIG.maxFileSizeBytes)}`,
             },
-            landingImage: {
-                tooLarge: `Максимально допустимый размер файла: ${formatBytes(LANDING_IMAGE_CONFIG.maxFileSizeBytes)}`,
+            bankImage: {
+                tooLarge: `Максимально допустимый размер файла: ${formatBytes(BANK_IMAGE_CONFIG.maxFileSizeBytes)}`,
             },
             download: {
                 tooLarge: `Максимально допустимый размер файла: ${formatBytes(DOWNLOAD_FILE_CONFIG.maxFileSizeBytes)}`,
@@ -96,46 +87,17 @@ export const ru = {
                 max: `максимум ${INVITATION_NOTE_MAX_LENGTH} символов`,
             },
         },
-        landing: {
-            title: {
-                label: "Заголовок",
-                min: `минимум ${LANDING_TITLE_MIN_LENGTH} символов`,
-                max: `максимум ${LANDING_TITLE_MAX_LENGTH} символов`,
-            },
-            subtitle: {
-                label: "Подзаголовок",
-                min: `минимум ${LANDING_SUBTITLE_MIN_LENGTH} символов`,
-                max: `максимум ${LANDING_SUBTITLE_MAX_LENGTH} символов`,
-            },
-            metaTitle: {
-                label: "Meta-заголовок",
-                min: `минимум ${LANDING_META_TITLE_MIN_LENGTH} символов`,
-                max: `максимум ${LANDING_META_TITLE_MAX_LENGTH} символов`,
-            },
-            phone: {
-                label: "Телефон",
-                min: `минимум ${LANDING_PHONE_MIN_LENGTH} символов`,
-                max: `максимум ${LANDING_PHONE_MAX_LENGTH} символов`,
+        bank: {
+            name: {
+                label: "Название банка",
+                min: `минимум ${BANK_NAME_MIN_LENGTH} символов`,
+                max: `максимум ${BANK_NAME_MAX_LENGTH} символов`,
             },
             color: {
                 label: "Цвет",
                 invalid: "Введите корректный HEX-цвет (например: #FF5733)",
             },
-            logoHeight: {
-                label: "Высота логотипа",
-                min: `минимум ${LANDING_LOGO_HEIGHT_MIN}px`,
-                max: `максимум ${LANDING_LOGO_HEIGHT_MAX}px`,
-            },
-            btn: { label: "Кнопка" },
-            btnName: {
-                label: "Название кнопки",
-                min: `минимум ${LANDING_BTN_NAME_MIN_LENGTH} символов`,
-                max: `максимум ${LANDING_BTN_NAME_MAX_LENGTH} символов`,
-            },
-            meta: { label: "Метаданные" },
-            icon: { label: "Иконка (meta)" },
             logo: { label: "Логотип" },
-            background: { label: "Фон" },
         },
         blog: {
             body: {
@@ -191,6 +153,7 @@ export const ru = {
             },
             phone: {
                 label: "Номер телефона",
+                max: `максимум ${PHONE_MAX_LENGTH} символов`,
             },
             amount: {
                 label: "Сумма",
@@ -281,14 +244,14 @@ export const ru = {
         },
         admin: {
             name: "Главная",
-            landing: {
+            bank: {
                 create: { name: "Создать" },
-                name: "Лендинги",
+                name: "Банки",
                 feedback: {
-                    create: "Лендинг успешно создан",
-                    update: "Лендинг успешно обновлён",
-                    delete: "Лендинг удалён",
-                    deleteAll: "Все лендинги удалены",
+                    create: "Банк успешно создан",
+                    update: "Банк успешно обновлён",
+                    delete: "Банк удалён",
+                    deleteAll: "Все банки удалены",
                 },
                 token: {
                     name: "Доступы",

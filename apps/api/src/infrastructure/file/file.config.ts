@@ -8,12 +8,7 @@ export const TMP_PATH = path.resolve(process.cwd(), UPLOADS_ROOT + "/tmp");
 
 export const FILE_CONFIG: Record<FileEntityType, FileEntityConfig> = {
     [FileEntityType.AVATAR]: { folder: "avatars", private: false },
-    [FileEntityType.LANDING_ICON]: { folder: "landing/icon", private: false },
-    [FileEntityType.LANDING_LOGO]: { folder: "landing/logo", private: false },
-    [FileEntityType.LANDING_BACKGROUND]: {
-        folder: "landing/background",
-        private: false,
-    },
+    [FileEntityType.BANK_LOGO]: { folder: "bank/logo", private: false },
     [FileEntityType.DOWNLOAD]: { folder: "download", private: false },
 };
 

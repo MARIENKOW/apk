@@ -49,7 +49,7 @@ export function TokenNoteForm({ token, onCancel }: Props) {
             const { data: updated } = await service.updateNote(token.id, values);
             update(() => updated, updated.id);
             sync();
-            snackbarSuccess(t("pages.admin.landing.token.feedback.noteUpdated"));
+            snackbarSuccess(t("pages.admin.bank.token.feedback.noteUpdated"));
             onCancel();
         } catch (error) {
             errorFormHandler({ error, t, setError, formValues: values });
@@ -64,12 +64,12 @@ export function TokenNoteForm({ token, onCancel }: Props) {
             >
                 <FormTextField<UpdateNoteTokenDtoInput>
                     name="note"
-                    label="pages.admin.landing.token.noteLabel"
+                    label="pages.admin.bank.token.noteLabel"
                     size="small"
                     multiline
                     variant="outlined"
                     rows={2}
-                    helperText={t("pages.admin.landing.token.notePlaceholder")}
+                    helperText={t("pages.admin.bank.token.notePlaceholder")}
                     slotProps={{
                         input: {
                             endAdornment: (

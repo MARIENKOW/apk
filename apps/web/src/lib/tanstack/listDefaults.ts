@@ -6,11 +6,11 @@ import { Pagination } from "./pagination";
  * (для SSR prefetch) и в client hooks.
  */
 
-export type LandingParams = Pagination & {
+export type BankParams = Pagination & {
     order: "desc" | "asc";
     query: string;
 };
-export const defaultLandingParams: LandingParams = {
+export const defaultBankParams: BankParams = {
     page: 1,
     order: "desc",
     query: "",
