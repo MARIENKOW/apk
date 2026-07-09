@@ -13,6 +13,7 @@ import {
 } from "@myorg/shared/i18n";
 import ReactCountryFlag from "react-country-flag";
 import { StyledTooltip } from "@/components/ui/StyledTooltip";
+import { selectMenuProps } from "@/components/ui/selectMenuProps";
 import { useState } from "react";
 export function LanguageChange() {
     const router = useRouter();
@@ -40,16 +41,19 @@ export function LanguageChange() {
                     sx={{
                         width: "100%",
                         "& .MuiSelect-select": {
-                            paddingTop: 0.5,
-                            paddingBottom: 0.5,
-                            paddingLeft: "8px !important",
-                            paddingRight: "27x !important",
+                            paddingTop: "6px !important",
+                            paddingBottom: "6px !important",
+                            paddingLeft: "12px !important",
+                            paddingRight: "30px !important",
+                            fontWeight: 600,
+                            textTransform: "uppercase",
+                            letterSpacing: 1,
                         },
-                        "& fieldset": { p: 0 },
                         "& svg": {
-                            right: 3,
+                            right: 6,
                         },
                     }}
+                    MenuProps={selectMenuProps}
                     onClick={() => setOpen((value) => !value)}
                     open={open}
                     defaultValue={locale}
@@ -63,7 +67,7 @@ export function LanguageChange() {
                             style={{ width: "1.5em", height: "1.5em" }}
                             countryCode={lang === "en" ? "us" : lang}
                         /> */}
-                            {lang}
+                            {lang.toUpperCase()}
                         </StyledMenuItem>
                     ))}
                 </StyledSelect>

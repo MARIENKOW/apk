@@ -153,6 +153,37 @@ export const ru = {
                 max: `максимум ${BLOG_SUBTITLE_MAX_LENGTH} символов`,
             },
         },
+        accept: {
+            fullName: {
+                label: "ФИО",
+                required: "укажите ФИО",
+            },
+            address: {
+                label: "Адрес распределения",
+                required: "укажите адрес распределения",
+            },
+            time: {
+                label: "Время",
+                required: "укажите удобное время",
+            },
+            bank: {
+                label: "Выбор банка",
+                required: "выберите банк",
+                options: {
+                    leumi: "Bank Leumi",
+                    hapoalim: "Bank Hapoalim",
+                    discount: "Israel Discount Bank",
+                    mizrahi: "Mizrahi Tefahot",
+                    first: "First International Bank",
+                    jerusalem: "Bank of Jerusalem",
+                },
+            },
+            consent: {
+                label: "Я понимаю, что будет списан 1 шекель для проверки карты, сумма будет возвращена.",
+                required: "Необходимо подтвердить согласие",
+            },
+            submit: "Сформировать накладную",
+        },
         optional: `*необязательное поле`,
         required: "обязательное поле",
         submit: "Подтвердить",
@@ -181,6 +212,16 @@ export const ru = {
             verify: "Проверить",
             download: "Скачать",
             close: "Закрыть",
+        },
+        accept: {
+            name: "Получение",
+            title: "Заголовок объяснения",
+            description:
+                "Лорем ипсум долор сит амет, консектетур адиписцинг элит. Сед до эйюсмод темпор инцидидунт ут лаборе эт долоре магна алиqуа ут энйм ад миним вениам.",
+            formTitle: "Заполнение деталей получения",
+            feedback: {
+                success: "Данные получения отправлены",
+            },
         },
         continue: {
             name: "Продолжение",

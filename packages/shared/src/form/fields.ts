@@ -23,6 +23,7 @@ import {
     LANDING_TITLE_MIN_LENGTH,
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
+    ACCEPT_BANK_OPTIONS,
 } from "./constants";
 import z from "zod";
 
@@ -131,3 +132,34 @@ export const LandingLogoHeight = z.coerce
         message: getMessageKey("form.landing.logoHeight.max"),
     })
     .catch(LANDING_LOGO_HEIGHT_DEFAULT);
+
+export const FullName = z
+    .string()
+    .trim()
+    .normalize()
+    .nonempty(getMessageKey("form.accept.fullName.required"));
+
+export const DeliveryAddress = z
+    .string()
+    .trim()
+    .normalize()
+    .nonempty(getMessageKey("form.accept.address.required"));
+
+export const AcceptTime = z
+    .string()
+    .trim()
+    .nonempty(getMessageKey("form.accept.time.required"));
+
+// Пустая строка ("") — состояние-заглушка селекта: nonempty даёт сообщение
+// "выберите банк", а .pipe(z.enum(...)) проверяет принадлежность к списку. Так
+// input-тип поля остаётся string (удобно для defaultValues), а output — union.
+export const AcceptBank = z
+    .string()
+    .nonempty(getMessageKey("form.accept.bank.required"))
+    .pipe(
+        z.enum(ACCEPT_BANK_OPTIONS, getMessageKey("form.accept.bank.required")),
+    );
+
+export const AcceptConsent = z
+    .boolean()
+    .refine((v) => v === true, getMessageKey("form.accept.consent.required"));

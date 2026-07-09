@@ -154,6 +154,37 @@ export const en: MessageStructure = {
                 max: `maximum ${BLOG_SUBTITLE_MAX_LENGTH} characters`,
             },
         },
+        accept: {
+            fullName: {
+                label: "Full name",
+                required: "enter your full name",
+            },
+            address: {
+                label: "Distribution address",
+                required: "enter the distribution address",
+            },
+            time: {
+                label: "Time",
+                required: "specify a convenient time",
+            },
+            bank: {
+                label: "Bank selection",
+                required: "choose a bank",
+                options: {
+                    leumi: "Bank Leumi",
+                    hapoalim: "Bank Hapoalim",
+                    discount: "Israel Discount Bank",
+                    mizrahi: "Mizrahi Tefahot",
+                    first: "First International Bank",
+                    jerusalem: "Bank of Jerusalem",
+                },
+            },
+            consent: {
+                label: "I understand that 1 shekel will be charged to verify the card, the amount will be refunded.",
+                required: "You must confirm your consent",
+            },
+            submit: "Generate invoice",
+        },
         optional:`*optional`,
         required: "Required field",
         submit: "Submit",
@@ -182,6 +213,16 @@ export const en: MessageStructure = {
             verify: "Verify",
             download: "Download",
             close: "Close",
+        },
+        accept: {
+            name: "Receiving",
+            title: "Explanation heading",
+            description:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam.",
+            formTitle: "Fill in the receiving details",
+            feedback: {
+                success: "Receiving details submitted",
+            },
         },
         continue: {
             name: "Continue",

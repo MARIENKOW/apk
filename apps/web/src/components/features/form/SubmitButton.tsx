@@ -5,13 +5,19 @@ import { useTranslations } from "next-intl";
 import { useFormConfig } from "@/components/wrappers/form/FormConfigProvider";
 import { ButtonProps } from "@mui/material";
 import { MessageKeyType } from "@myorg/shared/i18n";
+import { ReactNode } from "react";
 
 type SubmitButtonParams = {
     variant?: ButtonProps["variant"];
     text?: MessageKeyType;
+    endIcon?: ReactNode;
 };
 
-export default function SubmitButton({ variant, text }: SubmitButtonParams) {
+export default function SubmitButton({
+    variant,
+    text,
+    endIcon = <DoubleArrowIcon />,
+}: SubmitButtonParams) {
     const t = useTranslations();
     const { control } = useFormContext();
     const {
@@ -29,7 +35,7 @@ export default function SubmitButton({ variant, text }: SubmitButtonParams) {
         <StyledButton
             fullWidth
             loading={isSubmitting}
-            endIcon={<DoubleArrowIcon />}
+            endIcon={endIcon}
             type="submit"
             variant={finalVariant}
         >

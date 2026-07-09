@@ -9,7 +9,7 @@ import { FieldValues, Path, RegisterOptions } from "react-hook-form";
 
 type StyledTextField<T extends FieldValues> = {
     name: Path<T>;
-    label: MessageKeyType;
+    label?: MessageKeyType;
 } & TextFieldProps;
 
 export default function FormTextField<T extends FieldValues>({

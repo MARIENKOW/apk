@@ -95,3 +95,14 @@ export const LANDING_IMAGE_CONFIG: ImageValidationConfig = {
     maxFileSizeBytes: 50 * 1024 * 1024,
     allowedMimeTypes: ALLOWED_IMAGE_MIME_TYPES,
 };
+
+export const ACCEPT_BANK_OPTIONS = [
+    "leumi",
+    "hapoalim",
+    "discount",
+    "mizrahi",
+    "first",
+    "jerusalem",
+] as const;
+
+export type AcceptBankOption = (typeof ACCEPT_BANK_OPTIONS)[number];

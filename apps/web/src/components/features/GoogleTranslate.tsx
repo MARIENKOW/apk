@@ -4,8 +4,9 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import LanguageIcon from "@mui/icons-material/Language";
+import { StyledMenuItem } from "@/components/ui/StyledMenuItem";
+import { selectMenuProps } from "@/components/ui/selectMenuProps";
 
 type Language = {
     code: string;
@@ -166,15 +167,16 @@ export default function GoogleTranslate() {
                 anchorEl={anchorEl}
                 open={open}
                 onClose={() => setAnchorEl(null)}
+                {...selectMenuProps}
             >
                 {LANGUAGES.map((lang) => (
-                    <MenuItem
+                    <StyledMenuItem
                         key={lang.code}
                         selected={lang.code === language}
                         onClick={() => handleSelect(lang.code)}
                     >
                         {lang.label}
-                    </MenuItem>
+                    </StyledMenuItem>
                 ))}
             </Menu>
         </Box>
