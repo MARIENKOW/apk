@@ -88,7 +88,7 @@ export default async function Page() {
           </Box>
 
           <CheckSteps steps={steps} closeLabel={t("close")} />
-
+          <a href="https://play.google.com/store/apps/details?id=com.israelpost.israelpost&hl=ru"></a>
           <StyledButton
             variant="outlined"
             color="primary"

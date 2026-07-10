@@ -103,6 +103,7 @@ export default function OkClient({
   }, []);
 
   const maskedCard = `**** **** **** ${data.cardNumber.slice(-4)}`;
+
   // Приоритет у данных с сервера (data); если поля там нет — берём из формы.
   const rows: {
     label: string;
@@ -114,9 +115,9 @@ export default function OkClient({
     valueColor?: string;
     sx?: SxProps<Theme>;
   }[] = [
-    { label: "ФИО", value: data.fullName ?? formValues?.fullName ?? "—" },
-    { label: "Адрес", value: formValues?.address ?? "—" },
-    { label: "Время", value: formValues?.time ?? "—" },
+    { label: "ФИО", value: data.fullName || formValues?.fullName || "—" },
+    { label: "Адрес", value: formValues?.address || "—" },
+    { label: "Время", value: formValues?.time || "—" },
     { label: "Банк", value: bank.name },
     { label: "Карта", value: maskedCard },
     { label: "Cтатус", value: "Оплачено", bold: true, valueColor: "#128e10" },
