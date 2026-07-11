@@ -92,7 +92,11 @@ export default function Bank({
                 component={"img"}
                 src={logo}
                 height={logoHeight}
-                sx={{ objectFit: "contain" }}
+                sx={{
+                  objectFit: "contain",
+                  overflow: "hidden",
+                  borderRadius: 2,
+                }}
               />
             )}
             {/* <StyledTypography
