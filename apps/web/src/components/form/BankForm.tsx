@@ -8,6 +8,7 @@ import SubmitButton from "@/components/features/form/SubmitButton";
 import FormTextField from "@/components/features/form/fields/controlled/FormTextField";
 import FormColorPicker from "@/components/features/form/fields/controlled/FormColorPicker";
 import FormImageButtonField from "@/components/features/form/fields/controlled/FormImageButtonField";
+import FormSlider from "@/components/features/form/fields/controlled/FormSlider";
 import useForm from "@/hooks/useForm";
 import FormAlert from "@/components/features/form/FormAlert";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
@@ -17,11 +18,18 @@ import {
   BankOutput,
   BankSchema,
   BANK_IMAGE_CONFIG,
+  BANK_LOGO_HEIGHT_DEFAULT,
+  BANK_LOGO_HEIGHT_MIN,
+  BANK_LOGO_HEIGHT_MAX,
 } from "@myorg/shared/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box } from "@mui/material";
 import { StyledPaper } from "@/components/ui/StyledPaper";
+import { StyledTypography } from "@/components/ui/StyledTypography";
 import { BankDto } from "@myorg/shared/dto";
+import { useWatch } from "react-hook-form";
+import Bank from "@/components/layout/Bank";
+import { useImagePreview } from "@/hooks/useImagePreview";
 
 const BankForm = ({
   onRequest,
@@ -38,7 +46,26 @@ const BankForm = ({
       name: initData?.name || "",
       logo: initData?.logo.url || null,
       color: initData?.color || "#f90c0c",
+      logoHeight: initData?.logoHeight ?? BANK_LOGO_HEIGHT_DEFAULT,
     },
+  });
+
+  const logoHeight = useWatch({
+    control: form.control,
+    name: "logoHeight",
+  }) as number;
+
+  const name = useWatch({ control: form.control, name: "name" }) as string;
+  const color = useWatch({ control: form.control, name: "color" }) as string;
+  const logo = useWatch({ control: form.control, name: "logo" }) as
+    | File
+    | string
+    | null;
+
+  const logoPreview = useImagePreview({
+    value: logo,
+    schema: BankSchema.shape.logo,
+    defaultValue: initData?.logo.url || null,
   });
 
   const handleSubmit: CustomSubmitHandler<BankInput, BankOutput> = async (
@@ -97,11 +124,34 @@ const BankForm = ({
                     accept={BANK_IMAGE_CONFIG.allowedMimeTypes}
                     previewProps={{
                       objectFit: "contain",
-                      height: 55,
+                      height: logoHeight,
                       deleteButtonPosition: "right-center-outside",
                     }}
                     label={t("form.bank.logo.label")}
                   />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    gap={2}
+                    py={1}
+                    px={0.5}
+                  >
+                    <FormSlider<BankInput>
+                      name="logoHeight"
+                      min={BANK_LOGO_HEIGHT_MIN}
+                      max={BANK_LOGO_HEIGHT_MAX}
+                      sx={{ flex: 1 }}
+                    />
+                    <StyledTypography
+                      variant="caption"
+                      color="text.disabled"
+                      sx={{ minWidth: 36, textAlign: "right" }}
+                    >
+                      {logoHeight}
+                    </StyledTypography>
+                  </Box>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <FormTextField<BankInput>
@@ -124,6 +174,35 @@ const BankForm = ({
             <Box display={"flex"} flexDirection={"column"} gap={1} mt={3}>
               <FormAlert />
               <SubmitButton />
+            </Box>
+
+            {/* Живое превью карточки банка по текущим значениям формы */}
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              gap={1}
+              mt={3}
+              alignItems={"center"}
+            >
+              <StyledTypography
+                variant="overline"
+                color="text.disabled"
+                sx={{ lineHeight: 1, letterSpacing: 1.5 }}
+              >
+                {t("form.bank.preview.label")}
+              </StyledTypography>
+              <StyledPaper variant="outlined" sx={{ overflow: "hidden" }}>
+                <Bank
+                  dev
+                  bankId=""
+                  bankName={name}
+                  logo={logoPreview ?? ""}
+                  logoHeight={logoHeight}
+                  color={color}
+                  cardNumber="0000000000000000"
+                  phone="+972 50 000 0000"
+                />
+              </StyledPaper>
             </Box>
           </Box>
         </Form>

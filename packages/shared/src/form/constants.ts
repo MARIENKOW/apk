@@ -83,6 +83,10 @@ export const BANK_IMAGE_CONFIG: ImageValidationConfig = {
     maxFileSizeBytes: 50 * 1024 * 1024,
     allowedMimeTypes: ALLOWED_IMAGE_MIME_TYPES,
 };
+// Высота логотипа банка (px), задаётся в форме слайдером.
+export const BANK_LOGO_HEIGHT_MIN = 10;
+export const BANK_LOGO_HEIGHT_MAX = 100;
+export const BANK_LOGO_HEIGHT_DEFAULT = 30;
 
 // Общая длина телефона (используется в данных приложения).
 export const PHONE_MAX_LENGTH = 30;

@@ -138,6 +138,7 @@ export default function AcceptForm({
           {selectedBank && (
             <Bank
               logo={selectedBank.logo.url}
+              logoHeight={selectedBank.logoHeight}
               bankName={selectedBank.name}
               bankId={selectedBank.id}
               color={selectedBank.color}

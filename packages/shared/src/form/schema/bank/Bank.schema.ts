@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { getMessageKey } from "../../../i18n";
 import { BANK_IMAGE_CONFIG } from "../../constants";
-import { BankColor, BankName } from "../../fields";
+import { BankColor, BankLogoHeight, BankName } from "../../fields";
 
 const BankLogoFieldBase = z
     .union([z.instanceof(File), z.string()])
@@ -26,6 +26,7 @@ const BankLogoField = BankLogoFieldBase.refine(
 const BankBaseSchema = z.object({
     name: BankName,
     color: BankColor,
+    logoHeight: BankLogoHeight,
 });
 
 export const BankSchema = BankBaseSchema.extend({

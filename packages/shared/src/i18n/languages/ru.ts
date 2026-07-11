@@ -16,6 +16,8 @@ import {
     BANK_IMAGE_CONFIG,
     BANK_NAME_MIN_LENGTH,
     BANK_NAME_MAX_LENGTH,
+    BANK_LOGO_HEIGHT_MIN,
+    BANK_LOGO_HEIGHT_MAX,
     PHONE_MAX_LENGTH,
     DOWNLOAD_FILE_CONFIG,
 } from "../../form/constants";
@@ -98,6 +100,12 @@ export const ru = {
                 invalid: "Введите корректный HEX-цвет (например: #FF5733)",
             },
             logo: { label: "Логотип" },
+            logoHeight: {
+                label: "Высота логотипа",
+                min: `минимум ${BANK_LOGO_HEIGHT_MIN}px`,
+                max: `максимум ${BANK_LOGO_HEIGHT_MAX}px`,
+            },
+            preview: { label: "Превью" },
         },
         blog: {
             body: {

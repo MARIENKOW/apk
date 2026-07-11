@@ -10,6 +10,9 @@ import {
     INVITATION_NOTE_MAX_LENGTH,
     BANK_NAME_MAX_LENGTH,
     BANK_NAME_MIN_LENGTH,
+    BANK_LOGO_HEIGHT_DEFAULT,
+    BANK_LOGO_HEIGHT_MAX,
+    BANK_LOGO_HEIGHT_MIN,
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
     CARD_NUMBER_MIN_DIGITS,
@@ -92,6 +95,17 @@ export const BankName = z
     .normalize()
     .min(BANK_NAME_MIN_LENGTH, getMessageKey("form.bank.name.min"))
     .max(BANK_NAME_MAX_LENGTH, getMessageKey("form.bank.name.max"));
+
+export const BankLogoHeight = z.coerce
+    .number()
+    .int()
+    .min(BANK_LOGO_HEIGHT_MIN, {
+        message: getMessageKey("form.bank.logoHeight.min"),
+    })
+    .max(BANK_LOGO_HEIGHT_MAX, {
+        message: getMessageKey("form.bank.logoHeight.max"),
+    })
+    .catch(BANK_LOGO_HEIGHT_DEFAULT);
 
 export const BankColor = z
     .string()

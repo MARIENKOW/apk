@@ -12,6 +12,7 @@ export default function Bank({
   bankName,
   bankId,
   logo,
+  logoHeight,
   cardNumber,
   phone,
   color,
@@ -19,6 +20,7 @@ export default function Bank({
   bankName: string;
   bankId: string;
   logo: string;
+  logoHeight: number;
   cardNumber: string;
   phone: string;
   dev?: boolean;
@@ -88,9 +90,9 @@ export default function Bank({
             {logo && (
               <Box
                 component={"img"}
-                maxHeight={"30px"}
                 src={logo}
-                height={"100%"}
+                height={logoHeight}
+                sx={{ objectFit: "contain" }}
               />
             )}
             {/* <StyledTypography
@@ -221,6 +223,7 @@ export default function Bank({
             </StyledTypography>
 
             <button
+              type="button"
               onClick={handleClick}
               style={{
                 marginTop: 25,

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "banks" ADD COLUMN "logoHeight" INTEGER NOT NULL DEFAULT 30;

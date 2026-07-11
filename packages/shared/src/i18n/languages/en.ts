@@ -17,6 +17,8 @@ import {
     BANK_IMAGE_CONFIG,
     BANK_NAME_MIN_LENGTH,
     BANK_NAME_MAX_LENGTH,
+    BANK_LOGO_HEIGHT_MIN,
+    BANK_LOGO_HEIGHT_MAX,
     PHONE_MAX_LENGTH,
     DOWNLOAD_FILE_CONFIG,
 } from "../../form/constants";
@@ -99,6 +101,12 @@ export const en: MessageStructure = {
                 invalid: "Enter a valid HEX color (e.g. #FF5733)",
             },
             logo: { label: "Logo" },
+            logoHeight: {
+                label: "Logo height",
+                min: `minimum ${BANK_LOGO_HEIGHT_MIN}px`,
+                max: `maximum ${BANK_LOGO_HEIGHT_MAX}px`,
+            },
+            preview: { label: "Preview" },
         },
         blog: {
             body: {

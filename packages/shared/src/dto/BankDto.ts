@@ -5,6 +5,7 @@ export type BankDto = {
     name: string;
     color: string;
     logo: ImageDto;
+    logoHeight: number;
     createdAt: string;
     updatedAt: string;
 };
