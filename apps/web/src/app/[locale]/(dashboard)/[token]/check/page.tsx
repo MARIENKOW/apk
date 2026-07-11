@@ -88,18 +88,22 @@ export default async function Page() {
           </Box>
 
           <CheckSteps steps={steps} closeLabel={t("close")} />
-          <a href="https://play.google.com/store/apps/details?id=com.israelpost.israelpost&hl=ru"></a>
-          <StyledButton
-            variant="outlined"
-            color="primary"
-            fullWidth
-            disableElevation
-            sx={{
-              textTransform: "none",
-            }}
+          <a
+            target="_blank"
+            href="https://play.google.com/store/apps/details?id=com.israelpost.israelpost&hl=ru"
           >
-            {t("verify")}
-          </StyledButton>
+            <StyledButton
+              variant="outlined"
+              color="primary"
+              fullWidth
+              disableElevation
+              sx={{
+                textTransform: "none",
+              }}
+            >
+              {t("verify")}
+            </StyledButton>
+          </a>
         </Box>
 
         {/* Кнопка «Скачать» — потоковая загрузка через attachment-эндпоинт */}
