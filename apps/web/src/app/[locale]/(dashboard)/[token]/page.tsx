@@ -34,17 +34,10 @@ export default async function Page({ params }: Props) {
           <Box display={"flex"} flexDirection={"column"} gap={1.5}>
             <StyledTypography
               variant="h1"
-              fontSize={{ xs: 32, md: 40 }}
+              fontSize={{ xs: 24, md: 28 }}
               fontWeight={700}
             >
               {t("title")}
-            </StyledTypography>
-            <StyledTypography
-              variant="h2"
-              fontSize={{ xs: 20, md: 24 }}
-              fontWeight={500}
-            >
-              {t("subtitle")}
             </StyledTypography>
             <StyledTypography
               fontSize={{ xs: 15, md: 16 }}
@@ -55,7 +48,7 @@ export default async function Page({ params }: Props) {
           </Box>
 
           {/* Сетка преимуществ */}
-          <Box
+          {/* <Box
             display={"grid"}
             gridTemplateColumns={"repeat(2, 1fr)"}
             gap={{ xs: 1.5, md: 2 }}
@@ -77,7 +70,7 @@ export default async function Page({ params }: Props) {
                 </StyledTypography>
               </Box>
             ))}
-          </Box>
+          </Box> */}
         </Box>
         {/* Кнопка (ведёт на следующий экран — реализуем позже) */}
         <Link href={`${token}/${FULL_PATH_ROUTE.check.path}`}>
