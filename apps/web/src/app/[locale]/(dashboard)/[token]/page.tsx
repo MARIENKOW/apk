@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { FULL_PATH_ROUTE } from "@myorg/shared/route";
 import { getTranslations } from "next-intl/server";
 import { StyledButton } from "@/components/ui/StyledButton";
+import NewspaperIcon from "@mui/icons-material/Newspaper";
 
 const benefits = [1, 2, 3, 4, 5, 6];
 
@@ -77,7 +78,8 @@ export default async function Page({ params }: Props) {
           <StyledButton
             fullWidth
             disableElevation
-            variant='contained'
+            variant="contained"
+            startIcon={<NewspaperIcon />}
             sx={{
               borderRadius: 3,
               py: 2,
