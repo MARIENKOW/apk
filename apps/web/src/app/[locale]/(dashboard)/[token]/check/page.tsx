@@ -42,6 +42,18 @@ export default async function Page() {
       src: "/3.jpeg",
       alt: "3",
     },
+    {
+      src: "/4.jpeg",
+      alt: "3",
+    },
+    {
+      src: "/5.jpeg",
+      alt: "3",
+    },
+    {
+      src: "/6.jpeg",
+      alt: "3",
+    },
   ];
 
   const troublePoints = [

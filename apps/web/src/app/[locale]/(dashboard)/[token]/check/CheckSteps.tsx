@@ -27,7 +27,7 @@ export default function CheckSteps({
         <>
             <Box
                 display={"grid"}
-                gridTemplateColumns={`repeat(${steps.length}, 1fr)`}
+                gridTemplateColumns={`repeat(${3}, 1fr)`}
                 gap={{ xs: 1.5, md: 2 }}
             >
                 {steps.map((step, index) => (
