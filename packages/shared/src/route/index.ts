@@ -35,6 +35,9 @@ export const ROUTE = {
     invitation: { path: "invitation" },
     file: { path: "file" },
   },
+  search: {
+    path: "search",
+  },
   check: {
     path: "check",
   },

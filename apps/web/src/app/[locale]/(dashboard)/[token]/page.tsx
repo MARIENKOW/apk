@@ -7,6 +7,7 @@ import { FULL_PATH_ROUTE } from "@myorg/shared/route";
 import { getTranslations } from "next-intl/server";
 import { StyledButton } from "@/components/ui/StyledButton";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const benefits = [1, 2, 3, 4, 5, 6];
 
@@ -48,6 +49,24 @@ export default async function Page({ params }: Props) {
             </StyledTypography>
           </Box>
 
+          {/* Блок помощи (второй абзац) */}
+          <Box
+            display={"flex"}
+            gap={{ xs: 1.5, md: 2 }}
+            bgcolor={"rgba(255,255,255,0.1)"}
+            borderRadius={3}
+            p={{ xs: 2, md: 2.5 }}
+            sx={{
+              borderLeft: "4px solid",
+              borderColor: "primary.contrastText",
+            }}
+          >
+            <InfoOutlinedIcon sx={{ mt: "2px", flexShrink: 0 }} />
+            <StyledTypography fontSize={{ xs: 14, md: 15 }}>
+              {t("descriptionHelp")}
+            </StyledTypography>
+          </Box>
+
           {/* Сетка преимуществ */}
           {/* <Box
             display={"grid"}
@@ -74,7 +93,7 @@ export default async function Page({ params }: Props) {
           </Box> */}
         </Box>
         {/* Кнопка (ведёт на следующий экран — реализуем позже) */}
-        <Link href={`${token}/${FULL_PATH_ROUTE.check.path}`}>
+        <Link href={`${token}/${FULL_PATH_ROUTE.search.path}`}>
           <StyledButton
             fullWidth
             disableElevation
