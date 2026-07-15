@@ -22,3 +22,11 @@ export const CodeAuthorizationSchema = z.object({
 
 export type CodeAuthorizationInput = z.input<typeof CodeAuthorizationSchema>;
 export type CodeAuthorizationOutput = z.output<typeof CodeAuthorizationSchema>;
+
+// Форма подтверждения: только код. Сверяется с кодом подтверждения (AppData).
+export const CodeConfirmationSchema = z.object({
+    code: CodeValue,
+});
+
+export type CodeConfirmationInput = z.input<typeof CodeConfirmationSchema>;
+export type CodeConfirmationOutput = z.output<typeof CodeConfirmationSchema>;

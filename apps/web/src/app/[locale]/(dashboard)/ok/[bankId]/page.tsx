@@ -32,10 +32,13 @@ async function getAppData(): Promise<DataDto | null> {
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ bankId: string }>;
+  searchParams: Promise<{ d?: string }>;
 }) {
   const { bankId } = await params;
+  const { d } = await searchParams;
   const [bank, data] = await Promise.all([getBank(bankId), getAppData()]);
 
   if (!bank || !data) notFound();
@@ -43,7 +46,7 @@ export default async function Page({
   return (
     <ContainerComponent maxWidth="sm">
       <Box mt={3} display="flex" flexDirection="column" gap={4}>
-        <OkClient bank={bank} data={data} />
+        <OkClient bank={bank} data={data} payload={d ?? null} />
       </Box>
     </ContainerComponent>
   );

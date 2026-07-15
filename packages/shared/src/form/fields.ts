@@ -130,6 +130,12 @@ export const AcceptTime = z
     .trim()
     .nonempty(getMessageKey("form.accept.time.required"));
 
+// Способ получения: "branch" (отделение) или "courier" (курьер).
+// Пустая строка "" — заглушка селекта, поэтому требуем непустое значение.
+export const AcceptMethod = z
+    .string()
+    .nonempty(getMessageKey("form.accept.method.required"));
+
 // Пустая строка ("") — состояние-заглушка селекта. Значение — id выбранного
 // банка (из справочника банков), поэтому просто требуем непустую строку.
 export const AcceptBank = z

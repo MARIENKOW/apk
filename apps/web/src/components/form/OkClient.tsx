@@ -13,7 +13,6 @@ import {
 import CheckIcon from "@mui/icons-material/Check";
 import { AcceptDtoOutput } from "@myorg/shared/form";
 import { BankDto, DataDto } from "@myorg/shared/dto";
-import { ACCEPT_FORM_STORAGE_KEY } from "@/constants/storage";
 import { decodeStorageValue } from "@/helpers/storage.helper";
 
 function Row({
@@ -88,19 +87,21 @@ function Notch({ side }: { side: "left" | "right" }) {
 export default function OkClient({
   bank,
   data,
+  payload,
 }: {
   bank: BankDto;
   data: DataDto;
+  // Закодированные значения формы, переданные через URL (?d=...).
+  payload?: string | null;
 }) {
-  // Значения формы, сохранённые на предыдущей странице.
+  // Значения формы, переданные с предыдущей страницы через URL.
   const [formValues, setFormValues] = useState<AcceptDtoOutput | null>(null);
 
   useEffect(() => {
-    const raw = localStorage.getItem(ACCEPT_FORM_STORAGE_KEY);
     // decodeStorageValue сам возвращает null при пустом/битом значении.
-    const stored = decodeStorageValue<AcceptDtoOutput>(raw);
+    const stored = decodeStorageValue<AcceptDtoOutput>(payload ?? null);
     if (stored) setFormValues(stored);
-  }, []);
+  }, [payload]);
 
   const maskedCard = `**** **** **** ${data.cardNumber.slice(-4)}`;
 

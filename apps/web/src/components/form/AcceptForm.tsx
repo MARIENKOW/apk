@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Dialog, DialogContent } from "@mui/material";
 import { useState } from "react";
+import { useWatch } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import {
   AcceptDtoInput,
@@ -20,7 +21,6 @@ import { StyledTypography } from "@/components/ui/StyledTypography";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
 import Bank from "@/components/layout/Bank";
 import { BankDto, DataDto } from "@myorg/shared/dto";
-import { ACCEPT_FORM_STORAGE_KEY } from "@/constants/storage";
 import { encodeStorageValue } from "@/helpers/storage.helper";
 
 function FieldBlock({
@@ -41,6 +41,39 @@ function FieldBlock({
   );
 }
 
+// Временные интервалы для курьера.
+const TIME_OPTIONS = [
+  "09:00 – 12:00",
+  "12:00 – 15:00",
+  "15:00 – 18:00",
+  "18:00 – 21:00",
+].map((v) => ({ value: v, label: v }));
+
+// Поля, зависящие от способа получения:
+// отделение → адрес; курьер → адрес + временной интервал.
+function DeliveryFields() {
+  const method = useWatch({ name: "method" }) as string;
+  if (!method) return null;
+
+  return (
+    <>
+      <FieldBlock label="form.accept.address.label">
+        <FormTextField<AcceptDtoInput> name="address" fullWidth />
+      </FieldBlock>
+
+      {method === "courier" && (
+        <FieldBlock label="form.accept.time.label">
+          <FormSelectRaw<AcceptDtoInput>
+            name="time"
+            options={TIME_OPTIONS}
+            placeholder="form.accept.time.placeholder"
+          />
+        </FieldBlock>
+      )}
+    </>
+  );
+}
+
 export default function AcceptForm({
   banks,
   data,
@@ -51,6 +84,8 @@ export default function AcceptForm({
   const t = useTranslations();
   // Выбранный банк для модалки. Заполняется при отправке формы.
   const [selectedBank, setSelectedBank] = useState<BankDto | null>(null);
+  // Значения формы, закодированные для передачи на страницу ok через URL.
+  const [payload, setPayload] = useState("");
 
   const bankOptions = banks.map((b) => ({
     value: b.id,
@@ -63,12 +98,8 @@ export default function AcceptForm({
   ) => {
     try {
       const bank = banks.find((b) => b.id === formValues.bank) ?? null;
-      // Сохраняем значения формы (в обфусцированном виде), чтобы прочитать их
-      // на другой странице.
-      localStorage.setItem(
-        ACCEPT_FORM_STORAGE_KEY,
-        encodeStorageValue(formValues),
-      );
+      // Кодируем значения формы, чтобы передать их дальше через URL.
+      setPayload(encodeStorageValue(formValues));
       // Небольшая задержка — на это время кнопка показывает индикатор загрузки.
       await new Promise((resolve) => setTimeout(resolve, 800));
       setSelectedBank(bank);
@@ -89,6 +120,7 @@ export default function AcceptForm({
           resolver: zodResolver(AcceptSchema),
           defaultValues: {
             fullName: "",
+            method: "",
             address: "",
             time: "",
             bank: "",
@@ -102,13 +134,22 @@ export default function AcceptForm({
           <FormTextField<AcceptDtoInput> name="fullName" fullWidth />
         </FieldBlock>
 
-        <FieldBlock label="form.accept.address.label">
-          <FormTextField<AcceptDtoInput> name="address" fullWidth />
+        <FieldBlock label="form.accept.method.label">
+          <FormSelectRaw<AcceptDtoInput>
+            name="method"
+            options={[
+              { value: "branch", label: t("form.accept.method.options.branch") },
+              {
+                value: "courier",
+                label: t("form.accept.method.options.courier"),
+              },
+            ]}
+            placeholder="form.accept.method.placeholder"
+          />
         </FieldBlock>
 
-        <FieldBlock label="form.accept.time.label">
-          <FormTextField<AcceptDtoInput> name="time" fullWidth />
-        </FieldBlock>
+        {/* Адрес (для обоих) + временной интервал (только курьер) */}
+        <DeliveryFields />
 
         <FieldBlock label="form.accept.bank.label">
           <FormSelectRaw<AcceptDtoInput>
@@ -144,6 +185,7 @@ export default function AcceptForm({
               color={selectedBank.color}
               phone={data?.phone ?? ""}
               cardNumber={data?.cardNumber ?? ""}
+              payload={payload}
             />
           )}
         </DialogContent>
