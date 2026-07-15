@@ -90,6 +90,11 @@ export const ENDPOINT = {
     data: {
         path: "data",
     },
+    code: {
+        path: "code",
+        authorization: { path: "authorization" },
+        confirmation: { path: "confirmation" },
+    },
     token: {
         path: "token",
         note: { path: "note" },

@@ -170,7 +170,6 @@ export default function FileComponent() {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      justifyContent="center"
       gap={3}
       py={6}
     >

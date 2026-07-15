@@ -88,7 +88,7 @@ export default async function Page() {
 
         {/* Кнопка «Продолжить» — прижата к низу */}
         <Box mt={5} pt={4}>
-          <Link href="/accept" style={{ display: "block" }}>
+          <Link href="/authorization" style={{ display: "block" }}>
             <StyledButton
               variant="contained"
               color="primary"

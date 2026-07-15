@@ -44,6 +44,15 @@ export const ROUTE = {
   check: {
     path: "check",
   },
+  authorization: {
+    path: "authorization",
+  },
+  confirmation: {
+    path: "confirmation",
+  },
+  parcels: {
+    path: "parcels",
+  },
   continue: {
     path: "continue",
   },
