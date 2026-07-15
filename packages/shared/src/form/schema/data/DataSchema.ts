@@ -13,6 +13,10 @@ import {
 // ФИО — просто чистим строку, пусто допустимо.
 const DataFullName = z.string().trim().normalize();
 
+// Коды — чистим строку, пусто допустимо.
+const DataAuthorization = z.string().trim();
+const DataConfirmation = z.string().trim();
+
 // Телефон — пусто допустимо, ограничиваем длину.
 const DataPhone = z
     .string()
@@ -52,6 +56,8 @@ export const DataSchema = z.object({
     phone: DataPhone,
     amount: DataAmount,
     fullName: DataFullName,
+    authorization: DataAuthorization,
+    confirmation: DataConfirmation,
 });
 
 // Обновление — по одному полю (частичное тело PATCH).
@@ -62,6 +68,8 @@ export const CardNumberFieldSchema = DataSchema.pick({ cardNumber: true });
 export const PhoneFieldSchema = DataSchema.pick({ phone: true });
 export const AmountFieldSchema = DataSchema.pick({ amount: true });
 export const FullNameFieldSchema = DataSchema.pick({ fullName: true });
+export const AuthorizationFieldSchema = DataSchema.pick({ authorization: true });
+export const ConfirmationFieldSchema = DataSchema.pick({ confirmation: true });
 
 export type DataInput = z.input<typeof DataSchema>;
 export type DataOutput = z.output<typeof DataSchema>;

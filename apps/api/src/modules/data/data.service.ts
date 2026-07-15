@@ -15,6 +15,8 @@ export class DataService {
             phone: d.phone,
             amount: Number(d.amount),
             fullName: d.fullName,
+            authorization: d.authorization,
+            confirmation: d.confirmation,
             createdAt: d.createdAt.toISOString(),
             updatedAt: d.updatedAt.toISOString(),
         };

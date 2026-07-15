@@ -19,6 +19,9 @@ export const ROUTE = {
     data: {
       path: "data",
     },
+    codes: {
+      path: "codes",
+    },
     settings: {
       path: "settings",
       profile: { path: "profile" },

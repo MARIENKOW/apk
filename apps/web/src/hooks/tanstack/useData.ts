@@ -31,3 +31,19 @@ export function useUpdateData() {
         // Ошибки обрабатывает форма поля через errorFormHandler (setError по полю).
     });
 }
+
+// То же, что useUpdateData, но с уведомлением для страницы «Коды».
+// Коды — часть того же singleton, поэтому дёргаем тот же эндпоинт.
+export function useUpdateCodes() {
+    const t = useTranslations();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (body: DataUpdateInput) =>
+            update(body).then((r) => r.data),
+        onSuccess: () => {
+            snackbarSuccess(t("pages.admin.codes.feedback.updated"));
+            queryClient.invalidateQueries({ queryKey: dataKeys.all });
+        },
+    });
+}

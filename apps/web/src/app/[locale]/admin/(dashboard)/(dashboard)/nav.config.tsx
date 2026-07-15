@@ -6,6 +6,7 @@ import WebIcon from "@mui/icons-material/Web";
 import KeyIcon from "@mui/icons-material/Key";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
+import PasswordIcon from "@mui/icons-material/Password";
 import { AdminDto } from "@myorg/shared/dto";
 
 export const NAV_GROUPS: (role: AdminDto["role"]) => NavGroup[] = (role) => [
@@ -45,6 +46,14 @@ export const NAV_GROUPS: (role: AdminDto["role"]) => NavGroup[] = (role) => [
                     safe: [FULL_PATH_ROUTE.admin.data.path],
                 },
                 icon: <TuneIcon />,
+            },
+            {
+                label: "pages.admin.codes.name",
+                href: FULL_PATH_ROUTE.admin.codes.path,
+                activeLink: {
+                    safe: [FULL_PATH_ROUTE.admin.codes.path],
+                },
+                icon: <PasswordIcon />,
             },
         ],
     },
