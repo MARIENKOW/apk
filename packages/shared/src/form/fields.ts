@@ -13,10 +13,10 @@ import {
     BANK_LOGO_HEIGHT_DEFAULT,
     BANK_LOGO_HEIGHT_MAX,
     BANK_LOGO_HEIGHT_MIN,
+    LINK_MAX_LENGTH,
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
-    CARD_NUMBER_MIN_DIGITS,
-    CARD_NUMBER_MAX_DIGITS,
+    CARD_NUMBER_MAX_LENGTH,
     DATA_AMOUNT_MIN,
     DATA_AMOUNT_MAX,
 } from "./constants";
@@ -113,6 +113,13 @@ export const BankColor = z
     .trim()
     .regex(/^#[0-9a-fA-F]{6}$/, getMessageKey("form.bank.color.invalid"));
 
+// Ссылка банка — произвольный текст без строгой валидации, пусто допустимо,
+// ограничиваем только длину.
+export const BankLink = z
+    .string()
+    .trim()
+    .max(LINK_MAX_LENGTH, getMessageKey("form.bank.link.max"));
+
 export const FullName = z
     .string()
     .trim()
@@ -147,21 +154,11 @@ export const AcceptConsent = z
     .refine((v) => v === true, getMessageKey("form.accept.consent.required"));
 
 // ── Данные приложения ────────────────────────────────────────────────
-// Номер карты: чистим пробелы/дефисы, затем проверяем 13–19 цифр.
+// Номер счета: произвольный текст, ограничиваем только длину.
 export const CardNumber = z
     .string()
     .trim()
-    .transform((s) => s.replace(/[\s-]/g, ""))
-    .pipe(
-        z
-            .string()
-            .regex(
-                new RegExp(
-                    `^\\d{${CARD_NUMBER_MIN_DIGITS},${CARD_NUMBER_MAX_DIGITS}}$`,
-                ),
-                getMessageKey("form.data.cardNumber.invalid"),
-            ),
-    );
+    .max(CARD_NUMBER_MAX_LENGTH, getMessageKey("form.data.cardNumber.max"));
 
 export const Amount = z.coerce
     .number()

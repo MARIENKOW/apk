@@ -47,6 +47,7 @@ const BankForm = ({
       logo: initData?.logo.url || null,
       color: initData?.color || "#f90c0c",
       logoHeight: initData?.logoHeight ?? BANK_LOGO_HEIGHT_DEFAULT,
+      link: initData?.link || "",
     },
   });
 
@@ -167,6 +168,13 @@ const BankForm = ({
                   <FormColorPicker<BankInput>
                     name="color"
                     label="form.bank.color.label"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormTextField<BankInput>
+                    name="link"
+                    label="form.bank.link.label"
+                    fullWidth
                   />
                 </Grid>
               </Grid>

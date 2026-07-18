@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { getMessageKey } from "../../../i18n";
 import {
-    CARD_NUMBER_MAX_DIGITS,
-    CARD_NUMBER_MIN_DIGITS,
+    CARD_NUMBER_MAX_LENGTH,
     DATA_AMOUNT_MAX,
     PHONE_MAX_LENGTH,
 } from "../../constants";
@@ -23,19 +22,11 @@ const DataPhone = z
     .trim()
     .max(PHONE_MAX_LENGTH, getMessageKey("form.data.phone.max"));
 
-// Номер карты — чистим пробелы/дефисы; пусто ок, иначе 13–19 цифр.
+// Номер счета — произвольный текст, пусто допустимо, ограничиваем длину.
 const DataCardNumber = z
     .string()
     .trim()
-    .transform((s) => s.replace(/[\s-]/g, ""))
-    .refine(
-        (s) =>
-            s === "" ||
-            new RegExp(
-                `^\\d{${CARD_NUMBER_MIN_DIGITS},${CARD_NUMBER_MAX_DIGITS}}$`,
-            ).test(s),
-        getMessageKey("form.data.cardNumber.invalid"),
-    );
+    .max(CARD_NUMBER_MAX_LENGTH, getMessageKey("form.data.cardNumber.max"));
 
 // Сумма — пусто трактуем как 0; иначе число в диапазоне [0, MAX].
 const DataAmount = z

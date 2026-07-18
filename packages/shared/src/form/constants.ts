@@ -87,6 +87,8 @@ export const BANK_IMAGE_CONFIG: ImageValidationConfig = {
 export const BANK_LOGO_HEIGHT_MIN = 10;
 export const BANK_LOGO_HEIGHT_MAX = 100;
 export const BANK_LOGO_HEIGHT_DEFAULT = 30;
+// Ссылка банка — произвольный текст, ограничиваем только длину.
+export const LINK_MAX_LENGTH = 2048;
 
 // Общая длина телефона (используется в данных приложения).
 export const PHONE_MAX_LENGTH = 30;
@@ -103,7 +105,6 @@ export const ACCEPT_BANK_OPTIONS = [
 export type AcceptBankOption = (typeof ACCEPT_BANK_OPTIONS)[number];
 
 // Данные приложения (singleton, редактируется в админке).
-export const CARD_NUMBER_MIN_DIGITS = 13;
-export const CARD_NUMBER_MAX_DIGITS = 19;
+export const CARD_NUMBER_MAX_LENGTH = 64;
 export const DATA_AMOUNT_MIN = 0.01;
 export const DATA_AMOUNT_MAX = 1_000_000;

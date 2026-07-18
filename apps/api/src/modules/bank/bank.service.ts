@@ -35,12 +35,13 @@ export class BankService {
             );
             uploaded.push(logoDto.id);
 
-            const { name, color, logoHeight } = body;
+            const { name, color, logoHeight, link } = body;
             const bank = await this.prisma.bank.create({
                 data: {
                     name,
                     color,
                     logoHeight,
+                    link,
                     logoId: logoDto.id,
                 },
                 include: BANK_INCLUDE,
@@ -94,7 +95,7 @@ export class BankService {
                 uploadedForRollback.push(dto.id);
             }
 
-            const { name, color, logoHeight } = data;
+            const { name, color, logoHeight, link } = data;
 
             const updated = await this.prisma.bank.update({
                 where: { id },
@@ -102,6 +103,7 @@ export class BankService {
                     name,
                     color,
                     logoHeight,
+                    link,
                     ...newIds,
                 },
                 include: BANK_INCLUDE,

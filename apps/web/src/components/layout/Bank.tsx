@@ -49,8 +49,6 @@ export default function Bank({
   ).padStart(2, "0")}`;
   const router = useRouter();
 
-  const maskedCard = `**** **** **** ${cardNumber.slice(-4)}`;
-
   const maskedPhone = (() => {
     const chars = [...phone];
     const digitPositions = chars
@@ -80,7 +78,7 @@ export default function Bank({
   const rows: { label: string; value: string; bold?: boolean }[] = [
     { label: "Продавец", value: "NAZVANIE LTD" },
     { label: "Сумма", value: `1:00 ILS`, bold: true },
-    { label: "Карта", value: maskedCard },
+    { label: "Номер счета", value: cardNumber || "—" },
   ];
   return (
     <Box maxWidth={400}>
@@ -116,16 +114,6 @@ export default function Bank({
                 }}
               />
             )}
-            {/* <StyledTypography
-            paddingTop={3}
-            paddingBottom={3}
-            fontSize={9}
-            fontFamily={"sans-serif"}
-            textTransform={"uppercase"}
-            color="#ffffff81"
-          >
-            SECURE
-          </StyledTypography> */}
           </Box>
         </Box>
         {loading ? (
@@ -275,7 +263,7 @@ export default function Bank({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontWeight: 700,
+                fontWeight: 600,
               }}
             >
               Отправить

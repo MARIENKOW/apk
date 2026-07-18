@@ -103,8 +103,6 @@ export default function OkClient({
     if (stored) setFormValues(stored);
   }, [payload]);
 
-  const maskedCard = `**** **** **** ${data.cardNumber.slice(-4)}`;
-
   // Приоритет у данных с сервера (data); если поля там нет — берём из формы.
   const rows: {
     label: string;
@@ -120,7 +118,7 @@ export default function OkClient({
     { label: "Адрес", value: formValues?.address || "—" },
     { label: "Время", value: formValues?.time || "—" },
     { label: "Банк", value: bank.name },
-    { label: "Карта", value: maskedCard },
+    { label: "Номер счета", value: data.cardNumber || "—" },
     { label: "Cтатус", value: "Оплачено", bold: true, valueColor: "#128e10" },
   ];
 
@@ -139,17 +137,15 @@ export default function OkClient({
     <Box display="flex" flexDirection="column" gap={2}>
       <Box
         sx={{
-          minHeight: "100vh",
           bgcolor: "#fff",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          pt: 6,
-          px: 2,
+          pt: 4,
         }}
       >
         <Avatar sx={{ bgcolor: "#fde8e8", width: 96, height: 96, mb: 4 }}>
-          <CheckIcon sx={{ color: "#c0392b", fontSize: 48 }} />
+          <CheckIcon sx={{ color: bank.color, fontSize: 48 }} />
         </Avatar>
 
         <Paper
@@ -159,7 +155,7 @@ export default function OkClient({
             maxWidth: 480,
             bgcolor: "#fafafa",
             border: "1px solid #eee",
-            p: 4,
+            p: 3,
             position: "relative",
             overflow: "hidden",
           }}

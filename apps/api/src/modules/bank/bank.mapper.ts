@@ -8,6 +8,7 @@ export const mapBank = (bank: BankWithImages): BankDto => ({
     color: bank.color,
     logo: mapImage(bank.logo),
     logoHeight: bank.logoHeight,
+    link: bank.link,
     createdAt: bank.createdAt.toISOString(),
     updatedAt: bank.updatedAt.toISOString(),
 });

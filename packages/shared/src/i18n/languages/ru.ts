@@ -1,4 +1,5 @@
 import {
+  CARD_NUMBER_MAX_LENGTH,
   EMAIL_MAX_LENGTH,
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
@@ -19,6 +20,7 @@ import {
   BANK_LOGO_HEIGHT_MIN,
   BANK_LOGO_HEIGHT_MAX,
   PHONE_MAX_LENGTH,
+  LINK_MAX_LENGTH,
   DOWNLOAD_FILE_CONFIG,
 } from "../../form/constants";
 import { formatBytes } from "../../utils";
@@ -105,6 +107,10 @@ export const ru = {
         min: `минимум ${BANK_LOGO_HEIGHT_MIN}px`,
         max: `максимум ${BANK_LOGO_HEIGHT_MAX}px`,
       },
+      link: {
+        label: "Ссылка",
+        max: `максимум ${LINK_MAX_LENGTH} символов`,
+      },
       preview: { label: "Превью" },
     },
     blog: {
@@ -167,8 +173,8 @@ export const ru = {
     },
     data: {
       cardNumber: {
-        label: "Номер карты",
-        invalid: "введите корректный номер карты (13–19 цифр)",
+        label: "Номер счета",
+        max: `максимум ${CARD_NUMBER_MAX_LENGTH} символов`,
       },
       phone: {
         label: "Номер телефона",

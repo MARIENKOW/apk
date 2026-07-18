@@ -3,6 +3,8 @@ model Bank {
     name       String
     color      String
     logoHeight Int      @default(30)
+    // Произвольная ссылка. Строгой валидации нет — хранится как есть.
+    link       String   @default("")
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 

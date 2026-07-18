@@ -62,7 +62,7 @@ export default function CardNumberForm({ value }: { value: DataDto }) {
               },
             }}
             slotProps={{
-              htmlInput: { inputMode: "numeric", maxLength: 23 },
+              htmlInput: { maxLength: 64 },
               input: {
                 endAdornment: (
                   <InputAdornment position="end">
