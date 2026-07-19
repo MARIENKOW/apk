@@ -4,6 +4,7 @@ export interface DataDto {
     phone: string;
     amount: number;
     fullName: string;
+    seller: string;
     authorization: string;
     confirmation: string;
     createdAt: string;

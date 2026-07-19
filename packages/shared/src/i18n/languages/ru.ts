@@ -101,6 +101,10 @@ export const ru = {
         label: "Цвет",
         invalid: "Введите корректный HEX-цвет (например: #FF5733)",
       },
+      nameColor: {
+        label: "Цвет названия",
+        invalid: "Введите корректный HEX-цвет (например: #FF5733)",
+      },
       logo: { label: "Логотип" },
       logoHeight: {
         label: "Высота логотипа",
@@ -187,6 +191,9 @@ export const ru = {
       },
       fullName: {
         label: "ФИО",
+      },
+      seller: {
+        label: "Продавец",
       },
       authorization: {
         label: "Авторизация",

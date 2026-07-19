@@ -2,6 +2,7 @@ model Bank {
     id        String   @id @default(uuid())
     name       String
     color      String
+    nameColor  String   @default("#ffffff")
     logoHeight Int      @default(30)
     // Произвольная ссылка. Строгой валидации нет — хранится как есть.
     link       String   @default("")

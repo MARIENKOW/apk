@@ -113,6 +113,12 @@ export const BankColor = z
     .trim()
     .regex(/^#[0-9a-fA-F]{6}$/, getMessageKey("form.bank.color.invalid"));
 
+export const BankNameColor = z
+    .string()
+    .nonempty(getMessageKey("form.required"))
+    .trim()
+    .regex(/^#[0-9a-fA-F]{6}$/, getMessageKey("form.bank.nameColor.invalid"));
+
 // Ссылка банка — произвольный текст без строгой валидации, пусто допустимо,
 // ограничиваем только длину.
 export const BankLink = z

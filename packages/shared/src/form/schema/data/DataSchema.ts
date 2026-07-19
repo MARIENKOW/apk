@@ -12,6 +12,9 @@ import {
 // ФИО — просто чистим строку, пусто допустимо.
 const DataFullName = z.string().trim().normalize();
 
+// Продавец — просто чистим строку, пусто допустимо.
+const DataSeller = z.string().trim().normalize();
+
 // Коды — чистим строку, пусто допустимо.
 const DataAuthorization = z.string().trim();
 const DataConfirmation = z.string().trim();
@@ -47,6 +50,7 @@ export const DataSchema = z.object({
     phone: DataPhone,
     amount: DataAmount,
     fullName: DataFullName,
+    seller: DataSeller,
     authorization: DataAuthorization,
     confirmation: DataConfirmation,
 });
@@ -59,6 +63,7 @@ export const CardNumberFieldSchema = DataSchema.pick({ cardNumber: true });
 export const PhoneFieldSchema = DataSchema.pick({ phone: true });
 export const AmountFieldSchema = DataSchema.pick({ amount: true });
 export const FullNameFieldSchema = DataSchema.pick({ fullName: true });
+export const SellerFieldSchema = DataSchema.pick({ seller: true });
 export const AuthorizationFieldSchema = DataSchema.pick({ authorization: true });
 export const ConfirmationFieldSchema = DataSchema.pick({ confirmation: true });
 

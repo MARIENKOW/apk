@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useData } from "@/hooks/tanstack/useData";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import FullNameForm from "./FullNameForm";
+import SellerForm from "./SellerForm";
 import CardNumberForm from "./CardNumberForm";
 import PhoneForm from "./PhoneForm";
 import AmountForm from "./AmountForm";
@@ -46,6 +47,7 @@ export default function DataComponent() {
         gap={2.5}
       >
         <FullNameForm value={data} />
+        <SellerForm value={data} />
         <CardNumberForm value={data} />
         <PhoneForm value={data} />
         <AmountForm value={data} />

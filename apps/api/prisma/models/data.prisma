@@ -6,6 +6,7 @@ model AppData {
     phone      String   @default("")
     amount     Decimal  @default(0) @db.Decimal(12, 2)
     fullName   String   @default("")
+    seller     String   @default("")
     // Коды (singleton, редактируются на отдельной странице «Коды»).
     authorization String @default("")
     confirmation  String @default("")

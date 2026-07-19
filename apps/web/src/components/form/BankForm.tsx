@@ -46,6 +46,7 @@ const BankForm = ({
       name: initData?.name || "",
       logo: initData?.logo.url || null,
       color: initData?.color || "#f90c0c",
+      nameColor: initData?.nameColor || "#ffffff",
       logoHeight: initData?.logoHeight ?? BANK_LOGO_HEIGHT_DEFAULT,
       link: initData?.link || "",
     },
@@ -58,6 +59,10 @@ const BankForm = ({
 
   const name = useWatch({ control: form.control, name: "name" }) as string;
   const color = useWatch({ control: form.control, name: "color" }) as string;
+  const nameColor = useWatch({
+    control: form.control,
+    name: "nameColor",
+  }) as string;
   const logo = useWatch({ control: form.control, name: "logo" }) as
     | File
     | string
@@ -170,6 +175,15 @@ const BankForm = ({
                     label="form.bank.color.label"
                   />
                 </Grid>
+                <Grid
+                  sx={{ display: "flex", alignItems: "end" }}
+                  size={{ xs: 12, sm: 6 }}
+                >
+                  <FormColorPicker<BankInput>
+                    name="nameColor"
+                    label="form.bank.nameColor.label"
+                  />
+                </Grid>
                 <Grid size={{ xs: 12 }}>
                   <FormTextField<BankInput>
                     name="link"
@@ -207,7 +221,8 @@ const BankForm = ({
                   logo={logoPreview ?? ""}
                   logoHeight={logoHeight}
                   color={color}
-                  cardNumber="0000000000000000"
+                  nameColor={nameColor}
+                  cardNumber=""
                   phone="+972 50 000 0000"
                 />
               </StyledPaper>

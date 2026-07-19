@@ -6,6 +6,7 @@ export const mapBank = (bank: BankWithImages): BankDto => ({
     id: bank.id,
     name: bank.name,
     color: bank.color,
+    nameColor: bank.nameColor,
     logo: mapImage(bank.logo),
     logoHeight: bank.logoHeight,
     link: bank.link,

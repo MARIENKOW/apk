@@ -183,8 +183,10 @@ export default function AcceptForm({
               bankName={selectedBank.name}
               bankId={selectedBank.id}
               color={selectedBank.color}
+              nameColor={selectedBank.nameColor}
               phone={data?.phone ?? ""}
               cardNumber={data?.cardNumber ?? ""}
+              seller={data?.seller ?? ""}
               payload={payload}
             />
           )}
