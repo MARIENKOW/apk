@@ -83,12 +83,27 @@ export default async function Page({
         <Box display="flex" flexDirection="column" gap={4}>
           <OkClient bank={bank} data={data} payload={d ?? null} />
         </Box>
-        <Box maxWidth={480} width={"100%"} margin={"0 auto"}>
-          {bank.link && (
+        {/* Резерв места под фиксированную кнопку, чтобы она не перекрывала контент */}
+        {bank.link && <Box sx={{ height: 100 }} aria-hidden />}
+      </ContainerComponent>
+      {bank.link && (
+        <Box
+          sx={{
+            position: "fixed",
+            left:10,
+            right: 0,
+            bottom: 20,
+            width:'calc(100% - 20px)',
+            zIndex: 1200,
+            // отступ снизу с учётом «безопасной зоны» на iPhone (вырез/жестовая полоса)
+            paddingBottom: "env(safe-area-inset-bottom)",
+            backgroundColor: bank.color,
+          }}
+        >
+          <Box sx={{ maxWidth: 480, width: "100%", margin: "0 auto" }}>
             <a
               href={bank.link}
               style={{
-                marginTop: 25,
                 paddingTop: 15,
                 paddingBottom: 15,
                 borderRadius: 0,
@@ -107,9 +122,9 @@ export default async function Page({
             >
               Связаться с банком
             </a>
-          )}
+          </Box>
         </Box>
-      </ContainerComponent>
+      )}
     </>
   );
 }

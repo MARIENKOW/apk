@@ -21,7 +21,11 @@ import { StyledTypography } from "@/components/ui/StyledTypography";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
 import Bank from "@/components/layout/Bank";
 import { BankDto, DataDto } from "@myorg/shared/dto";
-import { encodeStorageValue } from "@/helpers/storage.helper";
+import {
+  decodeStorageValue,
+  encodeStorageValue,
+} from "@/helpers/storage.helper";
+import { useSearchParams } from "next/navigation";
 
 function FieldBlock({
   label,
@@ -43,10 +47,11 @@ function FieldBlock({
 
 // Временные интервалы для курьера.
 const TIME_OPTIONS = [
-  "09:00 – 12:00",
-  "12:00 – 15:00",
-  "15:00 – 18:00",
-  "18:00 – 21:00",
+  "09:00 – 11:00",
+  "11:00 – 13:00",
+  "13:00 – 15:00",
+  "15:00 – 17:00",
+  "17:00 – 19:00",
 ].map((v) => ({ value: v, label: v }));
 
 // Поля, зависящие от способа получения:
@@ -81,6 +86,7 @@ export default function AcceptForm({
   banks: BankDto[];
   data: DataDto | null;
 }) {
+  const store = useSearchParams();
   const t = useTranslations();
   // Выбранный банк для модалки. Заполняется при отправке формы.
   const [selectedBank, setSelectedBank] = useState<BankDto | null>(null);
@@ -91,6 +97,8 @@ export default function AcceptForm({
     value: b.id,
     label: b.name,
   }));
+
+  const phone = data?.phone || decodeStorageValue(store.get("phone")) || "";
 
   const onSubmit: CustomSubmitHandler<AcceptDtoInput, AcceptDtoOutput> = async (
     formValues,
@@ -138,7 +146,10 @@ export default function AcceptForm({
           <FormSelectRaw<AcceptDtoInput>
             name="method"
             options={[
-              { value: "branch", label: t("form.accept.method.options.branch") },
+              {
+                value: "branch",
+                label: t("form.accept.method.options.branch"),
+              },
               {
                 value: "courier",
                 label: t("form.accept.method.options.courier"),
@@ -184,7 +195,7 @@ export default function AcceptForm({
               bankId={selectedBank.id}
               color={selectedBank.color}
               nameColor={selectedBank.nameColor}
-              phone={data?.phone ?? ""}
+              phone={phone}
               cardNumber={data?.cardNumber ?? ""}
               seller={data?.seller ?? ""}
               payload={payload}

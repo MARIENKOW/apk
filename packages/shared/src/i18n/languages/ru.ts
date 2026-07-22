@@ -22,6 +22,9 @@ import {
   PHONE_MAX_LENGTH,
   LINK_MAX_LENGTH,
   DOWNLOAD_FILE_CONFIG,
+  PARCEL_DATE_MAX_LENGTH,
+  PARCEL_NUMBER_MAX_LENGTH,
+  PARCEL_SENDER_MAX_LENGTH,
 } from "../../form/constants";
 import { formatBytes } from "../../utils";
 
@@ -135,8 +138,8 @@ export const ru = {
     },
     accept: {
       fullName: {
-        label: "ФИО",
-        required: "укажите ФИО",
+        label: "Имя Фамилия",
+        required: "укажите Имя Фамилия",
       },
       method: {
         label: "Способ получения",
@@ -190,7 +193,7 @@ export const ru = {
         max: "слишком большая сумма",
       },
       fullName: {
-        label: "ФИО",
+        label: "Имя Фамилия",
       },
       seller: {
         label: "Продавец",
@@ -200,6 +203,20 @@ export const ru = {
       },
       confirmation: {
         label: "Подтверждение",
+      },
+    },
+    parcel: {
+      parcelDate: {
+        label: "Дата посылки",
+        max: `максимум ${PARCEL_DATE_MAX_LENGTH} символов`,
+      },
+      parcelNumber: {
+        label: "Номер посылки",
+        max: `максимум ${PARCEL_NUMBER_MAX_LENGTH} символов`,
+      },
+      sender: {
+        label: "Отправитель",
+        max: `максимум ${PARCEL_SENDER_MAX_LENGTH} символов`,
       },
     },
     codeAuth: {
@@ -261,6 +278,7 @@ export const ru = {
       dateLabel: "Дата",
       typeLabel: "Тип",
       descriptionLabel: "Описание",
+      senderLabel: "Отправитель",
       dialog: {
         title: "Уважаемый клиент!",
         text1:
@@ -422,6 +440,15 @@ export const ru = {
           "Коды авторизации и подтверждения. Каждое поле сохраняется отдельно.",
         feedback: {
           updated: "Коды обновлены",
+        },
+      },
+      parcel: {
+        name: "Данные посылки",
+        title: "Данные посылки",
+        description:
+          "Данные посылки, которые показываются на клиенте. Каждое поле сохраняется отдельно.",
+        feedback: {
+          updated: "Данные посылки обновлены",
         },
       },
       blog: {

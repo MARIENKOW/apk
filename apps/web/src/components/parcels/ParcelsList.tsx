@@ -20,9 +20,9 @@ export default function ParcelsList({ parcels }: { parcels: Parcel[] }) {
   const [type, setType] = useState("all"); // фильтр по типу
   const [sortDesc, setSortDesc] = useState(true); // true — сначала новые
 
-  // Доступные типы для фильтра (+ «Все»).
+  // Доступные типы для фильтра (+ «Все»). Пустые типы пропускаем.
   const types = useMemo(
-    () => Array.from(new Set(parcels.map((p) => p.type))),
+    () => Array.from(new Set(parcels.map((p) => p.type).filter(Boolean))),
     [parcels],
   );
 

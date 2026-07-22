@@ -14,6 +14,7 @@ import { AdminInvitationModule } from "@/modules/admin/invitation/adminInvitatio
 import { AdminManagementModule } from "@/modules/admin/management/adminManagement.module";
 import { BankModule } from "@/modules/bank/bank.module";
 import { DataModule } from "@/modules/data/data.module";
+import { ParcelModule } from "@/modules/parcel/parcel.module";
 import { CodeModule } from "@/modules/code/code.module";
 import { TokenModule } from "@/modules/token/token.module";
 import { AppFileModule } from "@/modules/file/appFile.module";
@@ -25,6 +26,7 @@ import { AppFileModule } from "@/modules/file/appFile.module";
         RequestContextModule,
         BankModule,
         DataModule,
+        ParcelModule,
         CodeModule,
         TokenModule,
         FileModule,

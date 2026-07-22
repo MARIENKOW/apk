@@ -19,6 +19,9 @@ export const ROUTE = {
     data: {
       path: "data",
     },
+    parcel: {
+      path: "parcel",
+    },
     codes: {
       path: "codes",
     },

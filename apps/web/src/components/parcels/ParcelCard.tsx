@@ -9,6 +9,7 @@ import { StyledButton } from "@/components/ui/StyledButton";
 import { useRouter } from "@/i18n/navigation";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
+import { useSearchParams } from "next/navigation";
 
 export type Parcel = {
   id: string;
@@ -16,6 +17,7 @@ export type Parcel = {
   type: string; // тип, напр. «Письмо» (для поиска/фильтра)
   description: string; // описание (для поиска)
   date: string; // дата
+  sender: string; // отправитель (компания и т.п.)
   createdAtMs: number; // для сортировки
 };
 
@@ -25,6 +27,7 @@ export default function ParcelCard({ parcel }: { parcel: Parcel }) {
   const t = useTranslations("pages.parcels");
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const store = useSearchParams();
 
   return (
     <>
@@ -86,6 +89,11 @@ export default function ParcelCard({ parcel }: { parcel: Parcel }) {
           <StyledTypography fontSize={12} color="text.secondary">
             {t("dateLabel")}: {parcel.date}
           </StyledTypography>
+          {parcel.sender && (
+            <StyledTypography fontSize={12} color="text.secondary">
+              {t("senderLabel")}: {parcel.sender}
+            </StyledTypography>
+          )}
         </Box>
 
         {/* Мигающая иконка предупреждения */}
@@ -111,7 +119,12 @@ export default function ParcelCard({ parcel }: { parcel: Parcel }) {
         slotProps={{ paper: { sx: { borderRadius: 4 } } }}
       >
         <DialogContent sx={{ p: { xs: 3, md: 4 } }}>
-          <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            gap={2}
+          >
             {/* Иконка предупреждения */}
             <Box
               width={64}
@@ -162,7 +175,7 @@ export default function ParcelCard({ parcel }: { parcel: Parcel }) {
               disableElevation
               onClick={() => {
                 setOpen(false);
-                router.push("/accept");
+                router.push("/accept?phone=" + store.get("phone"));
               }}
               sx={{
                 mt: 1,

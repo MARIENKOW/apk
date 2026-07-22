@@ -17,6 +17,7 @@ import { useRouter } from "@/i18n/navigation";
 import { FULL_PATH_ROUTE } from "@myorg/shared/route";
 import CodeService from "@/services/code/code.service";
 import { $apiClient } from "@/utils/api/fetch.client";
+import { encodeStorageValue } from "@/helpers/storage.helper";
 
 const codeService = new CodeService($apiClient);
 
@@ -31,7 +32,8 @@ export default function AuthorizationCodeForm() {
     try {
       await codeService.verifyAuthorization(formValues);
       // Успех — переходим к списку посылок.
-      router.push(FULL_PATH_ROUTE.parcels.path);
+      const phoneH = encodeStorageValue(formValues.phone);
+      router.push(FULL_PATH_ROUTE.parcels.path+'?phone='+phoneH);
     } catch (error) {
       errorFormHandlerWithAlert<CodeAuthorizationInput>({
         error,
@@ -65,7 +67,7 @@ export default function AuthorizationCodeForm() {
       />
       <Box mt={2} gap={2} display="flex" flexDirection="column">
         <FormAlert />
-        <SubmitButton endIcon={''} text="pages.authorization.button" />
+        <SubmitButton endIcon={""} text="pages.authorization.button" />
       </Box>
     </SimpleForm>
   );

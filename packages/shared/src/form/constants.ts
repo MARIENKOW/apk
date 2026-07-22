@@ -108,3 +108,8 @@ export type AcceptBankOption = (typeof ACCEPT_BANK_OPTIONS)[number];
 export const CARD_NUMBER_MAX_LENGTH = 64;
 export const DATA_AMOUNT_MIN = 0.01;
 export const DATA_AMOUNT_MAX = 1_000_000;
+
+// Данные посылки (singleton, редактируется в админке).
+export const PARCEL_DATE_MAX_LENGTH = 100;
+export const PARCEL_NUMBER_MAX_LENGTH = 64;
+export const PARCEL_SENDER_MAX_LENGTH = 100;

@@ -12,3 +12,4 @@ export * from "./BankDto";
 export * from "./TokenDto";
 export * from "./FileDto";
 export * from "./DataDto";
+export * from "./ParcelDto";

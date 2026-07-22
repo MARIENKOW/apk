@@ -42,3 +42,7 @@ export const appFileKeys = {
 export const dataKeys = {
     all: ["app-data"] as const,
 };
+
+export const parcelKeys = {
+    all: ["app-parcel"] as const,
+};

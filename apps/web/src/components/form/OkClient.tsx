@@ -114,7 +114,7 @@ export default function OkClient({
     valueColor?: string;
     sx?: SxProps<Theme>;
   }[] = [
-    { label: "ФИО", value: data.fullName || formValues?.fullName || "—" },
+    { label: "Имя Фамилия", value: data.fullName || formValues?.fullName || "—" },
     { label: "Адрес", value: formValues?.address || "—" },
     { label: "Время", value: formValues?.time || "—" },
     { label: "Банк", value: bank.name },
@@ -141,10 +141,10 @@ export default function OkClient({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          pt: 4,
+          pt: 2,
         }}
       >
-        <Avatar sx={{ bgcolor: "#fde8e8", width: 96, height: 96, mb: 4 }}>
+        <Avatar sx={{ bgcolor: "#fde8e8", width: 96, height: 96, mb: 2 }}>
           <CheckIcon sx={{ color: bank.color, fontSize: 48 }} />
         </Avatar>
 

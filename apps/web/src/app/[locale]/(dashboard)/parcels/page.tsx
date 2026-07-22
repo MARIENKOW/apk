@@ -5,30 +5,41 @@ import { getTranslations } from "next-intl/server";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import { Parcel } from "@/components/parcels/ParcelCard";
 import ParcelsList from "@/components/parcels/ParcelsList";
+import ParcelService from "@/services/parcel/parcel.service";
+import { $apiAxiosServer } from "@/utils/api/axios.server.instance";
+import { ParcelDto } from "@myorg/shared/dto";
+
+const { get: getParcel } = new ParcelService($apiAxiosServer);
+
+// Данные посылки (singleton), редактируются в админке на странице «Данные посылки».
+async function getAppParcel(): Promise<ParcelDto | null> {
+  try {
+    const { data } = await getParcel();
+    return data;
+  } catch {
+    return null;
+  }
+}
 
 export default async function Page() {
   const t = await getTranslations("pages.parcels");
 
-  // Сегодняшняя дата, напр. «15 июля 2026».
-  const today = new Intl.DateTimeFormat("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  })
-    .format(new Date())
-    .replace(/\sг\.$/, "");
+  const parcel = await getAppParcel();
 
-  // Пока данные-заглушка. Позже заменим на ответ сервера.
-  const parcels: Parcel[] = [
-    {
-      id: "1",
-      number: "RR123456785IL",
-      type: "Письмо",
-      description: "Документы",
-      date: today,
-      createdAtMs: Date.now(),
-    },
-  ];
+  // Одна посылка из singleton: номер, дата и отправитель заданы в админке.
+  const parcels: Parcel[] = parcel
+    ? [
+        {
+          id: parcel.id,
+          number: parcel.parcelNumber,
+          type: "",
+          description: parcel.sender,
+          date: parcel.parcelDate,
+          sender: parcel.sender,
+          createdAtMs: Date.parse(parcel.createdAt),
+        },
+      ]
+    : [];
 
   return (
     <ContainerComponent maxWidth="md">

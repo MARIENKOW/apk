@@ -1,0 +1,15 @@
+// Данные посылки (singleton). Единственность обеспечивается логикой сервиса.
+// Редактируется в админке, публично отдаётся на клиент.
+model AppParcel {
+    id           String   @id @default(uuid())
+    // Дата посылки — произвольный текст, пусто допустимо.
+    parcelDate   String   @default("")
+    // Номер посылки — произвольный текст, пусто допустимо.
+    parcelNumber String   @default("")
+    // Отправитель (компания и т.п.) — произвольный текст, пусто допустимо.
+    sender       String   @default("")
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    @@map("app_parcel")
+}
