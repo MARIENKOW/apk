@@ -33,6 +33,11 @@ const onest = Onest({
 export const metadata: Metadata = {
   title: "Сортировочный центр Почты Израиля",
   description: "",
+  // Закрываем весь сайт от индексации поисковыми системами.
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 type RootLayoutProps = {
