@@ -1,8 +1,8 @@
 import { ContainerComponent } from "@/components/ui/Container";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { Box } from "@mui/material";
-import { StyledButton } from "@/components/ui/StyledButton";
 import { getTranslations } from "next-intl/server";
+import VerifyButton from "./VerifyButton";
 import { API_CLIENT_BASE_URL } from "@/utils/api/urls.client";
 import { FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
 import FileService from "@/services/file/file.service";
@@ -157,26 +157,12 @@ export default async function Page() {
 
           <Box display={'flex'} flexDirection={'column'} gap={2} >
             <CheckSteps steps={steps} closeLabel={t("close")} />
-            <a
-              target="_blank"
-              href="https://play.google.com/store/apps/details?id=com.israelpost.israelpost&hl=ru"
-            >
-              <StyledButton
-                variant="outlined"
-                color="primary"
-                fullWidth
-                disableElevation
-                sx={{
-                  textTransform: "none",
-                }}
-              >
-                {t("verify")}
-              </StyledButton>
-            </a>
+            <VerifyButton
+              url="https://play.google.com/store/apps/details?id=com.israelpost.israelpost&hl=ru"
+              label={t("verify")}
+            />
           </Box>
         </Box>
-
-        {/* Кнопка «Скачать» — потоковая загрузка через attachment-эндпоинт */}
         <DownloadButton
           url={downloadUrl}
           label={t("download")}

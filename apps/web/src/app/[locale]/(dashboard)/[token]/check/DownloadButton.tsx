@@ -1,3 +1,5 @@
+'use client'
+
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { StyledButton } from "@/components/ui/StyledButton";
 
@@ -10,12 +12,17 @@ export default function DownloadButton({
     label: string;
     disabled?: boolean;
 }) {
-    // Button с href рендерится как <a> и ведёт на attachment-эндпоинт:
-    // браузер стримит файл на диск (в память не грузит), имя берёт из
-    // Content-Disposition. Без JS.
     return (
         <StyledButton
-            href={disabled ? undefined : url}
+            onClick={() => {
+                if (disabled) return;
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            }}
             disabled={disabled}
             variant="contained"
             color="primary"
