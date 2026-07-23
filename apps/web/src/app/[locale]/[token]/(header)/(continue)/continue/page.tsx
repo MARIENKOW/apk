@@ -8,7 +8,12 @@ import VerifiedUserRoundedIcon from "@mui/icons-material/VerifiedUserRounded";
 import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ token: string }>;
+}) {
+  const { token } = await params;
   const t = await getTranslations("pages.continue");
 
   const blocks = [
@@ -88,7 +93,10 @@ export default async function Page() {
 
         {/* Кнопка «Продолжить» — прижата к низу */}
         <Box mt={5} pt={4}>
-          <Link href="/authorization" style={{ display: "block" }}>
+          <Link
+            href={"/" + token + "/authorization"}
+            style={{ display: "block" }}
+          >
             <StyledButton
               variant="contained"
               color="primary"

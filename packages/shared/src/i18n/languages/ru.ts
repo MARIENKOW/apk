@@ -406,6 +406,20 @@ export const ru = {
             noteUpdated: "Заметка обновлена",
           },
         },
+        continueToken: {
+          name: "Доступ ко 2 части",
+          actions: {
+            create: "Создать доступ",
+            delete: "Удалить",
+          },
+          linkCopied: "Ссылка скопирована",
+          createdAt: "Создан {time}",
+          empty: "Доступ пока не создан",
+          feedback: {
+            created: "Доступ создан",
+            deleted: "Доступ удалён",
+          },
+        },
       },
       file: {
         name: "APK",

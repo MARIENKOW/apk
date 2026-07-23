@@ -13,7 +13,13 @@ import EmptyParcelSlot from "./ParcelSlot";
 // Список всегда рисуется «лесенкой» — минимум строк-полосок.
 const MIN_ROWS = 6;
 
-export default function ParcelsList({ parcels }: { parcels: Parcel[] }) {
+export default function ParcelsList({
+  parcels,
+  token,
+}: {
+  parcels: Parcel[];
+  token: string;
+}) {
   const t = useTranslations("pages.parcels");
 
   const [query, setQuery] = useState("");
@@ -38,7 +44,9 @@ export default function ParcelsList({ parcels }: { parcels: Parcel[] }) {
           p.description.toLowerCase().includes(q),
       )
       .sort((a, b) =>
-        sortDesc ? b.createdAtMs - a.createdAtMs : a.createdAtMs - b.createdAtMs,
+        sortDesc
+          ? b.createdAtMs - a.createdAtMs
+          : a.createdAtMs - b.createdAtMs,
       );
   }, [parcels, query, type, sortDesc]);
 
@@ -133,7 +141,7 @@ export default function ParcelsList({ parcels }: { parcels: Parcel[] }) {
                       "color-mix(in srgb, var(--mui-palette-primary-main) 12%, transparent)",
                   }}
                 >
-                  <ParcelCard parcel={parcel} />
+                  <ParcelCard token={token} parcel={parcel} />
                 </Box>
               ) : (
                 <Box

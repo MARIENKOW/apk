@@ -17,6 +17,7 @@ import { DataModule } from "@/modules/data/data.module";
 import { ParcelModule } from "@/modules/parcel/parcel.module";
 import { CodeModule } from "@/modules/code/code.module";
 import { TokenModule } from "@/modules/token/token.module";
+import { ContinueTokenModule } from "@/modules/continue-token/continue-token.module";
 import { AppFileModule } from "@/modules/file/appFile.module";
 @Module({
     imports: [
@@ -29,6 +30,7 @@ import { AppFileModule } from "@/modules/file/appFile.module";
         ParcelModule,
         CodeModule,
         TokenModule,
+        ContinueTokenModule,
         FileModule,
         AppFileModule,
         AdminInvitationModule,

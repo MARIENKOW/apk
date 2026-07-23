@@ -4,6 +4,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PeopleIcon from "@mui/icons-material/People";
 import WebIcon from "@mui/icons-material/Web";
 import KeyIcon from "@mui/icons-material/Key";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
@@ -31,6 +32,14 @@ export const NAV_GROUPS: (role: AdminDto["role"]) => NavGroup[] = (role) => [
                     safe: [FULL_PATH_ROUTE.admin.tokens.path],
                 },
                 icon: <KeyIcon />,
+            },
+            {
+                label: "pages.admin.bank.continueToken.name",
+                href: FULL_PATH_ROUTE.admin.continueAccess.path,
+                activeLink: {
+                    safe: [FULL_PATH_ROUTE.admin.continueAccess.path],
+                },
+                icon: <LockOpenIcon />,
             },
             {
                 label: "pages.admin.file.name",

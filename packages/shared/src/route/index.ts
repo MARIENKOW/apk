@@ -16,6 +16,9 @@ export const ROUTE = {
     tokens: {
       path: "tokens",
     },
+    continueAccess: {
+      path: "continue-access",
+    },
     data: {
       path: "data",
     },

@@ -103,6 +103,10 @@ export const ENDPOINT = {
         note: { path: "note" },
         verify: { path: "verify" },
     },
+    continueToken: {
+        path: "continue-token",
+        verify: { path: "verify" },
+    },
     file: {
         path: "file",
         current: { path: "current" },

@@ -30,7 +30,12 @@ async function getAppData(): Promise<DataDto | null> {
   }
 }
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ token: string }>;
+}) {
+  const { token } = await params;
   const t = await getTranslations("pages.accept");
   const [banks, data] = await Promise.all([getBanks(), getAppData()]);
 
@@ -65,7 +70,7 @@ export default async function Page() {
           >
             {t("formTitle")}
           </StyledTypography>
-          <AcceptForm banks={banks} data={data} />
+          <AcceptForm token={token} banks={banks} data={data} />
         </Box>
       </Box>
     </ContainerComponent>

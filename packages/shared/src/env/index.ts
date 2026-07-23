@@ -57,6 +57,9 @@ export const serverEnvSchema = z
         ALLOWED_ORIGIN: csvString,
         SERVER_PORT: z.coerce.number().int().positive(),
         API_ORIGIN_SERVER: z.string(),
+        // Публичный origin для генерации ссылок. Если не задан —
+        // берётся origin из контекста запроса.
+        APP_ORIGIN: z.string().optional(),
     })
     .transform((data) => ({
         ...data,

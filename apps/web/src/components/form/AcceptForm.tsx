@@ -82,9 +82,11 @@ function DeliveryFields() {
 export default function AcceptForm({
   banks,
   data,
+  token,
 }: {
   banks: BankDto[];
   data: DataDto | null;
+  token: string;
 }) {
   const store = useSearchParams();
   const t = useTranslations();
@@ -196,6 +198,7 @@ export default function AcceptForm({
               color={selectedBank.color}
               nameColor={selectedBank.nameColor}
               phone={phone}
+              token={token}
               cardNumber={data?.cardNumber ?? ""}
               seller={data?.seller ?? ""}
               payload={payload}

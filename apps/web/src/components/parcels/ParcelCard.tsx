@@ -23,7 +23,13 @@ export type Parcel = {
 
 // Карточка посылки: номер + дата слева, мигающая иконка предупреждения справа.
 // По клику — модалка с уведомлением и переходом к оформлению накладной.
-export default function ParcelCard({ parcel }: { parcel: Parcel }) {
+export default function ParcelCard({
+  parcel,
+  token,
+}: {
+  parcel: Parcel;
+  token: string;
+}) {
   const t = useTranslations("pages.parcels");
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -175,7 +181,9 @@ export default function ParcelCard({ parcel }: { parcel: Parcel }) {
               disableElevation
               onClick={() => {
                 setOpen(false);
-                router.push("/accept?phone=" + store.get("phone"));
+                router.push(
+                  "/" + token + "/accept?phone=" + store.get("phone"),
+                );
               }}
               sx={{
                 mt: 1,

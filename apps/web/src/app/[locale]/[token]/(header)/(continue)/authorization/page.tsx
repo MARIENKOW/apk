@@ -4,7 +4,12 @@ import { Box } from "@mui/material";
 import { getTranslations } from "next-intl/server";
 import AuthorizationCodeForm from "@/components/form/code/AuthorizationCodeForm";
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ token: string }>;
+}) {
+  const { token } = await params;
   const t = await getTranslations("pages.authorization");
 
   return (
@@ -16,7 +21,6 @@ export default async function Page() {
             variant="h1"
             fontSize={{ xs: 28, md: 34 }}
             fontWeight={700}
-            
             textAlign={"center"}
             color="text.primary"
           >
@@ -32,7 +36,7 @@ export default async function Page() {
         </Box>
 
         {/* Форма: телефон + код */}
-        <AuthorizationCodeForm />
+        <AuthorizationCodeForm token={token} />
       </Box>
     </ContainerComponent>
   );

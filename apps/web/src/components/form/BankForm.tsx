@@ -223,6 +223,7 @@ const BankForm = ({
                   color={color}
                   nameColor={nameColor}
                   cardNumber=""
+                  token=""
                   phone="+972 50 000 0000"
                 />
               </StyledPaper>

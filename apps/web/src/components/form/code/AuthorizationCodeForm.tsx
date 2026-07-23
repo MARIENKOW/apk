@@ -21,7 +21,7 @@ import { encodeStorageValue } from "@/helpers/storage.helper";
 
 const codeService = new CodeService($apiClient);
 
-export default function AuthorizationCodeForm() {
+export default function AuthorizationCodeForm({ token }: { token: string }) {
   const router = useRouter();
   const t = useTranslations();
 
@@ -33,7 +33,9 @@ export default function AuthorizationCodeForm() {
       await codeService.verifyAuthorization(formValues);
       // Успех — переходим к списку посылок.
       const phoneH = encodeStorageValue(formValues.phone);
-      router.push(FULL_PATH_ROUTE.parcels.path+'?phone='+phoneH);
+      router.push(
+        "/" + token + FULL_PATH_ROUTE.parcels.path + "?phone=" + phoneH,
+      );
     } catch (error) {
       errorFormHandlerWithAlert<CodeAuthorizationInput>({
         error,

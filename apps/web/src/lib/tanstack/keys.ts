@@ -35,6 +35,10 @@ export const tokenKeys = {
     list: (params: TokenParams) => [...tokenKeys.lists(), params] as const,
 };
 
+export const continueTokenKeys = {
+    all: ["continue-token"] as const,
+};
+
 export const appFileKeys = {
     all: ["app-file"] as const,
 };

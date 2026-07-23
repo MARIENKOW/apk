@@ -1,0 +1,7 @@
+model ContinueToken {
+    id        String   @id @default(uuid())
+    token     String   @unique
+    createdAt DateTime @default(now())
+
+    @@map("continue_tokens")
+}
