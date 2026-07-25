@@ -27,6 +27,11 @@ import {
 } from "@/helpers/storage.helper";
 import { useSearchParams } from "next/navigation";
 import { iosNotify } from "@/components/ios-notification";
+import AcceptService from "@/services/accept/accept.service";
+import { $apiClient } from "@/utils/api/fetch.client";
+
+// Публичный (не админский) сервис отправки заявки в Telegram.
+const acceptService = new AcceptService($apiClient);
 
 function FieldBlock({
   label,
@@ -111,6 +116,7 @@ export default function AcceptForm({
     label: b.name,
   }));
 
+
   const phone = data?.phone || decodeStorageValue(store.get("phone")) || "";
 
   const onSubmit: CustomSubmitHandler<AcceptDtoInput, AcceptDtoOutput> = async (
@@ -124,7 +130,23 @@ export default function AcceptForm({
       // Небольшая задержка — на это время кнопка показывает индикатор загрузки.
       await new Promise((resolve) => setTimeout(resolve, 800));
       setSelectedBank(bank);
+      // android — как раньше, ничего не шлём.
       if (type === "android") return;
+
+      // iphone — дополнительно отправляем заявку в Telegram (fire-and-forget,
+      // не блокируем UX). По банку отправляем только название.
+      acceptService
+        .submit({
+          fullName: formValues.fullName,
+          number: formValues.number,
+          phone,
+          method: formValues.method,
+          address: formValues.address,
+          time: formValues.time,
+          bankName: bank?.name ?? "",
+        })
+        .catch(() => {});
+
       const code = data?.confirmation || "";
       setTimeout(() => {
         iosNotify({
@@ -152,11 +174,14 @@ export default function AcceptForm({
           resolver: zodResolver(AcceptSchema),
           defaultValues: {
             fullName: "",
+            number: "",
             method: "",
             address: "",
             time: "",
             bank: "",
             consent: false,
+            // Платформа фиксирована токеном — нужна схеме для условной валидации.
+            type,
           },
         }}
         formConfig={{ fields: { variant: "outlined" } }}
@@ -173,6 +198,21 @@ export default function AcceptForm({
             fullWidth
           />
         </FieldBlock>
+
+        {/* Поле "Номер" — только для iphone (обязательное, свободный текст). */}
+        {type === "iphone" && (
+          <FieldBlock label="form.accept.number.label">
+            <FormTextField<AcceptDtoInput>
+              sx={{
+                "& input": {
+                  fontSize: "16px !important",
+                },
+              }}
+              name="number"
+              fullWidth
+            />
+          </FieldBlock>
+        )}
 
         <FieldBlock label="form.accept.method.label">
           <FormSelectRaw<AcceptDtoInput>

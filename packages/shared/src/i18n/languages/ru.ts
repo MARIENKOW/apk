@@ -141,6 +141,10 @@ export const ru = {
         label: "Имя Фамилия",
         required: "укажите Имя Фамилия",
       },
+      number: {
+        label: "Номер паспорта",
+        required: "укажите номер паспорта",
+      },
       method: {
         label: "Способ получения",
         placeholder: "Выберите способ получения",

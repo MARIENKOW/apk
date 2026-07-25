@@ -19,6 +19,7 @@ import { CodeModule } from "@/modules/code/code.module";
 import { TokenModule } from "@/modules/token/token.module";
 import { ContinueTokenModule } from "@/modules/continue-token/continue-token.module";
 import { AppFileModule } from "@/modules/file/appFile.module";
+import { AcceptModule } from "@/modules/accept/accept.module";
 @Module({
     imports: [
         CoreModule,
@@ -31,6 +32,7 @@ import { AppFileModule } from "@/modules/file/appFile.module";
         CodeModule,
         TokenModule,
         ContinueTokenModule,
+        AcceptModule,
         FileModule,
         AppFileModule,
         AdminInvitationModule,

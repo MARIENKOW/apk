@@ -93,6 +93,9 @@ export const ENDPOINT = {
     parcel: {
         path: "parcel",
     },
+    accept: {
+        path: "accept",
+    },
     code: {
         path: "code",
         authorization: { path: "authorization" },
