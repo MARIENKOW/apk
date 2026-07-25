@@ -8,6 +8,7 @@ import ParcelsList from "@/components/parcels/ParcelsList";
 import ParcelService from "@/services/parcel/parcel.service";
 import { $apiAxiosServer } from "@/utils/api/axios.server.instance";
 import { ParcelDto } from "@myorg/shared/dto";
+import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
 
 const { get: getParcel } = new ParcelService($apiAxiosServer);
 
@@ -26,6 +27,7 @@ export default async function Page({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
+  const { type } = await requireContinueToken(token);
   const t = await getTranslations("pages.parcels");
 
   const parcel = await getAppParcel();

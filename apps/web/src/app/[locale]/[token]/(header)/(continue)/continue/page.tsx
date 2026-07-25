@@ -7,6 +7,7 @@ import { getTranslations } from "next-intl/server";
 import VerifiedUserRoundedIcon from "@mui/icons-material/VerifiedUserRounded";
 import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
+import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
 
 export default async function Page({
   params,
@@ -14,6 +15,8 @@ export default async function Page({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
+  const { type } = await requireContinueToken(token);
+  console.log(type);
   const t = await getTranslations("pages.continue");
 
   const blocks = [

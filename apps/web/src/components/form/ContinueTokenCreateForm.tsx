@@ -6,13 +6,14 @@ import FormProvider from "@/components/wrappers/form/FormProvider";
 import Form, { CustomSubmitHandler } from "@/components/wrappers/form/Form";
 import { FormConfigProvider } from "@/components/wrappers/form/FormConfigProvider";
 import FormTextField from "@/components/features/form/fields/controlled/FormTextField";
+import FormDeviceTypeToggle from "@/components/features/form/fields/controlled/FormDeviceTypeToggle";
 import SubmitButton from "@/components/features/form/SubmitButton";
 import FormAlert from "@/components/features/form/FormAlert";
 import useForm from "@/hooks/useForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
 import {
-    ContinueTokenNoteSchema,
+    ContinueTokenCreateSchema,
     CreateContinueTokenDtoInput,
     CreateContinueTokenDtoOutput,
 } from "@myorg/shared/form";
@@ -31,8 +32,8 @@ export default function ContinueTokenCreateForm({ onCancel }: Props) {
         CreateContinueTokenDtoInput,
         CreateContinueTokenDtoOutput
     >({
-        resolver: zodResolver(ContinueTokenNoteSchema),
-        defaultValues: { note: "" },
+        resolver: zodResolver(ContinueTokenCreateSchema),
+        defaultValues: { note: "", type: "android" },
     });
 
     const handleSubmit: CustomSubmitHandler<
@@ -70,6 +71,9 @@ export default function ContinueTokenCreateForm({ onCancel }: Props) {
                             multiline
                             helperText={t("form.optional")}
                             rows={2}
+                        />
+                        <FormDeviceTypeToggle<CreateContinueTokenDtoInput>
+                            name="type"
                         />
                         <FormAlert />
                         <Box

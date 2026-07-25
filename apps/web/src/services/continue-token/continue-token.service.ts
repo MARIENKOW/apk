@@ -1,15 +1,20 @@
-import { ContinueTokenDto, PagedResult } from "@myorg/shared/dto";
+import {
+    ContinueTokenContextDto,
+    ContinueTokenDto,
+    PagedResult,
+} from "@myorg/shared/dto";
 import { ENDPOINT, FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
 import { FetchCustom, FetchCustomReturn } from "@/utils/api";
 import {
     CreateContinueTokenDtoOutput,
     UpdateNoteContinueTokenDtoOutput,
+    UpdateTypeContinueTokenDtoOutput,
 } from "@myorg/shared/form";
 import { toSearchParams } from "@/utils/toSearchParams";
 import { ContinueTokenParams } from "@/lib/tanstack/listDefaults";
 
 const basePath = FULL_PATH_ENDPOINT.continueToken.path;
-const { note, verify } = ENDPOINT.continueToken;
+const { note, type, verify } = ENDPOINT.continueToken;
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
 export default class ContinueTokenService {
@@ -24,11 +29,17 @@ export default class ContinueTokenService {
         id: string,
         body: UpdateNoteContinueTokenDtoOutput,
     ) => FetchCustomReturn<ContinueTokenDto>;
-    verify: (token: string) => FetchCustomReturn<void>;
+    updateType: (
+        id: string,
+        body: UpdateTypeContinueTokenDtoOutput,
+    ) => FetchCustomReturn<ContinueTokenDto>;
+    verify: (token: string) => FetchCustomReturn<ContinueTokenContextDto>;
 
     constructor(api: FetchCustom) {
         this.verify = (token) =>
-            api<void>(`${basePath}/${verify.path}/${token}`, { method: "GET" });
+            api<ContinueTokenContextDto>(`${basePath}/${verify.path}/${token}`, {
+                method: "GET",
+            });
 
         this.getAll = (params) => {
             const query = toSearchParams(params);
@@ -49,6 +60,13 @@ export default class ContinueTokenService {
 
         this.updateNote = (id, body) =>
             api<ContinueTokenDto>(`${basePath}/${id}/${note.path}`, {
+                method: "PATCH",
+                body: JSON.stringify(body),
+                headers: JSON_HEADERS,
+            });
+
+        this.updateType = (id, body) =>
+            api<ContinueTokenDto>(`${basePath}/${id}/${type.path}`, {
                 method: "PATCH",
                 body: JSON.stringify(body),
                 headers: JSON_HEADERS,

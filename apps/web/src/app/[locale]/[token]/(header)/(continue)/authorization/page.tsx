@@ -3,6 +3,7 @@ import { StyledTypography } from "@/components/ui/StyledTypography";
 import { Box } from "@mui/material";
 import { getTranslations } from "next-intl/server";
 import AuthorizationCodeForm from "@/components/form/code/AuthorizationCodeForm";
+import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
 
 export default async function Page({
   params,
@@ -10,6 +11,7 @@ export default async function Page({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
+  const { type } = await requireContinueToken(token);
   const t = await getTranslations("pages.authorization");
 
   return (

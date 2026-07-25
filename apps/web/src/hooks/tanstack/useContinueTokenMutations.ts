@@ -8,6 +8,7 @@ import { snackbarSuccess } from "@/utils/snackbar/snackbar.success";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { ContinueTokenDto, PagedResult } from "@myorg/shared/dto";
+import { UpdateTypeContinueTokenDtoOutput } from "@myorg/shared/form";
 
 const service = new ContinueTokenService($apiAdminClient);
 
@@ -70,6 +71,30 @@ export function useCreateContinueToken() {
         onSuccess: () => {
             snackbarSuccess(
                 t("pages.admin.bank.continueToken.feedback.created"),
+            );
+        },
+        onError: (error) => errorHandler({ error, t }),
+        onSettled: () => sync(),
+    });
+}
+
+export function useUpdateContinueTokenType() {
+    const t = useTranslations();
+    const { cancel, update, sync } = useContinueTokenListCache();
+
+    return useMutation({
+        mutationFn: ({
+            id,
+            body,
+        }: {
+            id: string;
+            body: UpdateTypeContinueTokenDtoOutput;
+        }) => service.updateType(id, body).then((r) => r.data),
+        onMutate: () => cancel(),
+        onSuccess: (updated) => {
+            update(() => updated, updated.id);
+            snackbarSuccess(
+                t("pages.admin.bank.continueToken.feedback.typeUpdated"),
             );
         },
         onError: (error) => errorHandler({ error, t }),

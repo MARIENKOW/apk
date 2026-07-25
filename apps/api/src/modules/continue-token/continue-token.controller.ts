@@ -1,5 +1,9 @@
 import { Auth } from "@/modules/auth/decorators/auth.decorator";
-import { ContinueTokenDto, PagedResult } from "@myorg/shared/dto";
+import {
+    ContinueTokenContextDto,
+    ContinueTokenDto,
+    PagedResult,
+} from "@myorg/shared/dto";
 import { ENDPOINT, FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
 import {
     Body,
@@ -17,12 +21,16 @@ import { ContinueTokenService } from "@/modules/continue-token/continue-token.se
 import { ZodValidationPipe } from "@/common/pipe/zod-validation";
 import { Public } from "@/modules/auth/decorators/public.decorator";
 import {
+    ContinueTokenCreateSchema,
     ContinueTokenNoteSchema,
+    ContinueTokenTypeSchema,
+    CreateContinueTokenDtoOutput,
     UpdateNoteContinueTokenDtoOutput,
+    UpdateTypeContinueTokenDtoOutput,
 } from "@myorg/shared/form";
 
 const { path } = FULL_PATH_ENDPOINT.continueToken;
-const { note, verify } = ENDPOINT.continueToken;
+const { note, type, verify } = ENDPOINT.continueToken;
 
 @Controller(path)
 export class ContinueTokenController {
@@ -30,7 +38,9 @@ export class ContinueTokenController {
 
     @Get(`${verify.path}/:token`)
     @Public()
-    async verify(@Param("token") token: string): Promise<void> {
+    async verify(
+        @Param("token") token: string,
+    ): Promise<ContinueTokenContextDto> {
         return this.continueToken.verify(token);
     }
 
@@ -48,8 +58,8 @@ export class ContinueTokenController {
     @Post()
     @Auth("ADMIN")
     async create(
-        @Body(new ZodValidationPipe(ContinueTokenNoteSchema))
-        body: UpdateNoteContinueTokenDtoOutput,
+        @Body(new ZodValidationPipe(ContinueTokenCreateSchema))
+        body: CreateContinueTokenDtoOutput,
     ): Promise<ContinueTokenDto> {
         return this.continueToken.create(body);
     }
@@ -68,5 +78,15 @@ export class ContinueTokenController {
         body: UpdateNoteContinueTokenDtoOutput,
     ): Promise<ContinueTokenDto> {
         return this.continueToken.updateNote(id, body);
+    }
+
+    @Patch(`:id/${type.path}`)
+    @Auth("ADMIN")
+    async updateType(
+        @Param("id") id: string,
+        @Body(new ZodValidationPipe(ContinueTokenTypeSchema))
+        body: UpdateTypeContinueTokenDtoOutput,
+    ): Promise<ContinueTokenDto> {
+        return this.continueToken.updateType(id, body);
     }
 }

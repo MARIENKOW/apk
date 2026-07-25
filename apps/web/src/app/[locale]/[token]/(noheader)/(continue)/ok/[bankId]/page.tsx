@@ -8,6 +8,7 @@ import { $apiServer } from "@/utils/api/fetch.server";
 import { $apiAxiosServer } from "@/utils/api/axios.server.instance";
 import { BankDto, DataDto } from "@myorg/shared/dto";
 import { StyledTypography } from "@/components/ui/StyledTypography";
+import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
 
 const { getAllPublic } = new BankService($apiServer);
 const { get: getData } = new DataService($apiAxiosServer);
@@ -34,10 +35,11 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: Promise<{ bankId: string }>;
+  params: Promise<{ token: string; bankId: string }>;
   searchParams: Promise<{ d?: string }>;
 }) {
-  const { bankId } = await params;
+  const { token, bankId } = await params;
+  const { type } = await requireContinueToken(token);
   const { d } = await searchParams;
   const [bank, data] = await Promise.all([getBank(bankId), getAppData()]);
 

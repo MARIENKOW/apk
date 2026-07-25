@@ -422,6 +422,12 @@ export const ru = {
           notePlaceholder: "Напр. для какого клиента",
           createdAt: "Создан {time}",
           empty: "Доступов пока нет",
+          type: {
+            android: "Android",
+            iphone: "iPhone",
+            confirmTitle: "Сменить платформу?",
+            confirmDescription: "Платформа доступа изменится на {type}.",
+          },
           form: {
             title: "Новый доступ",
             note: "Заметка",
@@ -430,6 +436,7 @@ export const ru = {
             created: "Доступ создан",
             deleted: "Доступ удалён",
             noteUpdated: "Заметка обновлена",
+            typeUpdated: "Платформа изменена",
           },
         },
       },

@@ -8,6 +8,7 @@ import DataService from "@/services/data/data.service";
 import { $apiServer } from "@/utils/api/fetch.server";
 import { $apiAxiosServer } from "@/utils/api/axios.server.instance";
 import { BankDto, DataDto } from "@myorg/shared/dto";
+import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
 
 const { getAllPublic } = new BankService($apiServer);
 const { get: getData } = new DataService($apiAxiosServer);
@@ -36,6 +37,7 @@ export default async function Page({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
+  const { type } = await requireContinueToken(token);
   const t = await getTranslations("pages.accept");
   const [banks, data] = await Promise.all([getBanks(), getAppData()]);
 
