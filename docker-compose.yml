@@ -4,7 +4,10 @@
 # ROLLBACK (requirement 4)
 # ────────────────────────
 # Build and tag before deploy:
-#   docker compose build --no-cache
+#   docker compose build            # NOTE: do NOT use --no-cache for routine builds.
+#                                   # Layer cache skips unchanged steps; content changes
+#                                   # still rebuild. --no-cache re-runs every step and
+#                                   # balloons the BuildKit cache (~1 GB per build).
 #   docker tag api:latest api:v1.2.3
 #   docker tag web:latest web:v1.2.3
 #

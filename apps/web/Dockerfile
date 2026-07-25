@@ -14,7 +14,10 @@ COPY packages/shared/package.json ./packages/shared/
 COPY apps/api/package.json        ./apps/api/
 COPY apps/web/package.json        ./apps/web/
 
-RUN pnpm install --frozen-lockfile
+# --filter web...  → install only web + its workspace deps (@myorg/shared), not the whole monorepo
+# cache mount      → pnpm store persists across builds (no re-download), and stays out of image layers
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    pnpm install --frozen-lockfile --filter web...
 
 COPY tsconfig.json ./
 COPY packages/shared ./packages/shared
@@ -31,7 +34,9 @@ RUN --mount=type=secret,id=env,target=/app/.env \
 RUN mkdir -p /app/apps/web/public
 
 # Production deploy: prod deps only, @myorg/shared dist is inlined by pnpm
-RUN pnpm deploy --filter=web --prod /prod/web
+# same store cache mount so deploy clones from the warm store instead of re-resolving
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
+    pnpm deploy --filter=web --prod /prod/web
 
 # ── Stage 2: runner ─────────────────────────────────────────────────────────
 FROM node:22-slim AS runner
