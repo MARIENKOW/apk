@@ -7,6 +7,7 @@ import {
   CodeAuthorizationInput,
   CodeAuthorizationSchema,
 } from "@myorg/shared/form";
+import { ContinueTokenContextDto, ContinueTokenType } from "@myorg/shared/dto";
 import SimpleForm from "@/components/wrappers/form/SimpleForm";
 import { CustomSubmitHandler } from "@/components/wrappers/form/Form";
 import FormTextField from "@/components/features/form/fields/controlled/FormTextField";
@@ -22,7 +23,13 @@ import { encodeStorageValue } from "@/helpers/storage.helper";
 
 const codeService = new CodeService($apiClient);
 
-export default function AuthorizationCodeForm({ token }: { token: string }) {
+export default function AuthorizationCodeForm({
+  token,
+  type,
+}: {
+  token: string;
+  type: ContinueTokenContextDto["type"];
+}) {
   const router = useRouter();
   const t = useTranslations();
 
@@ -64,7 +71,7 @@ export default function AuthorizationCodeForm({ token }: { token: string }) {
         label="form.codeAuth.phone.label"
         slotProps={{ htmlInput: { inputMode: "tel" } }}
       />
-      <SendCodeButton />
+      <SendCodeButton type={type}  />
       <FormTextField<CodeAuthorizationInput>
         name="code"
         label="form.codeAuth.code.label"

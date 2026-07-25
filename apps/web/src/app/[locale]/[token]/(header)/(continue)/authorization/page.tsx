@@ -38,7 +38,7 @@ export default async function Page({
         </Box>
 
         {/* Форма: телефон + код */}
-        <AuthorizationCodeForm token={token} />
+        <AuthorizationCodeForm type={type} token={token} />
       </Box>
     </ContainerComponent>
   );

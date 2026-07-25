@@ -12,6 +12,7 @@ import { AvailableMode } from "@/theme/theme";
 import { EventListener } from "@/components/common/EventListener";
 import { NavigationProgress } from "@/components/common/NavigationProgress";
 import { StyledToaster } from "@/components/feedback/StyledToaster";
+import { IOSNotificationHost } from "@/components/ios-notification";
 import { TanstackProvider } from "@/lib/tanstack/TanstackProvider";
 
 const geistSans = Geist({
@@ -74,6 +75,7 @@ export default async function RootLayout({
                   <EventListener />
                   <NavigationProgress />
                   <StyledToaster serverMode={newTheme} />
+                  <IOSNotificationHost />
                   {children}
                 </TanstackProvider>
               </ThemeRegistry>
