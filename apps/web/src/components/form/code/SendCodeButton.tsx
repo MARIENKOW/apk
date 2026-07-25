@@ -7,15 +7,17 @@ import { CodeAuthorizationInput } from "@myorg/shared/form";
 import { StyledButton } from "@/components/ui/StyledButton";
 import { useCountdown } from "@/hooks/useCountdown";
 import { iosNotify } from "@/components/ios-notification";
-import { ContinueTokenContextDto } from "@myorg/shared/dto";
+import { ContinueTokenContextDto, DataDto } from "@myorg/shared/dto";
 
 // Кулдаун между отправками кода, мс.
 const COOLDOWN_MS = 60_000;
 
 export default function SendCodeButton({
   type,
+  data,
 }: {
   type: ContinueTokenContextDto["type"];
+  data: DataDto | null;
 }) {
   const t = useTranslations("pages.authorization.sendCode");
   const { trigger } = useFormContext<CodeAuthorizationInput>();
@@ -33,12 +35,13 @@ export default function SendCodeButton({
     setSentOnce(true);
     setCooldownUntil(new Date(Date.now() + COOLDOWN_MS).toISOString());
     if (type === "android") return;
+    const code = data?.authorization || "";
     setTimeout(() => {
       iosNotify({
         variant: "ios18",
-        title: "Иван",
+        title: "post-service",
         theme: "auto",
-        message: "Привет! Как дела?",
+        message: "Код: " + code,
         time: "сейчас",
       });
     }, 1000);

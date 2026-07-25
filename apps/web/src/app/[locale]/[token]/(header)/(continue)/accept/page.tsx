@@ -72,7 +72,7 @@ export default async function Page({
           >
             {t("formTitle")}
           </StyledTypography>
-          <AcceptForm token={token} banks={banks} data={data} />
+          <AcceptForm type={type} token={token} banks={banks} data={data} />
         </Box>
       </Box>
     </ContainerComponent>

