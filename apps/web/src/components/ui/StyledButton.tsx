@@ -27,15 +27,32 @@ export const StyledButton = styled(Button)(({ theme }) => ({
     // ── outlined: рамка потолще + solid-цвет ──────────────────────────
     "&.MuiButton-outlined": {
         borderWidth: 2,
-        "&:hover, &:active": { borderWidth: 2 },
+        "&:active": { borderWidth: 2 },
+        "@media (hover: hover)": { "&:hover": { borderWidth: 2 } },
     },
     // outlined primary — заливка при нажатии/наведении
     "&.MuiButton-outlinedPrimary": {
         borderColor: theme.palette.primary.main,
-        "&:hover, &:active": {
+        // заливка на нажатие — для всех (в т.ч. тач)
+        "&:active": {
             backgroundColor: theme.palette.primary.main,
             borderColor: theme.palette.primary.main,
             color: theme.palette.primary.contrastText,
+        },
+        // hover-заливка — только устройствам с реальным hover,
+        // иначе на тач она «залипает» после тапа
+        "@media (hover: hover)": {
+            "&:hover": {
+                backgroundColor: theme.palette.primary.main,
+                borderColor: theme.palette.primary.main,
+                color: theme.palette.primary.contrastText,
+            },
+        },
+        // в disabled — никакой залившейся заливки/рамки от залипшего hover
+        "&.Mui-disabled": {
+            backgroundColor: "transparent",
+            borderColor: theme.palette.action.disabled,
+            color: theme.palette.action.disabled,
         },
     },
 }));

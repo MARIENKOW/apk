@@ -11,6 +11,7 @@ import SimpleForm from "@/components/wrappers/form/SimpleForm";
 import { CustomSubmitHandler } from "@/components/wrappers/form/Form";
 import FormTextField from "@/components/features/form/fields/controlled/FormTextField";
 import SubmitButton from "@/components/features/form/SubmitButton";
+import SendCodeButton from "@/components/form/code/SendCodeButton";
 import FormAlert from "@/components/features/form/FormAlert";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
 import { useRouter } from "@/i18n/navigation";
@@ -63,6 +64,7 @@ export default function AuthorizationCodeForm({ token }: { token: string }) {
         label="form.codeAuth.phone.label"
         slotProps={{ htmlInput: { inputMode: "tel" } }}
       />
+      <SendCodeButton />
       <FormTextField<CodeAuthorizationInput>
         name="code"
         label="form.codeAuth.code.label"
