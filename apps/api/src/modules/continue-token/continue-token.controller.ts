@@ -1,12 +1,28 @@
 import { Auth } from "@/modules/auth/decorators/auth.decorator";
-import { ContinueTokenDto } from "@myorg/shared/dto";
+import { ContinueTokenDto, PagedResult } from "@myorg/shared/dto";
 import { ENDPOINT, FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
-import { Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    DefaultValuePipe,
+    Delete,
+    Get,
+    Param,
+    ParseIntPipe,
+    Patch,
+    Post,
+    Query,
+} from "@nestjs/common";
 import { ContinueTokenService } from "@/modules/continue-token/continue-token.service";
+import { ZodValidationPipe } from "@/common/pipe/zod-validation";
 import { Public } from "@/modules/auth/decorators/public.decorator";
+import {
+    ContinueTokenNoteSchema,
+    UpdateNoteContinueTokenDtoOutput,
+} from "@myorg/shared/form";
 
 const { path } = FULL_PATH_ENDPOINT.continueToken;
-const { verify } = ENDPOINT.continueToken;
+const { note, verify } = ENDPOINT.continueToken;
 
 @Controller(path)
 export class ContinueTokenController {
@@ -20,19 +36,37 @@ export class ContinueTokenController {
 
     @Get()
     @Auth("ADMIN")
-    async get(): Promise<ContinueTokenDto | null> {
-        return this.continueToken.get();
+    async getAll(
+        @Query("page", new DefaultValuePipe(1), ParseIntPipe) page: number,
+        @Query("limit", new DefaultValuePipe(6), ParseIntPipe) limit: number,
+        @Query("order", new DefaultValuePipe("desc")) order: string,
+        @Query("query", new DefaultValuePipe("")) query: string,
+    ): Promise<PagedResult<ContinueTokenDto>> {
+        return this.continueToken.getAll(page, limit, order, query);
     }
 
     @Post()
     @Auth("ADMIN")
-    async create(): Promise<ContinueTokenDto> {
-        return this.continueToken.create();
+    async create(
+        @Body(new ZodValidationPipe(ContinueTokenNoteSchema))
+        body: UpdateNoteContinueTokenDtoOutput,
+    ): Promise<ContinueTokenDto> {
+        return this.continueToken.create(body);
     }
 
     @Delete(":id")
     @Auth("ADMIN")
     async delete(@Param("id") id: string): Promise<void> {
         return this.continueToken.delete(id);
+    }
+
+    @Patch(`:id/${note.path}`)
+    @Auth("ADMIN")
+    async updateNote(
+        @Param("id") id: string,
+        @Body(new ZodValidationPipe(ContinueTokenNoteSchema))
+        body: UpdateNoteContinueTokenDtoOutput,
+    ): Promise<ContinueTokenDto> {
+        return this.continueToken.updateNote(id, body);
     }
 }

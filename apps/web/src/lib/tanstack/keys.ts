@@ -3,6 +3,7 @@ import type {
     InvitationParams,
     BankParams,
     TokenParams,
+    ContinueTokenParams,
 } from "@/lib/tanstack/listDefaults";
 
 
@@ -37,6 +38,9 @@ export const tokenKeys = {
 
 export const continueTokenKeys = {
     all: ["continue-token"] as const,
+    lists: () => [...continueTokenKeys.all, "list"] as const,
+    list: (params: ContinueTokenParams) =>
+        [...continueTokenKeys.lists(), params] as const,
 };
 
 export const appFileKeys = {

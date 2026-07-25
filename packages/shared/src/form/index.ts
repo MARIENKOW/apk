@@ -11,6 +11,7 @@ export * from "./schema/admin/RegisterByInvitationAdminSchema";
 export * from "./schema/admin/AvatarAdminSchema";
 export * from "./schema/bank/Bank.schema";
 export * from "./schema/token/Token.schema";
+export * from "./schema/continue-token/ContinueToken.schema";
 export * from "./schema/accept/AcceptSchema";
 export * from "./schema/data/DataSchema";
 export * from "./schema/parcel/ParcelSchema";

@@ -26,6 +26,16 @@ export const defaultTokenParams: TokenParams = {
     query: "",
 };
 
+export type ContinueTokenParams = Pagination & {
+    order: "desc" | "asc";
+    query: string;
+};
+export const defaultContinueTokenParams: ContinueTokenParams = {
+    page: 1,
+    order: "desc",
+    query: "",
+};
+
 // --- Invitation ---
 type InvitationFilters = {
     status: "all" | "active" | "expired" | "revoked";

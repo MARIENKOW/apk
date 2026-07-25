@@ -411,13 +411,21 @@ export const ru = {
           actions: {
             create: "Создать доступ",
             delete: "Удалить",
+            addNote: "Добавить заметку",
           },
           linkCopied: "Ссылка скопирована",
+          noteLabel: "Заметка",
+          notePlaceholder: "Напр. для какого клиента",
           createdAt: "Создан {time}",
-          empty: "Доступ пока не создан",
+          empty: "Доступов пока нет",
+          form: {
+            title: "Новый доступ",
+            note: "Заметка",
+          },
           feedback: {
             created: "Доступ создан",
             deleted: "Доступ удалён",
+            noteUpdated: "Заметка обновлена",
           },
         },
       },

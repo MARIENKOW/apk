@@ -1,25 +1,38 @@
 "use client";
 
-import { Box, Grid, LinearProgress } from "@mui/material";
+import { useState } from "react";
+import { Box, DialogContent, DialogTitle, LinearProgress } from "@mui/material";
 import { useTranslations } from "next-intl";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import { StyledButton } from "@/components/ui/StyledButton";
 import { StyledIconButton } from "@/components/ui/StyledIconButton";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { StyledTooltip } from "@/components/ui/StyledTooltip";
-import EmptyElement from "@/components/feedback/EmptyElement";
-import ErrorHandlerElement from "@/components/feedback/error/ErrorHandlerElement";
-import { useContinueToken } from "@/hooks/tanstack/useContinueToken";
-import { useCreateContinueToken } from "@/hooks/tanstack/useContinueTokenMutations";
-import ContinueTokenItem from "@/components/continue-token/ContinueTokenItem";
-import { useQueryClient } from "@tanstack/react-query";
-import { continueTokenKeys } from "@/lib/tanstack/keys";
+import { StyledDialog } from "@/components/ui/StyledDialog";
+import {
+    useContinueTokens,
+    defaultContinueTokenParams,
+} from "@/hooks/tanstack/useContinueTokens";
+import { usePageClamp } from "@/hooks/tanstack/usePageClamp";
+import ContinueTokenCreateForm from "@/components/form/ContinueTokenCreateForm";
+import { ContinueTokenList } from "./ContinueTokenList";
+import { PaginationComponent } from "@/components/common/PaginationComponent";
+import { SearchField } from "@/components/common/SearchField";
+import { useUrlListState } from "@/hooks/tanstack/useUrlListState";
 
 export default function ContinueAccessComponent() {
     const t = useTranslations();
-    const queryClient = useQueryClient();
-    const { data, isFetching, error, refetch } = useContinueToken();
-    const createToken = useCreateContinueToken();
+    const { page, setPage, filters, setFilter } = useUrlListState(
+        defaultContinueTokenParams,
+    );
+    const { data, isFetching, error, refetch } = useContinueTokens({
+        page,
+        ...filters,
+    });
+    usePageClamp(page, data?.meta.pageCount, setPage);
+    const [createOpen, setCreateOpen] = useState(false);
 
     return (
         <Box display="flex" flexDirection="column" flex={1} height="100%">
@@ -34,6 +47,7 @@ export default function ContinueAccessComponent() {
                 <Box display="flex" alignItems="center" gap={1}>
                     <StyledTypography variant="h5" fontWeight={700}>
                         {t("pages.admin.bank.continueToken.name")}
+                        {data?.meta.total ? ` · ${data.meta.total}` : ""}
                     </StyledTypography>
                     <StyledTooltip title={t("common.refresh")} placement="top">
                         <span>
@@ -45,15 +59,47 @@ export default function ContinueAccessComponent() {
                             </StyledIconButton>
                         </span>
                     </StyledTooltip>
+                    <StyledTooltip
+                        title={t(
+                            filters.order === "desc"
+                                ? "common.sortNewest"
+                                : "common.sortOldest",
+                        )}
+                        placement="top"
+                    >
+                        <span>
+                            <StyledIconButton
+                                size="small"
+                                onClick={() =>
+                                    setFilter(
+                                        "order",
+                                        filters.order === "desc"
+                                            ? "asc"
+                                            : "desc",
+                                    )
+                                }
+                            >
+                                {filters.order === "desc" ? (
+                                    <ArrowDownwardIcon />
+                                ) : (
+                                    <ArrowUpwardIcon />
+                                )}
+                            </StyledIconButton>
+                        </span>
+                    </StyledTooltip>
                 </Box>
                 <StyledButton
                     variant="contained"
-                    disabled={!!data || isFetching || createToken.isPending}
-                    onClick={() => createToken.mutate()}
+                    onClick={() => setCreateOpen(true)}
                 >
                     {t("pages.admin.bank.continueToken.actions.create")}
                 </StyledButton>
             </Box>
+
+            <SearchField
+                value={filters.query}
+                onChange={(v) => setFilter("query", v)}
+            />
 
             <Box
                 flex={1}
@@ -73,35 +119,29 @@ export default function ContinueAccessComponent() {
                         }}
                     />
                 )}
-
-                {error && !data ? (
-                    <ErrorHandlerElement
-                        reset={() =>
-                            queryClient.invalidateQueries({
-                                queryKey: continueTokenKeys.all,
-                            })
-                        }
-                        error={error}
-                    />
-                ) : data ? (
-                    <Grid container spacing={1.5} columns={{ xs: 1, md: 2, lg: 3 }}>
-                        <Grid size={1}>
-                            <ContinueTokenItem token={data} />
-                        </Grid>
-                    </Grid>
-                ) : (
-                    !isFetching && (
-                        <Box
-                            display="flex"
-                            flexDirection="column"
-                            flex={1}
-                            py={10}
-                        >
-                            <EmptyElement />
-                        </Box>
-                    )
-                )}
+                <ContinueTokenList data={data?.data} error={error} />
+                <PaginationComponent
+                    page={page}
+                    count={data?.meta.pageCount ?? 1}
+                    onChange={setPage}
+                    disabled={isFetching}
+                />
             </Box>
+
+            <StyledDialog
+                open={createOpen}
+                onClose={() => setCreateOpen(false)}
+                fullWidth
+            >
+                <DialogTitle sx={{ pb: 1 }}>
+                    {t("pages.admin.bank.continueToken.form.title")}
+                </DialogTitle>
+                <DialogContent sx={{ pt: "7px !important" }}>
+                    <ContinueTokenCreateForm
+                        onCancel={() => setCreateOpen(false)}
+                    />
+                </DialogContent>
+            </StyledDialog>
         </Box>
     );
 }

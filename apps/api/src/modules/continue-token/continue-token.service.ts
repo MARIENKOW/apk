@@ -1,11 +1,8 @@
-import {
-    ConflictException,
-    Injectable,
-    NotFoundException,
-} from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "@/infrastructure/prisma/prisma.service";
 import { RequestContextService } from "@/common/request-context/request-context.service";
-import { ContinueTokenDto } from "@myorg/shared/dto";
+import { ContinueTokenDto, PagedResult } from "@myorg/shared/dto";
+import { UpdateNoteContinueTokenDtoOutput } from "@myorg/shared/form";
 import { FULL_PATH_ROUTE } from "@myorg/shared/route";
 import { ContinueToken } from "@/generated/prisma";
 import { env } from "@/config";
@@ -30,14 +27,37 @@ export class ContinueTokenService {
         return {
             id: t.id,
             token: t.token,
+            note: t.note,
             url: this.buildUrl(t.token),
             createdAt: t.createdAt.toISOString(),
         };
     }
 
-    async get(): Promise<ContinueTokenDto | null> {
-        const record = await this.prisma.continueToken.findFirst();
-        return record ? this.map(record) : null;
+    async getAll(
+        page: number,
+        limit: number,
+        order: string = "desc",
+        query: string = "",
+    ): Promise<PagedResult<ContinueTokenDto>> {
+        const q = query.trim();
+        const where = {
+            ...(q && { note: { contains: q, mode: "insensitive" as const } }),
+        };
+
+        const [tokens, total] = await Promise.all([
+            this.prisma.continueToken.findMany({
+                where,
+                orderBy: { createdAt: order === "asc" ? "asc" : "desc" },
+                skip: (page - 1) * limit,
+                take: limit,
+            }),
+            this.prisma.continueToken.count({ where }),
+        ]);
+
+        return {
+            data: tokens.map((t) => this.map(t)),
+            meta: { page, limit, total, pageCount: Math.ceil(total / limit) },
+        };
     }
 
     async verify(token: string): Promise<void> {
@@ -47,13 +67,12 @@ export class ContinueTokenService {
         if (!record) throw new NotFoundException();
     }
 
-    async create(): Promise<ContinueTokenDto> {
-        const existing = await this.prisma.continueToken.count();
-        if (existing > 0) throw new ConflictException();
-
+    async create({
+        note,
+    }: UpdateNoteContinueTokenDtoOutput): Promise<ContinueTokenDto> {
         const token = randomUUID();
         const created = await this.prisma.continueToken.create({
-            data: { token },
+            data: { token, note: note ?? null },
         });
 
         return this.map(created);
@@ -65,5 +84,22 @@ export class ContinueTokenService {
         });
         if (!record) throw new NotFoundException();
         await this.prisma.continueToken.delete({ where: { id } });
+    }
+
+    async updateNote(
+        id: string,
+        { note }: UpdateNoteContinueTokenDtoOutput,
+    ): Promise<ContinueTokenDto> {
+        const record = await this.prisma.continueToken.findUnique({
+            where: { id },
+        });
+        if (!record) throw new NotFoundException();
+
+        const updated = await this.prisma.continueToken.update({
+            where: { id },
+            data: { note: note ?? null },
+        });
+
+        return this.map(updated);
     }
 }

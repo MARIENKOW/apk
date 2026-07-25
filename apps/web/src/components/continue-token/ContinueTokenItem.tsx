@@ -4,6 +4,7 @@ import { Box, Card, CardContent } from "@mui/material";
 import { ContinueTokenDto } from "@myorg/shared/dto";
 import { useTranslations } from "next-intl";
 import { CopyToClipboard } from "@/components/features/CopyToClipboard";
+import { ContinueTokenNote } from "@/components/continue-token/ContinueTokenNote";
 import { StyledDivider } from "@/components/ui/StyledDivider";
 import { ClientDate } from "@/components/common/ClientDate";
 import { smartDate } from "@myorg/shared/utils";
@@ -65,6 +66,10 @@ export default function ContinueTokenItem({
                         "pages.admin.bank.continueToken.linkCopied",
                     )}
                 />
+
+                <Box flex={1} mt={1.5}>
+                    <ContinueTokenNote token={token} />
+                </Box>
 
                 <StyledDivider sx={{ mt: 1.5 }} />
                 <Box py={1} display="flex" justifyContent="flex-end">
