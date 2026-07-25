@@ -72,11 +72,21 @@ export default function AuthorizationCodeForm({
         name="phone"
         label="form.codeAuth.phone.label"
         slotProps={{ htmlInput: { inputMode: "tel" } }}
+        sx={{
+          "& input": {
+            fontSize: "16px !important",
+          },
+        }}
       />
-      <SendCodeButton data={data} type={type}  />
+      <SendCodeButton data={data} type={type} />
       <FormTextField<CodeAuthorizationInput>
         name="code"
         label="form.codeAuth.code.label"
+        sx={{
+          "& input": {
+            fontSize: "16px !important",
+          },
+        }}
       />
       <Box mt={2} gap={2} display="flex" flexDirection="column">
         <FormAlert />

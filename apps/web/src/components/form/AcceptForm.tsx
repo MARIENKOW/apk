@@ -64,7 +64,15 @@ function DeliveryFields() {
   return (
     <>
       <FieldBlock label="form.accept.address.label">
-        <FormTextField<AcceptDtoInput> name="address" fullWidth />
+        <FormTextField<AcceptDtoInput>
+          sx={{
+            "& input": {
+              fontSize: "16px !important",
+            },
+          }}
+          name="address"
+          fullWidth
+        />
       </FieldBlock>
 
       {method === "courier" && (
@@ -126,7 +134,7 @@ export default function AcceptForm({
           message: "Код: " + code,
           time: "сейчас",
         });
-      }, Math.random()*1000);
+      }, Math.random() * 1000);
     } catch (error) {
       errorFormHandlerWithAlert<AcceptDtoInput>({
         error,
@@ -155,7 +163,15 @@ export default function AcceptForm({
         onSubmit={onSubmit}
       >
         <FieldBlock label="form.accept.fullName.label">
-          <FormTextField<AcceptDtoInput> name="fullName" fullWidth />
+          <FormTextField<AcceptDtoInput>
+            sx={{
+              "& input": {
+                fontSize: "16px !important",
+              },
+            }}
+            name="fullName"
+            fullWidth
+          />
         </FieldBlock>
 
         <FieldBlock label="form.accept.method.label">

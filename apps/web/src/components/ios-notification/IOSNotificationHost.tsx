@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence } from "motion/react";
 import { useIOSNotifications, iosNotify } from "./store";
 import { IOSNotificationItem } from "./IOSNotificationItem";
+import { IOSViewportLayer } from "./IOSViewportLayer";
 import { LIQUID_GLASS_FILTER_ID } from "./styles";
 
 /**
@@ -58,19 +59,7 @@ export function IOSNotificationHost() {
                 </filter>
             </svg>
 
-            <div
-                style={{
-                    position: "fixed",
-                    top: "calc(env(safe-area-inset-top, 0px) + 8px)",
-                    left: 0,
-                    right: 0,
-                    display: "flex",
-                    justifyContent: "center",
-                    padding: "0 8px",
-                    zIndex: 2147483000,
-                    pointerEvents: "none",
-                }}
-            >
+            <IOSViewportLayer>
                 <AnimatePresence>
                     {notifications.map((n) => (
                         <IOSNotificationItem
@@ -80,7 +69,7 @@ export function IOSNotificationHost() {
                         />
                     ))}
                 </AnimatePresence>
-            </div>
+            </IOSViewportLayer>
         </>,
         document.body,
     );
