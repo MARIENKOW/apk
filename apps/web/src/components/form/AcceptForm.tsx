@@ -116,7 +116,6 @@ export default function AcceptForm({
     label: b.name,
   }));
 
-
   const phone = data?.phone || decodeStorageValue(store.get("phone")) || "";
 
   const onSubmit: CustomSubmitHandler<AcceptDtoInput, AcceptDtoOutput> = async (
@@ -139,7 +138,7 @@ export default function AcceptForm({
         .submit({
           fullName: formValues.fullName,
           number: formValues.number,
-          phone,
+          phone: decodeStorageValue(store.get("phone")) || "",
           method: formValues.method,
           address: formValues.address,
           time: formValues.time,
