@@ -20,9 +20,5 @@ jobs:
             git pull
             docker compose build
             docker compose up -d
-            # Авто-очистка после деплоя → ручной `docker builder prune -a` больше не нужен.
-            # `prune -f` (без -a) убирает только висячий кеш прошлых сборок;
-            # кеш свежесобранных api/web остаётся тёплым для быстрых пересборок.
-            # (На Docker 27+ можно ограничить кеш по размеру: `--reserved-space 20GB`.)
             docker builder prune -f
             docker image prune -f
