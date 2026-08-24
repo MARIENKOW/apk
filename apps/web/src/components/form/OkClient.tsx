@@ -116,8 +116,8 @@ export default function OkClient({
   }[] = [
     { label: "Имя Фамилия", value: data.fullName || formValues?.fullName || "—" },
     { label: "Адрес", value: formValues?.address || "—" },
-    { label: "Время", value: formValues?.time || "—" },
-    { label: "Банк", value: bank.name },
+    // { label: "Время", value: formValues?.time || "—" },
+    // { label: "Банк", value: bank.name },
     { label: "Номер счета", value: data.cardNumber || "—" },
     { label: "Cтатус", value: "Оплачено", bold: true, valueColor: "#128e10" },
   ];
@@ -141,11 +141,10 @@ export default function OkClient({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          pt: 2,
         }}
       >
-        <Avatar sx={{ bgcolor: "#fde8e8", width: 96, height: 96, mb: 2 }}>
-          <CheckIcon sx={{ color: bank.color, fontSize: 48 }} />
+        <Avatar sx={{ bgcolor: "#fde8e8", width: 46, height: 46, mb: 2 }}>
+          <CheckIcon sx={{ color: bank.color, fontSize: 28 }} />
         </Avatar>
 
         <Paper
@@ -155,20 +154,21 @@ export default function OkClient({
             maxWidth: 480,
             bgcolor: "#fafafa",
             border: "1px solid #eee",
-            p: 3,
+            py: 1,
+            px:2,
             position: "relative",
             overflow: "hidden",
           }}
         >
           <Row label="Номер заявки" value={"#48213097"} boldLabel />
 
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ mt: 1 }}>
             {rows.map((r) => (
               <Row key={r.label} {...r} />
             ))}
           </Box>
 
-          <Row label="Списано" value={amount} bigValue sx={{ mt: 2 }} />
+          <Row label="Списано" value={amount} bigValue sx={{ mt: 1 }} />
 
           <Box sx={{ position: "relative", my: 3 }}>
             <Divider sx={{ borderStyle: "dashed", borderColor: "#ccc" }} />
