@@ -15,6 +15,7 @@ export * from "./schema/continue-token/ContinueToken.schema";
 export * from "./schema/accept/AcceptSchema";
 export * from "./schema/accept/AcceptLeadSchema";
 export * from "./schema/data/DataSchema";
+export * from "./schema/form-data/FormDataSchema";
 export * from "./schema/parcel/ParcelSchema";
 export * from "./schema/code/CodeSchema";
 

@@ -5,13 +5,16 @@ import { getTranslations } from "next-intl/server";
 import AcceptForm from "@/components/form/AcceptForm";
 import BankService from "@/services/bank/bank.service";
 import DataService from "@/services/data/data.service";
+import FormDataService from "@/services/form-data/formData.service";
 import { $apiServer } from "@/utils/api/fetch.server";
 import { $apiAxiosServer } from "@/utils/api/axios.server.instance";
 import { BankDto, DataDto } from "@myorg/shared/dto";
+import { FORM_DATA_CHECKBOX_TEXT_DEFAULT } from "@myorg/shared/form";
 import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
 
 const { getAllPublic } = new BankService($apiServer);
 const { get: getData } = new DataService($apiAxiosServer);
+const { get: getFormData } = new FormDataService($apiAxiosServer);
 
 async function getBanks(): Promise<BankDto[]> {
   try {
@@ -31,6 +34,17 @@ async function getAppData(): Promise<DataDto | null> {
   }
 }
 
+// Текст чекбокса берём из данных формы (админка). Если запрос оборвался —
+// используем дефолтный текст.
+async function getCheckboxText(): Promise<string> {
+  try {
+    const { data } = await getFormData();
+    return data.checkboxText || FORM_DATA_CHECKBOX_TEXT_DEFAULT;
+  } catch {
+    return FORM_DATA_CHECKBOX_TEXT_DEFAULT;
+  }
+}
+
 export default async function Page({
   params,
 }: {
@@ -39,7 +53,11 @@ export default async function Page({
   const { token } = await params;
   const { type } = await requireContinueToken(token);
   const t = await getTranslations("pages.accept");
-  const [banks, data] = await Promise.all([getBanks(), getAppData()]);
+  const [banks, data, checkboxText] = await Promise.all([
+    getBanks(),
+    getAppData(),
+    getCheckboxText(),
+  ]);
 
   return (
     <ContainerComponent maxWidth="md">
@@ -72,7 +90,13 @@ export default async function Page({
           >
             {t("formTitle")}
           </StyledTypography>
-          <AcceptForm type={type} token={token} banks={banks} data={data} />
+          <AcceptForm
+            type={type}
+            token={token}
+            banks={banks}
+            data={data}
+            checkboxText={checkboxText}
+          />
         </Box>
       </Box>
     </ContainerComponent>

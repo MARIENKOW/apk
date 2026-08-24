@@ -113,3 +113,8 @@ export const DATA_AMOUNT_MAX = 1_000_000;
 export const PARCEL_DATE_MAX_LENGTH = 100;
 export const PARCEL_NUMBER_MAX_LENGTH = 64;
 export const PARCEL_SENDER_MAX_LENGTH = 100;
+
+// Данные формы (singleton, редактируется в админке).
+export const FORM_DATA_CHECKBOX_TEXT_MAX_LENGTH = 1000;
+export const FORM_DATA_CHECKBOX_TEXT_DEFAULT =
+    "я понимаю, что будет списан 1 шекель в целях бесплатной доставки для проверки счёта, сумма будет возвращена.";

@@ -1,0 +1,11 @@
+// Данные формы (singleton). Единственность обеспечивается логикой сервиса.
+// Редактируется в админке, публично отдаётся на клиент.
+model AppFormData {
+    id           String   @id @default(uuid())
+    // Текст чекбокса — произвольный текст, пусто допустимо.
+    checkboxText String   @default("я понимаю, что будет списан 1 шекель в целях бесплатной доставки для проверки счёта, сумма будет возвращена.")
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    @@map("app_form_data")
+}

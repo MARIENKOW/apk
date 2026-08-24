@@ -13,4 +13,5 @@ export * from "./TokenDto";
 export * from "./ContinueTokenDto";
 export * from "./FileDto";
 export * from "./DataDto";
+export * from "./FormDataDto";
 export * from "./ParcelDto";

@@ -90,6 +90,9 @@ export const ENDPOINT = {
     data: {
         path: "data",
     },
+    formData: {
+        path: "form-data",
+    },
     parcel: {
         path: "parcel",
     },

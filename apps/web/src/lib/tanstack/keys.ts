@@ -51,6 +51,10 @@ export const dataKeys = {
     all: ["app-data"] as const,
 };
 
+export const formDataKeys = {
+    all: ["app-form-data"] as const,
+};
+
 export const parcelKeys = {
     all: ["app-parcel"] as const,
 };

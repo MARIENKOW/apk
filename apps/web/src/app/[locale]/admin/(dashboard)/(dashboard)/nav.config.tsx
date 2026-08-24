@@ -9,6 +9,7 @@ import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutl
 import TuneIcon from "@mui/icons-material/Tune";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import PasswordIcon from "@mui/icons-material/Password";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import { AdminDto } from "@myorg/shared/dto";
 
 export const NAV_GROUPS: (role: AdminDto["role"]) => NavGroup[] = (role) => [
@@ -72,6 +73,14 @@ export const NAV_GROUPS: (role: AdminDto["role"]) => NavGroup[] = (role) => [
                     safe: [FULL_PATH_ROUTE.admin.codes.path],
                 },
                 icon: <PasswordIcon />,
+            },
+            {
+                label: "pages.admin.formData.name",
+                href: FULL_PATH_ROUTE.admin.formData.path,
+                activeLink: {
+                    safe: [FULL_PATH_ROUTE.admin.formData.path],
+                },
+                icon: <CheckBoxOutlinedIcon />,
             },
         ],
     },

@@ -25,6 +25,7 @@ import {
   PARCEL_DATE_MAX_LENGTH,
   PARCEL_NUMBER_MAX_LENGTH,
   PARCEL_SENDER_MAX_LENGTH,
+  FORM_DATA_CHECKBOX_TEXT_MAX_LENGTH,
 } from "../../form/constants";
 import { formatBytes } from "../../utils";
 
@@ -207,6 +208,12 @@ export const ru = {
       },
       confirmation: {
         label: "Подтверждение",
+      },
+    },
+    formData: {
+      checkboxText: {
+        label: "Текст чекбокса",
+        max: `максимум ${FORM_DATA_CHECKBOX_TEXT_MAX_LENGTH} символов`,
       },
     },
     parcel: {
@@ -477,6 +484,15 @@ export const ru = {
           "Коды авторизации и подтверждения. Каждое поле сохраняется отдельно.",
         feedback: {
           updated: "Коды обновлены",
+        },
+      },
+      formData: {
+        name: "Данные формы",
+        title: "Данные формы",
+        description:
+          "Данные формы, которые показываются на клиенте. Каждое поле сохраняется отдельно.",
+        feedback: {
+          updated: "Данные формы обновлены",
         },
       },
       parcel: {

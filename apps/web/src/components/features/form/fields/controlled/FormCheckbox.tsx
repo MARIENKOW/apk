@@ -10,12 +10,16 @@ import { FieldValues, Path } from "react-hook-form";
 
 type FormCheckboxProps<T extends FieldValues> = {
     name: Path<T>;
-    label: MessageKeyType;
+    // Ключ перевода. Игнорируется, если задан labelText.
+    label?: MessageKeyType;
+    // Готовый текст (например, из данных админки). Имеет приоритет над label.
+    labelText?: string;
 } & Omit<CheckboxProps, "name" | "checked" | "onChange" | "onBlur">;
 
 export default function FormCheckbox<T extends FieldValues>({
     name,
     label,
+    labelText,
     ...checkboxProps
 }: FormCheckboxProps<T>) {
     const t = useTranslations();
@@ -44,7 +48,7 @@ export default function FormCheckbox<T extends FieldValues>({
                             variant="body2"
                             color={ "text.secondary"}
                         >
-                            {t(label)}
+                            {labelText ?? (label ? t(label) : "")}
                         </StyledTypography>
                     </Box>
                     {error?.message && (

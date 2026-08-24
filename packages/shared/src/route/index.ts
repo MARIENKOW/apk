@@ -22,6 +22,9 @@ export const ROUTE = {
     data: {
       path: "data",
     },
+    formData: {
+      path: "form-data",
+    },
     parcel: {
       path: "parcel",
     },

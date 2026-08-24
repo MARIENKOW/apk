@@ -98,11 +98,13 @@ export default function AcceptForm({
   data,
   token,
   type,
+  checkboxText,
 }: {
   type: ContinueTokenContextDto["type"];
   banks: BankDto[];
   data: DataDto | null;
   token: string;
+  checkboxText: string;
 }) {
   const store = useSearchParams();
   const t = useTranslations();
@@ -243,7 +245,7 @@ export default function AcceptForm({
 
         <FormCheckbox<AcceptDtoInput>
           name="consent"
-          label="form.accept.consent.label"
+          labelText={checkboxText}
         />
 
         <Box mt={1} display="flex" flexDirection="column" gap={2}>
