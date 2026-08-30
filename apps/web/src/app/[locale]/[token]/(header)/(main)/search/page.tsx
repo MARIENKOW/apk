@@ -3,6 +3,7 @@ import { StyledTypography } from "@/components/ui/StyledTypography";
 import { Box } from "@mui/material";
 import { getTranslations } from "next-intl/server";
 import { FULL_PATH_ROUTE } from "@myorg/shared/route";
+import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
 import SearchForm from "./SearchForm";
 
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const { token } = await params;
+  const { type } = await requireContinueToken(token);
   const t = await getTranslations("pages.search");
 
   const checkHref = `/${token}${FULL_PATH_ROUTE.check.path}`;

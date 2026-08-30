@@ -433,6 +433,7 @@ export const ru = {
             created: "Доступ создан",
             deleted: "Доступ удалён",
             noteUpdated: "Заметка обновлена",
+            typeUpdated: "Платформа изменена",
           },
         },
         continueToken: {

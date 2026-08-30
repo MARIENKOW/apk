@@ -11,12 +11,12 @@ export default async function ContinueTokenLayout({ children, params }: Props) {
     const { token } = await params;
 
     // Невалидный токен — внутри произойдёт redirect, дальше не пойдём.
-    const { type } = await requireContinueToken(token);
+    await requireContinueToken(token);
 
     return (
         <>
-            {/* Стрим алертов — только для iphone-доступов. */}
-            {type === "iphone" && <AlertStream token={token} />}
+            {/* Алерты теперь для всех доступов (и android, и iphone). */}
+            <AlertStream token={token} />
             {children}
         </>
     );

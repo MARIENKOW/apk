@@ -8,6 +8,7 @@ import { getTranslations } from "next-intl/server";
 import { StyledButton } from "@/components/ui/StyledButton";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
 
 const benefits = [1, 2, 3, 4, 5, 6];
 
@@ -17,6 +18,7 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const { token } = await params;
+  const { type } = await requireContinueToken(token);
   const t = await getTranslations("pages.token");
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Card, CardContent } from "@mui/material";
-import { ContinueTokenDto, ContinueTokenType } from "@myorg/shared/dto";
+import { TokenDto, ContinueTokenType } from "@myorg/shared/dto";
 import { useTranslations } from "next-intl";
 import { CopyToClipboard } from "@/components/features/CopyToClipboard";
 import { ContinueTokenNote } from "@/components/continue-token/ContinueTokenNote";
@@ -10,9 +10,9 @@ import { StyledDivider } from "@/components/ui/StyledDivider";
 import { ClientDate } from "@/components/common/ClientDate";
 import { smartDate } from "@myorg/shared/utils";
 import {
-    useDeleteContinueToken,
-    useUpdateContinueTokenType,
-} from "@/hooks/tanstack/useContinueTokenMutations";
+    useDeleteToken,
+    useUpdateTokenType,
+} from "@/hooks/tanstack/useTokenMutations";
 import { useConfirm } from "@/hooks/useConfirm";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
@@ -21,14 +21,10 @@ import { StyledTooltip } from "@/components/ui/StyledTooltip";
 import { Link } from "@/i18n/navigation";
 import { FULL_PATH_ROUTE } from "@myorg/shared/route";
 
-export default function ContinueTokenItem({
-    token,
-}: {
-    token: ContinueTokenDto;
-}) {
+export default function ContinueTokenItem({ token }: { token: TokenDto }) {
     const t = useTranslations();
-    const deleteToken = useDeleteContinueToken();
-    const updateType = useUpdateContinueTokenType();
+    const deleteToken = useDeleteToken();
+    const updateType = useUpdateTokenType();
     const { confirm, confirmDialog } = useConfirm();
 
     const handleDelete = async () => {
@@ -101,29 +97,28 @@ export default function ContinueTokenItem({
                     alignItems="center"
                     gap={1}
                 >
+                    {/* 2-я часть залочена на android — переключатель недоступен. */}
                     <DeviceTypeToggle
                         value={token.type}
                         onChange={handleTypeChange}
-                        disabled={updateType.isPending}
+                        disabled={token.isSecondPart || updateType.isPending}
                     />
                     <Box display="flex" alignItems="center" gap={0.5}>
-                        {/* Алерты — только для iphone-доступов. */}
-                        {token.type === "iphone" && (
-                            <StyledTooltip
-                                title={t(
-                                    "pages.admin.bank.continueToken.alert.actions.open",
-                                )}
-                                placement="top"
+                        {/* Алерты теперь для всех доступов. */}
+                        <StyledTooltip
+                            title={t(
+                                "pages.admin.bank.continueToken.alert.actions.open",
+                            )}
+                            placement="top"
+                        >
+                            <Link
+                                href={`${FULL_PATH_ROUTE.admin.continueAccess.alert.path}/${token.id}`}
                             >
-                                <Link
-                                    href={`${FULL_PATH_ROUTE.admin.continueAccess.alert.path}/${token.id}`}
-                                >
-                                    <StyledIconButton size="small">
-                                        <NotificationsActiveIcon fontSize="small" />
-                                    </StyledIconButton>
-                                </Link>
-                            </StyledTooltip>
-                        )}
+                                <StyledIconButton size="small">
+                                    <NotificationsActiveIcon fontSize="small" />
+                                </StyledIconButton>
+                            </Link>
+                        </StyledTooltip>
                         <StyledIconButton
                             size="small"
                             onClick={handleDelete}

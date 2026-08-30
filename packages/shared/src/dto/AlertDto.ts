@@ -10,7 +10,7 @@ export type AlertViewDto = {
 // Отправка алерта (строка истории в админке).
 export type AlertDto = {
     id: string;
-    continueTokenId: string;
+    tokenId: string;
     message: string;
     sender: string;
     active: boolean;

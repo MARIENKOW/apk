@@ -6,15 +6,16 @@ import { useTranslations } from "next-intl";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import type { MessageKeyType } from "@myorg/shared/i18n";
 import { StyledButton } from "@/components/ui/StyledButton";
 import { StyledIconButton } from "@/components/ui/StyledIconButton";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { StyledTooltip } from "@/components/ui/StyledTooltip";
 import { StyledDialog } from "@/components/ui/StyledDialog";
 import {
-    useContinueTokens,
-    defaultContinueTokenParams,
-} from "@/hooks/tanstack/useContinueTokens";
+    useTokens,
+    defaultTokenParams,
+} from "@/hooks/tanstack/useTokens";
 import { usePageClamp } from "@/hooks/tanstack/usePageClamp";
 import ContinueTokenCreateForm from "@/components/form/ContinueTokenCreateForm";
 import { ContinueTokenList } from "./ContinueTokenList";
@@ -22,15 +23,21 @@ import { PaginationComponent } from "@/components/common/PaginationComponent";
 import { SearchField } from "@/components/common/SearchField";
 import { useUrlListState } from "@/hooks/tanstack/useUrlListState";
 
-export default function ContinueAccessComponent() {
+// Единый список доступов. isSecondPart фиксирован панелью: 1-я → false, 2-я → true.
+export default function ContinueAccessComponent({
+    isSecondPart,
+    titleKey,
+}: {
+    isSecondPart: boolean;
+    titleKey: MessageKeyType;
+}) {
     const t = useTranslations();
-    const { page, setPage, filters, setFilter } = useUrlListState(
-        defaultContinueTokenParams,
+    const { page, setPage, filters, setFilter } =
+        useUrlListState(defaultTokenParams);
+    const { data, isFetching, error, refetch } = useTokens(
+        { page, ...filters },
+        isSecondPart,
     );
-    const { data, isFetching, error, refetch } = useContinueTokens({
-        page,
-        ...filters,
-    });
     usePageClamp(page, data?.meta.pageCount, setPage);
     const [createOpen, setCreateOpen] = useState(false);
 
@@ -46,7 +53,7 @@ export default function ContinueAccessComponent() {
             >
                 <Box display="flex" alignItems="center" gap={1}>
                     <StyledTypography variant="h5" fontWeight={700}>
-                        {t("pages.admin.bank.continueToken.name")}
+                        {t(titleKey)}
                         {data?.meta.total ? ` · ${data.meta.total}` : ""}
                     </StyledTypography>
                     <StyledTooltip title={t("common.refresh")} placement="top">
@@ -138,6 +145,7 @@ export default function ContinueAccessComponent() {
                 </DialogTitle>
                 <DialogContent sx={{ pt: "7px !important" }}>
                     <ContinueTokenCreateForm
+                        isSecondPart={isSecondPart}
                         onCancel={() => setCreateOpen(false)}
                     />
                 </DialogContent>

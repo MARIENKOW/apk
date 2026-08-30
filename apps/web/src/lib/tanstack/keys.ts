@@ -3,7 +3,6 @@ import type {
     InvitationParams,
     BankParams,
     TokenParams,
-    ContinueTokenParams,
     AlertParams,
 } from "@/lib/tanstack/listDefaults";
 
@@ -34,14 +33,9 @@ export const adminSessionKeys = {
 export const tokenKeys = {
     all: ["tokens"] as const,
     lists: () => [...tokenKeys.all, "list"] as const,
-    list: (params: TokenParams) => [...tokenKeys.lists(), params] as const,
-};
-
-export const continueTokenKeys = {
-    all: ["continue-token"] as const,
-    lists: () => [...continueTokenKeys.all, "list"] as const,
-    list: (params: ContinueTokenParams) =>
-        [...continueTokenKeys.lists(), params] as const,
+    // isSecondPart разделяет кэш двух панелей (1-я: false, 2-я: true).
+    list: (params: TokenParams, isSecondPart: boolean) =>
+        [...tokenKeys.lists(), isSecondPart, params] as const,
 };
 
 export const alertKeys = {

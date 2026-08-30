@@ -13,32 +13,31 @@ import useForm from "@/hooks/useForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
 import {
-    ContinueTokenCreateSchema,
-    CreateContinueTokenDtoInput,
-    CreateContinueTokenDtoOutput,
+    TokenCreateSchema,
+    CreateTokenDtoInput,
+    CreateTokenDtoOutput,
 } from "@myorg/shared/form";
 import { useTranslations } from "next-intl";
-import { useCreateContinueToken } from "@/hooks/tanstack/useContinueTokenMutations";
+import { useCreateToken } from "@/hooks/tanstack/useTokenMutations";
 
 interface Props {
+    // Панель, из которой создаём: 2-я всегда android + isSecondPart=true.
+    isSecondPart: boolean;
     onCancel: () => void;
 }
 
-export default function ContinueTokenCreateForm({ onCancel }: Props) {
+export default function ContinueTokenCreateForm({ isSecondPart, onCancel }: Props) {
     const t = useTranslations();
-    const createToken = useCreateContinueToken();
+    const createToken = useCreateToken();
 
-    const form = useForm<
-        CreateContinueTokenDtoInput,
-        CreateContinueTokenDtoOutput
-    >({
-        resolver: zodResolver(ContinueTokenCreateSchema),
-        defaultValues: { note: "", type: "android" },
+    const form = useForm<CreateTokenDtoInput, CreateTokenDtoOutput>({
+        resolver: zodResolver(TokenCreateSchema),
+        defaultValues: { note: "", type: "android", isSecondPart },
     });
 
     const handleSubmit: CustomSubmitHandler<
-        CreateContinueTokenDtoInput,
-        CreateContinueTokenDtoOutput
+        CreateTokenDtoInput,
+        CreateTokenDtoOutput
     > = async (values, { setError }) => {
         try {
             await createToken.mutateAsync(values);
@@ -60,21 +59,24 @@ export default function ContinueTokenCreateForm({ onCancel }: Props) {
             }}
         >
             <FormProvider form={form}>
-                <Form<CreateContinueTokenDtoInput, CreateContinueTokenDtoOutput>
+                <Form<CreateTokenDtoInput, CreateTokenDtoOutput>
                     onSubmit={handleSubmit}
                     form={form}
                 >
                     <Box display="flex" flexDirection="column" gap={2}>
-                        <FormTextField<CreateContinueTokenDtoInput>
+                        <FormTextField<CreateTokenDtoInput>
                             name="note"
                             label="pages.admin.bank.continueToken.form.note"
                             multiline
                             helperText={t("form.optional")}
                             rows={2}
                         />
-                        <FormDeviceTypeToggle<CreateContinueTokenDtoInput>
-                            name="type"
-                        />
+                        {/* 2-я часть всегда android — переключатель прячем. */}
+                        {!isSecondPart && (
+                            <FormDeviceTypeToggle<CreateTokenDtoInput>
+                                name="type"
+                            />
+                        )}
                         <FormAlert />
                         <Box
                             display="flex"

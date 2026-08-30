@@ -1,13 +1,13 @@
 import ContinueTokenItem from "@/components/continue-token/ContinueTokenItem";
 import EmptyElement from "@/components/feedback/EmptyElement";
 import ErrorHandlerElement from "@/components/feedback/error/ErrorHandlerElement";
-import { continueTokenKeys } from "@/lib/tanstack/keys";
+import { tokenKeys } from "@/lib/tanstack/keys";
 import { Box, Grid } from "@mui/material";
-import { ContinueTokenDto } from "@myorg/shared/dto";
+import { TokenDto } from "@myorg/shared/dto";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
-    data?: ContinueTokenDto[];
+    data?: TokenDto[];
     error: unknown;
 }
 
@@ -19,7 +19,7 @@ export function ContinueTokenList({ data, error }: Props) {
             <ErrorHandlerElement
                 reset={() =>
                     queryClient.invalidateQueries({
-                        queryKey: continueTokenKeys.all,
+                        queryKey: tokenKeys.all,
                     })
                 }
                 error={error}

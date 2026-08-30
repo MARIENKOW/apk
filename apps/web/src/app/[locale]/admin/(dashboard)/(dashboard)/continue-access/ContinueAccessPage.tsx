@@ -26,7 +26,10 @@ export default async function ContinueAccessPage() {
                     ]}
                 />
             </Box>
-            <ContinueAccessComponent />
+            <ContinueAccessComponent
+                isSecondPart={true}
+                titleKey="pages.admin.bank.continueToken.name"
+            />
         </ContainerComponent>
     );
 }

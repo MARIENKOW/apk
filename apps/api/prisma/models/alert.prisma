@@ -1,4 +1,4 @@
-// Отправка алерта админом на continue-доступ.
+// Отправка алерта админом на доступ.
 // В каждый момент на доступ — не больше одного active=true (инвариант держит сервис).
 // История отправок; показывается человеку всегда только текущий активный.
 model Alert {
@@ -8,12 +8,12 @@ model Alert {
     active    Boolean  @default(true)
     createdAt DateTime @default(now())
 
-    continueTokenId String
-    continueToken   ContinueToken @relation(fields: [continueTokenId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    tokenId String
+    token   Token  @relation(fields: [tokenId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
     views AlertView[]
 
-    @@index([continueTokenId])
+    @@index([tokenId])
     @@index([active])
     @@map("alerts")
 }

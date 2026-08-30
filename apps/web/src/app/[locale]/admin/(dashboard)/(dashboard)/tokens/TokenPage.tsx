@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import { FULL_PATH_ROUTE } from "@myorg/shared/route";
 import { getTranslations } from "next-intl/server";
 import * as uuid from "uuid";
-import TokenComponent from "./TokenComponent";
+import ContinueAccessComponent from "../continue-access/ContinueAccessComponent";
 
 export default async function TokenPage() {
     const t = await getTranslations();
@@ -26,7 +26,10 @@ export default async function TokenPage() {
                     ]}
                 />
             </Box>
-            <TokenComponent />
+            <ContinueAccessComponent
+                isSecondPart={false}
+                titleKey="pages.admin.bank.token.name"
+            />
         </ContainerComponent>
     );
 }

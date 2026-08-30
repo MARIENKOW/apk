@@ -8,10 +8,11 @@ export { defaultTokenParams };
 
 const { getAll } = new TokenService($apiAdminClient);
 
-export function useTokens(params: TokenParams) {
+// isSecondPart фиксирован панелью (не из URL): 1-я → false, 2-я → true.
+export function useTokens(params: TokenParams, isSecondPart: boolean) {
     return useQuery({
-        queryKey: tokenKeys.list(params),
-        queryFn: () => getAll(params).then((r) => r.data),
+        queryKey: tokenKeys.list(params, isSecondPart),
+        queryFn: () => getAll(params, isSecondPart).then((r) => r.data),
         placeholderData: (prev) => prev,
     });
 }

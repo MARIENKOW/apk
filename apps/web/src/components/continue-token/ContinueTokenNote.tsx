@@ -8,9 +8,9 @@ import { useTranslations } from "next-intl";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { StyledIconButton } from "@/components/ui/StyledIconButton";
 import { ContinueTokenNoteForm } from "@/components/continue-token/ContinueTokenNoteForm";
-import { ContinueTokenDto } from "@myorg/shared/dto";
+import { TokenDto } from "@myorg/shared/dto";
 
-export function ContinueTokenNote({ token }: { token: ContinueTokenDto }) {
+export function ContinueTokenNote({ token }: { token: TokenDto }) {
     const t = useTranslations();
     const [editing, setEditing] = useState(false);
 

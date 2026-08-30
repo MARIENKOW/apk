@@ -18,7 +18,6 @@ import { FormDataModule } from "@/modules/form-data/form-data.module";
 import { ParcelModule } from "@/modules/parcel/parcel.module";
 import { CodeModule } from "@/modules/code/code.module";
 import { TokenModule } from "@/modules/token/token.module";
-import { ContinueTokenModule } from "@/modules/continue-token/continue-token.module";
 import { AlertModule } from "@/modules/alert/alert.module";
 import { AppFileModule } from "@/modules/file/appFile.module";
 import { AcceptModule } from "@/modules/accept/accept.module";
@@ -34,7 +33,6 @@ import { AcceptModule } from "@/modules/accept/accept.module";
         ParcelModule,
         CodeModule,
         TokenModule,
-        ContinueTokenModule,
         AlertModule,
         AcceptModule,
         FileModule,

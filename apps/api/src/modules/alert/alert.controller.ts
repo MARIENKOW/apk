@@ -23,8 +23,8 @@ import { SendAlertDtoOutput, SendAlertSchema } from "@myorg/shared/form";
 import { ENDPOINT, FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
 import { env } from "@/config";
 
-const { path } = FULL_PATH_ENDPOINT.continueToken;
-const { alert } = ENDPOINT.continueToken;
+const { path } = FULL_PATH_ENDPOINT.token;
+const { alert } = ENDPOINT.token;
 
 // Cookie дедупа показа: alert_seen_<token> = <alertId>. HttpOnly, живёт долго.
 const SEEN_COOKIE_MAX_AGE = 180 * 24 * 60 * 60 * 1000; // 180 дней

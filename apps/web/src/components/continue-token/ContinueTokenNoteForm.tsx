@@ -10,35 +10,35 @@ import FormProvider from "@/components/wrappers/form/FormProvider";
 import Form, { CustomSubmitHandler } from "@/components/wrappers/form/Form";
 import FormTextField from "@/components/features/form/fields/controlled/FormTextField";
 import { StyledButton } from "@/components/ui/StyledButton";
-import ContinueTokenService from "@/services/continue-token/continue-token.service";
+import TokenService from "@/services/token/token.service";
 import { $apiAdminClient } from "@/utils/api/admin/fetch.admin.client";
 import { errorFormHandler } from "@/helpers/error/error.handler.helper";
 import { snackbarSuccess } from "@/utils/snackbar/snackbar.success";
 import {
-    ContinueTokenNoteSchema,
-    UpdateNoteContinueTokenDtoInput,
-    UpdateNoteContinueTokenDtoOutput,
+    TokenNoteSchema,
+    UpdateNoteTokenDtoInput,
+    UpdateNoteTokenDtoOutput,
 } from "@myorg/shared/form";
-import { ContinueTokenDto } from "@myorg/shared/dto";
-import { useContinueTokenListCache } from "@/hooks/tanstack/useContinueTokenMutations";
+import { TokenDto } from "@myorg/shared/dto";
+import { useTokenListCache } from "@/hooks/tanstack/useTokenMutations";
 import { useEffect } from "react";
 
-const service = new ContinueTokenService($apiAdminClient);
+const service = new TokenService($apiAdminClient);
 
 interface Props {
-    token: ContinueTokenDto;
+    token: TokenDto;
     onCancel: () => void;
 }
 
 export function ContinueTokenNoteForm({ token, onCancel }: Props) {
     const t = useTranslations();
-    const { cancel, update, sync } = useContinueTokenListCache();
+    const { cancel, update, sync } = useTokenListCache();
 
     const form = useForm<
-        UpdateNoteContinueTokenDtoInput,
-        UpdateNoteContinueTokenDtoOutput
+        UpdateNoteTokenDtoInput,
+        UpdateNoteTokenDtoOutput
     >({
-        resolver: zodResolver(ContinueTokenNoteSchema),
+        resolver: zodResolver(TokenNoteSchema),
         defaultValues: { note: token.note ?? "" },
     });
     const {
@@ -51,8 +51,8 @@ export function ContinueTokenNoteForm({ token, onCancel }: Props) {
     }, [token.note, reset]);
 
     const handleSubmit: CustomSubmitHandler<
-        UpdateNoteContinueTokenDtoInput,
-        UpdateNoteContinueTokenDtoOutput
+        UpdateNoteTokenDtoInput,
+        UpdateNoteTokenDtoOutput
     > = async (values, { setError }) => {
         try {
             await cancel();
@@ -71,13 +71,13 @@ export function ContinueTokenNoteForm({ token, onCancel }: Props) {
     return (
         <FormProvider form={form}>
             <Form<
-                UpdateNoteContinueTokenDtoInput,
-                UpdateNoteContinueTokenDtoOutput
+                UpdateNoteTokenDtoInput,
+                UpdateNoteTokenDtoOutput
             >
                 form={form}
                 onSubmit={handleSubmit}
             >
-                <FormTextField<UpdateNoteContinueTokenDtoInput>
+                <FormTextField<UpdateNoteTokenDtoInput>
                     name="note"
                     label="pages.admin.bank.continueToken.noteLabel"
                     size="small"

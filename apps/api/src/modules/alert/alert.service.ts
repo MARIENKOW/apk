@@ -1,8 +1,4 @@
-import {
-    BadRequestException,
-    Injectable,
-    NotFoundException,
-} from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { MessageEvent } from "@nestjs/common";
 import {
     EMPTY,
@@ -41,7 +37,7 @@ export class AlertService {
     private map(a: AlertWithViews): AlertDto {
         return {
             id: a.id,
-            continueTokenId: a.continueTokenId,
+            tokenId: a.tokenId,
             message: a.message,
             sender: a.sender,
             active: a.active,
@@ -57,34 +53,30 @@ export class AlertService {
 
     // ── Админ: отправить / остановить / переотправить / история ──────
     async send(
-        continueTokenId: string,
+        tokenId: string,
         { message, sender }: SendAlertDtoOutput,
     ): Promise<AlertDto> {
-        const ct = await this.prisma.continueToken.findUnique({
-            where: { id: continueTokenId },
-        });
-        if (!ct) throw new NotFoundException();
-        // Фича алертов — только для iphone-доступов.
-        if (ct.type !== "IPHONE") throw new BadRequestException();
+        const t = await this.prisma.token.findUnique({ where: { id: tokenId } });
+        if (!t) throw new NotFoundException();
 
         // Инвариант «один активный»: гасим прежний активный и создаём новый.
         const alert = await this.prisma.$transaction(async (tx) => {
             await tx.alert.updateMany({
-                where: { continueTokenId, active: true },
+                where: { tokenId, active: true },
                 data: { active: false },
             });
             return tx.alert.create({
-                data: { continueTokenId, message, sender, active: true },
+                data: { tokenId, message, sender, active: true },
                 include: { views: true },
             });
         });
 
-        this.bus.emitShow(continueTokenId, {
+        this.bus.emitShow(tokenId, {
             id: alert.id,
             message: alert.message,
             sender: alert.sender,
         });
-        this.bus.emitAdminChanged(continueTokenId);
+        this.bus.emitAdminChanged(tokenId);
 
         return this.map(alert);
     }
@@ -101,7 +93,7 @@ export class AlertService {
             data: { active: false },
             include: { views: true },
         });
-        this.bus.emitAdminChanged(alert.continueTokenId);
+        this.bus.emitAdminChanged(alert.tokenId);
 
         return this.map(alert);
     }
@@ -113,24 +105,24 @@ export class AlertService {
         if (!existing) throw new NotFoundException();
 
         // «Отправить заново» = новая активная запись с теми же данными.
-        return this.send(existing.continueTokenId, {
+        return this.send(existing.tokenId, {
             message: existing.message,
             sender: existing.sender,
         });
     }
 
     async list(
-        continueTokenId: string,
+        tokenId: string,
         page: number,
         limit: number,
     ): Promise<AlertHistoryDto> {
-        const ct = await this.prisma.continueToken.findUnique({
-            where: { id: continueTokenId },
+        const t = await this.prisma.token.findUnique({
+            where: { id: tokenId },
             select: { note: true },
         });
-        if (!ct) throw new NotFoundException();
+        if (!t) throw new NotFoundException();
 
-        const where = { continueTokenId };
+        const where = { tokenId };
         const [items, total] = await Promise.all([
             this.prisma.alert.findMany({
                 where,
@@ -143,7 +135,7 @@ export class AlertService {
         ]);
 
         return {
-            note: ct.note,
+            note: t.note,
             data: items.map((i) => this.map(i)),
             meta: { page, limit, total, pageCount: Math.ceil(total / limit) },
         };
@@ -154,20 +146,20 @@ export class AlertService {
     // `alert_seen_<token>` = alertId (дедуп показа на этом устройстве).
     async registerView(
         alertId: string,
-    ): Promise<{ token: string; continueTokenId: string }> {
+    ): Promise<{ token: string; tokenId: string }> {
         const alert = await this.prisma.alert.findUnique({
             where: { id: alertId },
-            include: { continueToken: true },
+            include: { token: true },
         });
         if (!alert) throw new NotFoundException();
 
         const ip = this.requestContext.ip ?? "unknown";
         await this.prisma.alertView.create({ data: { alertId, ip } });
-        this.bus.emitAdminChanged(alert.continueTokenId);
+        this.bus.emitAdminChanged(alert.tokenId);
 
         return {
-            token: alert.continueToken.token,
-            continueTokenId: alert.continueTokenId,
+            token: alert.token.token,
+            tokenId: alert.tokenId,
         };
     }
 
@@ -180,18 +172,16 @@ export class AlertService {
         seenAlertId: string | undefined,
     ): Observable<MessageEvent> {
         return defer(() =>
-            from(
-                this.prisma.continueToken.findUnique({ where: { token } }),
-            ),
+            from(this.prisma.token.findUnique({ where: { token } })),
         ).pipe(
-            switchMap((ct) => {
-                if (!ct) return throwError(() => new NotFoundException());
-                const id = ct.id;
+            switchMap((t) => {
+                if (!t) return throwError(() => new NotFoundException());
+                const id = t.id;
 
                 const replay$ = defer(() =>
                     from(
                         this.prisma.alert.findFirst({
-                            where: { continueTokenId: id, active: true },
+                            where: { tokenId: id, active: true },
                             orderBy: { createdAt: "desc" },
                         }),
                     ),
@@ -233,19 +223,19 @@ export class AlertService {
 
     // ── SSE: админский стрим доступа ─────────────────────────────────
     // Сразу отдаёт текущее присутствие, затем presence/changed-события.
-    streamForAdmin(continueTokenId: string): Observable<MessageEvent> {
+    streamForAdmin(tokenId: string): Observable<MessageEvent> {
         const initial$ = defer(() =>
             of<MessageEvent>({
                 data: {
                     type: "presence",
-                    online: this.bus.isOnline(continueTokenId),
-                    count: this.bus.count(continueTokenId),
+                    online: this.bus.isOnline(tokenId),
+                    count: this.bus.count(tokenId),
                 },
             }),
         );
 
         const live$ = this.bus
-            .adminStream(continueTokenId)
+            .adminStream(tokenId)
             .pipe(map((ev): MessageEvent => ({ data: ev })));
 
         const heartbeat$ = interval(HEARTBEAT_MS).pipe(

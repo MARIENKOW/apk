@@ -1,9 +1,9 @@
-import { ContinueTokenContextDto } from "@myorg/shared/dto";
-import ContinueTokenService from "@/services/continue-token/continue-token.service";
+import { TokenContextDto } from "@myorg/shared/dto";
+import TokenService from "@/services/token/token.service";
 import { $apiServer } from "@/utils/api/fetch.server";
 import { redirect } from "next/navigation";
 
-const { verify } = new ContinueTokenService($apiServer);
+const { verify } = new TokenService($apiServer);
 
 /**
  * Гард токена (continue) для серверных компонентов/лейаутов.
@@ -17,7 +17,7 @@ const { verify } = new ContinueTokenService($apiServer);
  */
 export async function requireContinueToken(
     token: string,
-): Promise<ContinueTokenContextDto> {
+): Promise<TokenContextDto> {
     try {
         const { data } = await verify(token);
         return data;

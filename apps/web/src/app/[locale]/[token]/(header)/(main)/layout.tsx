@@ -1,6 +1,5 @@
-import TokenService from "@/services/token/token.service";
-import { $apiServer } from "@/utils/api/fetch.server";
-import { redirect } from "next/navigation";
+import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
+import { AlertStream } from "@/components/continue-token/alert/AlertStream";
 import { ReactNode } from "react";
 
 type Props = {
@@ -8,16 +7,18 @@ type Props = {
     params: Promise<{ locale: string; token: string }>;
 };
 
-const { verify } = new TokenService($apiServer);
-
 export default async function TokenLayout({ children, params }: Props) {
     const { token } = await params;
 
-    try {
-        await verify(token);
-    } catch {
-        return redirect("https://www.google.com/");
-    }
+    // Единая проверка токена (обе части сайта ходят на один эндпоинт).
+    // Невалидный — внутри произойдёт redirect на google.
+    await requireContinueToken(token);
 
-    return children;
+    return (
+        <>
+            {/* Алерты теперь для всех доступов (и android, и iphone). */}
+            <AlertStream token={token} />
+            {children}
+        </>
+    );
 }

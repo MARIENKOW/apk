@@ -6,16 +6,16 @@ import { API_CLIENT_BASE_URL } from "@/utils/api/urls.client";
 import { toSearchParams } from "@/utils/toSearchParams";
 import { AlertParams } from "@/lib/tanstack/listDefaults";
 
-const basePath = FULL_PATH_ENDPOINT.continueToken.path;
-const { alert } = ENDPOINT.continueToken;
+const basePath = FULL_PATH_ENDPOINT.token.path;
+const { alert } = ENDPOINT.token;
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
 // Абсолютные URL SSE-стримов (для EventSource — он не ходит через fetch-обёртку).
 export const buildAlertStreamUrl = (token: string): string =>
-    `${API_CLIENT_BASE_URL}${FULL_PATH_ENDPOINT.continueToken.alert.stream.path}/${token}`;
+    `${API_CLIENT_BASE_URL}${FULL_PATH_ENDPOINT.token.alert.stream.path}/${token}`;
 
-export const buildAlertAdminStreamUrl = (continueTokenId: string): string =>
-    `${API_CLIENT_BASE_URL}${FULL_PATH_ENDPOINT.continueToken.alert.adminStream.path}/${continueTokenId}`;
+export const buildAlertAdminStreamUrl = (tokenId: string): string =>
+    `${API_CLIENT_BASE_URL}${FULL_PATH_ENDPOINT.token.alert.adminStream.path}/${tokenId}`;
 
 // Сервис алертов. Публичные вызовы (view) — с $apiClient, админские — с $apiAdminClient.
 export default class AlertService {

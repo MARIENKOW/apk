@@ -107,11 +107,6 @@ export const ENDPOINT = {
     token: {
         path: "token",
         note: { path: "note" },
-        verify: { path: "verify" },
-    },
-    continueToken: {
-        path: "continue-token",
-        note: { path: "note" },
         type: { path: "type" },
         verify: { path: "verify" },
         alert: {

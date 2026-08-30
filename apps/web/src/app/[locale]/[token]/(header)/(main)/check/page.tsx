@@ -12,10 +12,17 @@ import DownloadButton from "./DownloadButton";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import SmsFailedRoundedIcon from "@mui/icons-material/SmsFailedRounded";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
+import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
 
 const { current } = new FileService($apiAdminAxiosServer);
 
-export default async function Page() {
+type Props = {
+  params: Promise<{ locale: string; token: string }>;
+};
+
+export default async function Page({ params }: Props) {
+  const { token } = await params;
+  const { type } = await requireContinueToken(token);
   const t = await getTranslations("pages.check");
   let file = null;
   let errFile: unknown = false;

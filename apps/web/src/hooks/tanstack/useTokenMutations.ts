@@ -8,6 +8,7 @@ import { snackbarSuccess } from "@/utils/snackbar/snackbar.success";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { TokenDto, PagedResult } from "@myorg/shared/dto";
+import { UpdateTypeTokenDtoOutput } from "@myorg/shared/form";
 
 const service = new TokenService($apiAdminClient);
 
@@ -29,7 +30,10 @@ export function useTokenListCache() {
             { queryKey: tokenKeys.lists() },
             (old) => {
                 if (!old) return old;
-                return { ...old, data: old.data.map((t) => (t.id === id ? updater(t) : t)) };
+                return {
+                    ...old,
+                    data: old.data.map((t) => (t.id === id ? updater(t) : t)),
+                };
             },
         );
     }
@@ -61,6 +65,28 @@ export function useCreateToken() {
         onMutate: () => cancel(),
         onSuccess: () => {
             snackbarSuccess(t("pages.admin.bank.token.feedback.created"));
+        },
+        onError: (error) => errorHandler({ error, t }),
+        onSettled: () => sync(),
+    });
+}
+
+export function useUpdateTokenType() {
+    const t = useTranslations();
+    const { cancel, update, sync } = useTokenListCache();
+
+    return useMutation({
+        mutationFn: ({
+            id,
+            body,
+        }: {
+            id: string;
+            body: UpdateTypeTokenDtoOutput;
+        }) => service.updateType(id, body).then((r) => r.data),
+        onMutate: () => cancel(),
+        onSuccess: (updated) => {
+            update(() => updated, updated.id);
+            snackbarSuccess(t("pages.admin.bank.token.feedback.typeUpdated"));
         },
         onError: (error) => errorHandler({ error, t }),
         onSettled: () => sync(),

@@ -1,8 +1,16 @@
+// Единый доступ ко всему сайту (обе части). Опознаётся анонимно по `token` в URL.
+// isSecondPart — только про то, в какой админ-панели показывать запись (не про доступ):
+//   false → 1-я панель (main), true → 2-я панель (continue). По любой записи доступны обе части.
 model Token {
-    id        String   @id @default(uuid())
-    token     String   @unique
-    note      String?
-    createdAt DateTime @default(now())
+    id           String            @id @default(uuid())
+    token        String            @unique
+    note         String?
+    type         ContinueTokenType @default(ANDROID)
+    isSecondPart Boolean           @default(false)
+    createdAt    DateTime          @default(now())
 
+    alerts Alert[]
+
+    @@index([isSecondPart])
     @@map("tokens")
 }

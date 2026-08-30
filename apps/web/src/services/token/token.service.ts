@@ -1,31 +1,51 @@
-import { TokenDto, PagedResult } from "@myorg/shared/dto";
+import { TokenContextDto, TokenDto, PagedResult } from "@myorg/shared/dto";
 import { ENDPOINT, FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
 import { FetchCustom, FetchCustomReturn } from "@/utils/api";
-import { CreateTokenDtoOutput, UpdateNoteTokenDtoOutput } from "@myorg/shared/form";
+import {
+    CreateTokenDtoOutput,
+    UpdateNoteTokenDtoOutput,
+    UpdateTypeTokenDtoOutput,
+} from "@myorg/shared/form";
 import { toSearchParams } from "@/utils/toSearchParams";
 import { TokenParams } from "@/lib/tanstack/listDefaults";
 
 const basePath = FULL_PATH_ENDPOINT.token.path;
-const { note, verify } = ENDPOINT.token;
+const { note, type, verify } = ENDPOINT.token;
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
 export default class TokenService {
-    getAll: (params: TokenParams) => FetchCustomReturn<PagedResult<TokenDto>>;
+    getAll: (
+        params: TokenParams,
+        isSecondPart: boolean,
+    ) => FetchCustomReturn<PagedResult<TokenDto>>;
+    getOne: (id: string) => FetchCustomReturn<TokenDto>;
     create: (body: CreateTokenDtoOutput) => FetchCustomReturn<TokenDto>;
     delete: (id: string) => FetchCustomReturn<void>;
-    updateNote: (id: string, body: UpdateNoteTokenDtoOutput) => FetchCustomReturn<TokenDto>;
-    verify: (token: string) => FetchCustomReturn<void>;
+    updateNote: (
+        id: string,
+        body: UpdateNoteTokenDtoOutput,
+    ) => FetchCustomReturn<TokenDto>;
+    updateType: (
+        id: string,
+        body: UpdateTypeTokenDtoOutput,
+    ) => FetchCustomReturn<TokenDto>;
+    verify: (token: string) => FetchCustomReturn<TokenContextDto>;
 
     constructor(api: FetchCustom) {
         this.verify = (token) =>
-            api<void>(`${basePath}/${verify.path}/${token}`, { method: "GET" });
+            api<TokenContextDto>(`${basePath}/${verify.path}/${token}`, {
+                method: "GET",
+            });
 
-        this.getAll = (params) => {
-            const query = toSearchParams(params);
+        this.getAll = (params, isSecondPart) => {
+            const query = toSearchParams({ ...params, isSecondPart });
             return api<PagedResult<TokenDto>>(`${basePath}?${query}`, {
                 method: "GET",
             });
         };
+
+        this.getOne = (id) =>
+            api<TokenDto>(`${basePath}/${id}`, { method: "GET" });
 
         this.create = (body) =>
             api<TokenDto>(basePath, {
@@ -39,6 +59,13 @@ export default class TokenService {
 
         this.updateNote = (id, body) =>
             api<TokenDto>(`${basePath}/${id}/${note.path}`, {
+                method: "PATCH",
+                body: JSON.stringify(body),
+                headers: JSON_HEADERS,
+            });
+
+        this.updateType = (id, body) =>
+            api<TokenDto>(`${basePath}/${id}/${type.path}`, {
                 method: "PATCH",
                 body: JSON.stringify(body),
                 headers: JSON_HEADERS,
