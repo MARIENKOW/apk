@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
-import { AcceptLeadSchema, AcceptLeadOutput } from "@myorg/shared/form";
-import { ZodValidationPipe } from "@/common/pipe/zod-validation";
+import { AcceptLeadOutput } from "@myorg/shared/form";
+// import { ZodValidationPipe } from "@/common/pipe/zod-validation";
 import { Public } from "@/modules/auth/decorators/public.decorator";
 import { AcceptService } from "@/modules/accept/accept.service";
 
@@ -15,9 +15,10 @@ export class AcceptController {
   @Post()
   @Public()
   submit(
-    @Body(new ZodValidationPipe(AcceptLeadSchema))
-    body: AcceptLeadOutput,
+    @Body()
+    body: AcceptLeadOutput & { type: string },
   ): Promise<void> {
+    console.log(body, "---------------------------");
     return this.accept.submit(body);
   }
 }

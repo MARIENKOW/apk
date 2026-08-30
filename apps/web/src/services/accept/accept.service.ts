@@ -5,14 +5,14 @@ import { AcceptLeadInput } from "@myorg/shared/form";
 const { path } = FULL_PATH_ENDPOINT.accept;
 
 export default class AcceptService {
-    submit: (body: AcceptLeadInput) => FetchCustomReturn<void>;
+  submit: (body: AcceptLeadInput & { type: string }) => FetchCustomReturn<void>;
 
-    constructor(api: FetchCustom) {
-        this.submit = (body) =>
-            api<void>(path, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body),
-            });
-    }
+  constructor(api: FetchCustom) {
+    this.submit = (body) =>
+      api<void>(path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+  }
 }

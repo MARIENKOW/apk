@@ -6,3 +6,4 @@ export type {
     IOSNotificationTheme,
 } from "./store";
 export { IOSNotificationHost } from "./IOSNotificationHost";
+export { IOSNotificationCard } from "./IOSNotificationCard";

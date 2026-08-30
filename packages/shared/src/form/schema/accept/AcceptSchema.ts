@@ -31,7 +31,7 @@ export const AcceptSchema = z
                 message: getMessageKey("form.accept.time.required"),
             });
         }
-        if (val.type === "iphone" && !val.number.trim()) {
+        if (!val.number.trim()) {
             ctx.addIssue({
                 code: "custom",
                 path: ["number"],

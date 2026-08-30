@@ -118,7 +118,7 @@ export class AlertService {
     ): Promise<AlertHistoryDto> {
         const t = await this.prisma.token.findUnique({
             where: { id: tokenId },
-            select: { note: true },
+            select: { note: true, isSecondPart: true },
         });
         if (!t) throw new NotFoundException();
 
@@ -136,6 +136,7 @@ export class AlertService {
 
         return {
             note: t.note,
+            isSecondPart: t.isSecondPart,
             data: items.map((i) => this.map(i)),
             meta: { page, limit, total, pageCount: Math.ceil(total / limit) },
         };

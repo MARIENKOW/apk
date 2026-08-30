@@ -14,5 +14,7 @@ export function useTokens(params: TokenParams, isSecondPart: boolean) {
         queryKey: tokenKeys.list(params, isSecondPart),
         queryFn: () => getAll(params, isSecondPart).then((r) => r.data),
         placeholderData: (prev) => prev,
+        // Онлайн — снимок на момент запроса; освежаем каждые 3с.
+        refetchInterval: 3_000,
     });
 }

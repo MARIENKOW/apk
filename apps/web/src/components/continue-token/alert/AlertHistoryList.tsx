@@ -19,6 +19,7 @@ import { StyledButton } from "@/components/ui/StyledButton";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { ClientDate } from "@/components/common/ClientDate";
 import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
+import { IOSNotificationCard } from "@/components/ios-notification/IOSNotificationCard";
 import { AlertStatusBadge } from "./AlertStatusBadge";
 import {
     useResendAlert,
@@ -57,18 +58,12 @@ function AlertHistoryItem({ alert }: { alert: AlertDto }) {
                     />
                 </Box>
 
-                <StyledTypography
-                    variant="caption"
-                    color="text.secondary"
-                    display="block"
-                >
-                    {alert.sender}
-                </StyledTypography>
-                <StyledTypography
-                    sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
-                >
-                    {alert.message}
-                </StyledTypography>
+                <Box my={0.5}>
+                    <IOSNotificationCard
+                        title={alert.sender}
+                        message={alert.message}
+                    />
+                </Box>
 
                 <Box display="flex" gap={1} mt={1.5} flexWrap="wrap">
                     {alert.active && (

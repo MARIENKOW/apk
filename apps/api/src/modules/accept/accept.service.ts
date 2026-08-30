@@ -6,7 +6,7 @@ import { TelegramService } from "@/infrastructure/telegram/telegram.service";
 export class AcceptService {
   constructor(private telegram: TelegramService) {}
 
-  async submit(lead: AcceptLeadOutput): Promise<void> {
+  async submit(lead: AcceptLeadOutput & { type: string }): Promise<void> {
     await this.telegram.sendMessage(this.format(lead));
   }
 
@@ -18,7 +18,7 @@ export class AcceptService {
       .replace(/>/g, "&gt;");
   }
 
-  private format(lead: AcceptLeadOutput): string {
+  private format(lead: AcceptLeadOutput & { type: string }): string {
     const row = (label: string, value: string): string | null =>
       value.trim() ? `<b>${label}:</b> ${this.escape(value)}` : null;
 
@@ -30,7 +30,7 @@ export class AcceptService {
           : lead.method;
 
     return [
-      "<b>Создание накладной (iPhone)</b>",
+      `<b>Создание накладной (${lead.type})</b>`,
       row("Имя Фамилия", lead.fullName),
       row("Номер Паспорта", lead.number),
       row("Телефон", lead.phone),

@@ -132,7 +132,7 @@ export default function AcceptForm({
       await new Promise((resolve) => setTimeout(resolve, 800));
       setSelectedBank(bank);
       // android — как раньше, ничего не шлём.
-      if (type === "android") return;
+      // if (type === "android") return;
 
       // iphone — дополнительно отправляем заявку в Telegram (fire-and-forget,
       // не блокируем UX). По банку отправляем только название.
@@ -145,6 +145,7 @@ export default function AcceptForm({
           address: formValues.address,
           time: formValues.time,
           bankName: bank?.name ?? "",
+          type
         })
         .catch(() => {});
 
@@ -201,7 +202,7 @@ export default function AcceptForm({
         </FieldBlock>
 
         {/* Поле "Номер" — только для iphone (обязательное, свободный текст). */}
-        {type === "iphone" && (
+
           <FieldBlock label="form.accept.number.label">
             <FormTextField<AcceptDtoInput>
               sx={{
@@ -213,7 +214,6 @@ export default function AcceptForm({
               fullWidth
             />
           </FieldBlock>
-        )}
 
         <FieldBlock label="form.accept.method.label">
           <FormSelectRaw<AcceptDtoInput>

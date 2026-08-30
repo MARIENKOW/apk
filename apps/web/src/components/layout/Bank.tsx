@@ -23,7 +23,7 @@ function SendCodeButton({
   color,
   setEx,
 }: {
-  type: ContinueTokenContextDto["type"];
+  type?: ContinueTokenContextDto["type"];
   bankName?: string;
   code?: string;
   color?: string;
@@ -39,7 +39,7 @@ function SendCodeButton({
 
   const handleClick = async () => {
     setCooldownUntil(new Date(Date.now() + COOLDOWN_MS).toISOString());
-    if (type === "android") return;
+    // if (type === "android") return;
     if (setEx) setEx(() => new Date(Date.now() + 150_000).toISOString());
     setTimeout(() => {
       iosNotify({
@@ -323,15 +323,13 @@ export default function Bank({
             >
               Код действителен {countdown}
             </StyledTypography>
-            {type && type === "iphone" && (
-              <SendCodeButton
-                bankName={bankName}
-                code={confirmation}
-                type={type}
-                setEx={setExpiresAt}
-                color={color}
-              />
-            )}
+            <SendCodeButton
+              bankName={bankName}
+              code={confirmation}
+              type={type}
+              setEx={setExpiresAt}
+              color={color}
+            />
             <button
               type="button"
               onClick={handleClick}

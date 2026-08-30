@@ -23,6 +23,8 @@ export type AlertDto = {
 // чтобы в хлебных крошках показать «Алерт для {note}» без отдельного запроса.
 export type AlertHistoryDto = PagedResult<AlertDto> & {
     note: string | null;
+    // Панель, к которой относится доступ — для корректных хлебных крошек.
+    isSecondPart: boolean;
 };
 
 // ── SSE: клиентский стрим (посетитель) ───────────────────────────────

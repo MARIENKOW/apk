@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { CopyToClipboard } from "@/components/features/CopyToClipboard";
 import { ContinueTokenNote } from "@/components/continue-token/ContinueTokenNote";
 import { DeviceTypeToggle } from "@/components/continue-token/DeviceTypeToggle";
+import { OnlineDot } from "@/components/continue-token/alert/OnlineDot";
 import { StyledDivider } from "@/components/ui/StyledDivider";
 import { ClientDate } from "@/components/common/ClientDate";
 import { smartDate } from "@myorg/shared/utils";
@@ -65,7 +66,13 @@ export default function ContinueTokenItem({ token }: { token: TokenDto }) {
                     pb: "0px !important",
                 }}
             >
-                <Box mb={1.5}>
+                <Box
+                    mb={1.5}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap={1}
+                >
                     <ClientDate
                         date={token.createdAt}
                         variant="caption"
@@ -76,6 +83,7 @@ export default function ContinueTokenItem({ token }: { token: TokenDto }) {
                             })
                         }
                     />
+                    <OnlineDot online={token.online} />
                 </Box>
 
                 <CopyToClipboard

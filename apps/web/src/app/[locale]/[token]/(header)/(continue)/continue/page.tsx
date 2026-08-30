@@ -16,11 +16,16 @@ export default async function Page({
 }) {
   const { token } = await params;
   const { type } = await requireContinueToken(token);
-  console.log(type);
   const t = await getTranslations("pages.continue");
 
+  // Для iphone «приложение» → «личный кабинет».
+  const isIphone = type === "iphone";
+
   const blocks = [
-    { icon: <VerifiedUserRoundedIcon />, text: "paragraph1" },
+    {
+      icon: <VerifiedUserRoundedIcon />,
+      text: isIphone ? "paragraph1Iphone" : "paragraph1",
+    },
     { icon: <LocalShippingRoundedIcon />, text: "paragraph2" },
     { icon: <LoginRoundedIcon />, text: "paragraph3" },
   ] as const;
@@ -36,7 +41,7 @@ export default async function Page({
           color={"text.primary"}
           mb={4}
         >
-          {t("title")}
+          {t(isIphone ? "titleIphone" : "title")}
         </StyledTypography>
 
         {/* Три блока */}

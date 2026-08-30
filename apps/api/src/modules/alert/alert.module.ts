@@ -8,6 +8,6 @@ import { AlertController } from "@/modules/alert/alert.controller";
     imports: [PrismaModule],
     providers: [AlertService, AlertBusService],
     controllers: [AlertController],
-    exports: [AlertService],
+    exports: [AlertService, AlertBusService],
 })
 export class AlertModule {}

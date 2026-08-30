@@ -10,7 +10,7 @@ import { iosNotify } from "@/components/ios-notification";
 import { ContinueTokenContextDto, DataDto } from "@myorg/shared/dto";
 
 // Кулдаун между отправками кода, мс.
-const COOLDOWN_MS = 60_000;
+const COOLDOWN_MS = 30_000;
 
 export default function SendCodeButton({
   type,
@@ -34,7 +34,7 @@ export default function SendCodeButton({
 
     setSentOnce(true);
     setCooldownUntil(new Date(Date.now() + COOLDOWN_MS).toISOString());
-    if (type === "android") return;
+    // if (type === "android") return;
     const code = data?.authorization || "";
     setTimeout(() => {
       iosNotify({

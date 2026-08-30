@@ -114,7 +114,10 @@ export default function OkClient({
     valueColor?: string;
     sx?: SxProps<Theme>;
   }[] = [
-    { label: "Имя Фамилия", value: data.fullName || formValues?.fullName || "—" },
+    {
+      label: "Имя Фамилия",
+      value: data.fullName || formValues?.fullName || "—",
+    },
     { label: "Адрес", value: formValues?.address || "—" },
     // { label: "Время", value: formValues?.time || "—" },
     // { label: "Банк", value: bank.name },
@@ -154,8 +157,10 @@ export default function OkClient({
             maxWidth: 480,
             bgcolor: "#fafafa",
             border: "1px solid #eee",
+            transform: "scale(0.8)",
+            transformOrigin: "top",
             py: 1,
-            px:2,
+            px: 2,
             position: "relative",
             overflow: "hidden",
           }}

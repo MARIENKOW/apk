@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "@/infrastructure/prisma/prisma.service";
 import { RequestContextService } from "@/common/request-context/request-context.service";
+import { AlertBusService } from "@/modules/alert/alert-bus.service";
 import { TokenContextDto, TokenDto, PagedResult } from "@myorg/shared/dto";
 import { ContinueTokenType } from "@myorg/shared/dto";
 import {
@@ -21,6 +22,7 @@ export class TokenService {
     constructor(
         private prisma: PrismaService,
         private requestContext: RequestContextService,
+        private bus: AlertBusService,
     ) {}
 
     // Enum БД (ANDROID/IPHONE) ⇄ значение DTO (android/iphone).
@@ -53,6 +55,7 @@ export class TokenService {
             note: t.note,
             type: this.toDtoType(t.type),
             isSecondPart: t.isSecondPart,
+            online: this.bus.isOnline(t.id),
             url: this.buildUrl(t.token, t.isSecondPart),
             createdAt: t.createdAt.toISOString(),
         };

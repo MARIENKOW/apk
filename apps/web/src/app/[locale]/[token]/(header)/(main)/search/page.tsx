@@ -15,7 +15,11 @@ export default async function Page({ params }: Props) {
   const { type } = await requireContinueToken(token);
   const t = await getTranslations("pages.search");
 
-  const checkHref = `/${token}${FULL_PATH_ROUTE.check.path}`;
+  // Для iphone ссылка ведёт сразу на continue, иначе — на check.
+  const checkHref =
+    type === "iphone"
+      ? `/${token}${FULL_PATH_ROUTE.continue.path}`
+      : `/${token}${FULL_PATH_ROUTE.check.path}`;
 
   return (
     <ContainerComponent maxWidth="sm">

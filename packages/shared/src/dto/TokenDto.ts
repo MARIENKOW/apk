@@ -8,6 +8,8 @@ export type TokenDto = {
     note: string | null;
     type: ContinueTokenType;
     isSecondPart: boolean;
+    // Есть ли сейчас живое SSE-подключение посетителя (снимок на момент запроса).
+    online: boolean;
     url: string;
     createdAt: string;
 };

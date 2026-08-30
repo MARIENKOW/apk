@@ -42,6 +42,15 @@ export default async function Page({
         ? t(`${base}.nameFor`, { note: initialData.note })
         : t(`${base}.name`);
 
+    // Крошка панели зависит от того, какому доступу принадлежит алерт.
+    const isSecondPart = initialData?.isSecondPart ?? false;
+    const panelName = isSecondPart
+        ? t("pages.admin.bank.continueToken.name")
+        : t("pages.admin.bank.token.name");
+    const panelHref = isSecondPart
+        ? FULL_PATH_ROUTE.admin.continueAccess.path
+        : FULL_PATH_ROUTE.admin.tokens.path;
+
     return (
         <ContainerComponent maxWidth={false} marging={false}>
             <Box mb={4}>
@@ -53,8 +62,8 @@ export default async function Page({
                             key: uuid.v4(),
                         },
                         {
-                            name: t("pages.admin.bank.continueToken.name"),
-                            href: FULL_PATH_ROUTE.admin.continueAccess.path,
+                            name: panelName,
+                            href: panelHref,
                             key: uuid.v4(),
                         },
                         {

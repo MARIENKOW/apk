@@ -7,7 +7,7 @@ import { MessagesIcon } from "./MessagesIcon";
 import { FONT_STACK, getGlassStyle } from "./styles";
 import { useSystemTheme } from "./useSystemTheme";
 
-const DEFAULT_DURATION = 6000;
+const DEFAULT_DURATION = 10000;
 // Порог смахивания вверх: сдвиг ИЛИ скорость (что раньше).
 const DISMISS_OFFSET = -36;
 const DISMISS_VELOCITY = -500;
