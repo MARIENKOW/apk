@@ -5,5 +5,7 @@ model ContinueToken {
     type      ContinueTokenType @default(ANDROID)
     createdAt DateTime          @default(now())
 
+    alerts Alert[]
+
     @@map("continue_tokens")
 }

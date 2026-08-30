@@ -11,6 +11,7 @@ export * from "./AdminManagementDto";
 export * from "./BankDto";
 export * from "./TokenDto";
 export * from "./ContinueTokenDto";
+export * from "./AlertDto";
 export * from "./FileDto";
 export * from "./DataDto";
 export * from "./FormDataDto";

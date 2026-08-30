@@ -4,6 +4,7 @@ import type {
     BankParams,
     TokenParams,
     ContinueTokenParams,
+    AlertParams,
 } from "@/lib/tanstack/listDefaults";
 
 
@@ -41,6 +42,14 @@ export const continueTokenKeys = {
     lists: () => [...continueTokenKeys.all, "list"] as const,
     list: (params: ContinueTokenParams) =>
         [...continueTokenKeys.lists(), params] as const,
+};
+
+export const alertKeys = {
+    all: ["alert"] as const,
+    lists: () => [...alertKeys.all, "list"] as const,
+    // История отправок одного доступа (скоуп по continueTokenId + params).
+    list: (continueTokenId: string, params: AlertParams) =>
+        [...alertKeys.lists(), continueTokenId, params] as const,
 };
 
 export const appFileKeys = {

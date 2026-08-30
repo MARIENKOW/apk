@@ -36,6 +36,12 @@ export const defaultContinueTokenParams: ContinueTokenParams = {
     query: "",
 };
 
+// --- Alert (история отправок доступа: только пагинация, без фильтров) ---
+export type AlertParams = Pagination;
+export const defaultAlertParams: AlertParams = {
+    page: 1,
+};
+
 // --- Invitation ---
 type InvitationFilters = {
     status: "all" | "active" | "expired" | "revoked";

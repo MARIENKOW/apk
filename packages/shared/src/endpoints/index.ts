@@ -114,6 +114,14 @@ export const ENDPOINT = {
         note: { path: "note" },
         type: { path: "type" },
         verify: { path: "verify" },
+        alert: {
+            path: "alert",
+            stream: { path: "stream" },
+            adminStream: { path: "admin-stream" },
+            stop: { path: "stop" },
+            resend: { path: "resend" },
+            view: { path: "view" },
+        },
     },
     file: {
         path: "file",

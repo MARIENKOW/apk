@@ -114,6 +114,10 @@ export const PARCEL_DATE_MAX_LENGTH = 100;
 export const PARCEL_NUMBER_MAX_LENGTH = 64;
 export const PARCEL_SENDER_MAX_LENGTH = 100;
 
+// Алерт для continue-доступа (сообщение админ → посетитель).
+export const ALERT_MESSAGE_MAX_LENGTH = 1000;
+export const ALERT_SENDER_MAX_LENGTH = 100;
+
 // Данные формы (singleton, редактируется в админке).
 export const FORM_DATA_CHECKBOX_TEXT_MAX_LENGTH = 1000;
 export const FORM_DATA_CHECKBOX_TEXT_DEFAULT =

@@ -18,6 +18,9 @@ export const ROUTE = {
     },
     continueAccess: {
       path: "continue-access",
+      alert: {
+        path: "alert",
+      },
     },
     data: {
       path: "data",

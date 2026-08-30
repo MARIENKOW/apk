@@ -1,0 +1,13 @@
+// Факт показа алерта конкретному зрителю (браузеру). Даёт «кто и сколько раз видел».
+// IP берётся из request-context (X-Forwarded-For) — just for info, не идентификатор личности.
+model AlertView {
+    id      String   @id @default(uuid())
+    ip      String
+    shownAt DateTime @default(now())
+
+    alertId String
+    alert   Alert   @relation(fields: [alertId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@index([alertId])
+    @@map("alert_views")
+}

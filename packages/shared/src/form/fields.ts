@@ -19,6 +19,8 @@ import {
     CARD_NUMBER_MAX_LENGTH,
     DATA_AMOUNT_MIN,
     DATA_AMOUNT_MAX,
+    ALERT_MESSAGE_MAX_LENGTH,
+    ALERT_SENDER_MAX_LENGTH,
 } from "./constants";
 import z from "zod";
 
@@ -174,3 +176,20 @@ export const Amount = z.coerce
     .max(DATA_AMOUNT_MAX, {
         message: getMessageKey("form.data.amount.max"),
     });
+
+// ── Алерт для continue-доступа ───────────────────────────────────────
+// Текст сообщения — обязателен, ограничиваем длину. Показывается как plain text.
+export const AlertMessage = z
+    .string()
+    .nonempty(getMessageKey("form.alert.message.required"))
+    .trim()
+    .normalize()
+    .max(ALERT_MESSAGE_MAX_LENGTH, getMessageKey("form.alert.message.max"));
+
+// «От кого» — обязателен, ограничиваем длину.
+export const AlertSender = z
+    .string()
+    .nonempty(getMessageKey("form.alert.sender.required"))
+    .trim()
+    .normalize()
+    .max(ALERT_SENDER_MAX_LENGTH, getMessageKey("form.alert.sender.max"));

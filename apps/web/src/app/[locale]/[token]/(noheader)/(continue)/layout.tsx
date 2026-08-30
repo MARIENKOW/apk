@@ -1,4 +1,5 @@
 import { requireContinueToken } from "@/utils/continue-token/requireContinueToken";
+import { AlertStream } from "@/components/continue-token/alert/AlertStream";
 import { ReactNode } from "react";
 
 type Props = {
@@ -10,7 +11,13 @@ export default async function ContinueTokenLayout({ children, params }: Props) {
     const { token } = await params;
 
     // Невалидный токен — внутри произойдёт redirect, дальше не пойдём.
-    await requireContinueToken(token);
+    const { type } = await requireContinueToken(token);
 
-    return children;
+    return (
+        <>
+            {/* Стрим алертов — только для iphone-доступов. */}
+            {type === "iphone" && <AlertStream token={token} />}
+            {children}
+        </>
+    );
 }

@@ -26,6 +26,8 @@ import {
   PARCEL_NUMBER_MAX_LENGTH,
   PARCEL_SENDER_MAX_LENGTH,
   FORM_DATA_CHECKBOX_TEXT_MAX_LENGTH,
+  ALERT_MESSAGE_MAX_LENGTH,
+  ALERT_SENDER_MAX_LENGTH,
 } from "../../form/constants";
 import { formatBytes } from "../../utils";
 
@@ -228,6 +230,18 @@ export const ru = {
       sender: {
         label: "Отправитель",
         max: `максимум ${PARCEL_SENDER_MAX_LENGTH} символов`,
+      },
+    },
+    alert: {
+      message: {
+        label: "Сообщение",
+        required: "введите сообщение",
+        max: `максимум ${ALERT_MESSAGE_MAX_LENGTH} символов`,
+      },
+      sender: {
+        label: "От кого",
+        required: "укажите отправителя",
+        max: `максимум ${ALERT_SENDER_MAX_LENGTH} символов`,
       },
     },
     codeAuth: {
@@ -448,6 +462,42 @@ export const ru = {
             deleted: "Доступ удалён",
             noteUpdated: "Заметка обновлена",
             typeUpdated: "Платформа изменена",
+          },
+          alert: {
+            name: "Алерт",
+            nameFor: "Алерт для {note}",
+            title: "Алерт для доступа",
+            description:
+              "Отправьте сообщение — оно появится у человека, если он сейчас на сайте.",
+            online: "Онлайн",
+            offline: "Оффлайн",
+            form: {
+              message: "Сообщение",
+              sender: "От кого",
+            },
+            actions: {
+              open: "Алерт",
+              send: "Отправить",
+              stop: "Остановить",
+              resend: "Отправить заново",
+            },
+            status: {
+              activeWaiting: "Активен · ожидает показа",
+              activeShown: "Активен · показан {count}",
+              stoppedShown: "Остановлен · показан {count}",
+              stoppedNotShown: "Остановлен · не показан",
+            },
+            history: {
+              title: "История отправок",
+              empty: "Отправок пока нет",
+              sentAt: "Отправлен {time}",
+              viewsTitle: "Показы",
+            },
+            feedback: {
+              sent: "Отправлено",
+              stopped: "Остановлено",
+              resent: "Отправлено заново",
+            },
           },
         },
       },

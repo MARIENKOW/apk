@@ -15,7 +15,11 @@ import {
 } from "@/hooks/tanstack/useContinueTokenMutations";
 import { useConfirm } from "@/hooks/useConfirm";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { StyledIconButton } from "@/components/ui/StyledIconButton";
+import { StyledTooltip } from "@/components/ui/StyledTooltip";
+import { Link } from "@/i18n/navigation";
+import { FULL_PATH_ROUTE } from "@myorg/shared/route";
 
 export default function ContinueTokenItem({
     token,
@@ -102,13 +106,32 @@ export default function ContinueTokenItem({
                         onChange={handleTypeChange}
                         disabled={updateType.isPending}
                     />
-                    <StyledIconButton
-                        size="small"
-                        onClick={handleDelete}
-                        color="error"
-                    >
-                        <DeleteForeverIcon fontSize="small" />
-                    </StyledIconButton>
+                    <Box display="flex" alignItems="center" gap={0.5}>
+                        {/* Алерты — только для iphone-доступов. */}
+                        {token.type === "iphone" && (
+                            <StyledTooltip
+                                title={t(
+                                    "pages.admin.bank.continueToken.alert.actions.open",
+                                )}
+                                placement="top"
+                            >
+                                <Link
+                                    href={`${FULL_PATH_ROUTE.admin.continueAccess.alert.path}/${token.id}`}
+                                >
+                                    <StyledIconButton size="small">
+                                        <NotificationsActiveIcon fontSize="small" />
+                                    </StyledIconButton>
+                                </Link>
+                            </StyledTooltip>
+                        )}
+                        <StyledIconButton
+                            size="small"
+                            onClick={handleDelete}
+                            color="error"
+                        >
+                            <DeleteForeverIcon fontSize="small" />
+                        </StyledIconButton>
+                    </Box>
                 </Box>
             </CardContent>
         </Card>
