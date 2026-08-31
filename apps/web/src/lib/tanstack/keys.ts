@@ -4,6 +4,7 @@ import type {
     BankParams,
     TokenParams,
     AlertParams,
+    VisitParams,
 } from "@/lib/tanstack/listDefaults";
 
 
@@ -44,6 +45,14 @@ export const alertKeys = {
     // История отправок одного доступа (скоуп по continueTokenId + params).
     list: (continueTokenId: string, params: AlertParams) =>
         [...alertKeys.lists(), continueTokenId, params] as const,
+};
+
+// Лог визитов доступа (кто заходил). Скоуп по continueTokenId + params.
+export const visitKeys = {
+    all: ["visit"] as const,
+    lists: () => [...visitKeys.all, "list"] as const,
+    list: (continueTokenId: string, params: VisitParams) =>
+        [...visitKeys.lists(), continueTokenId, params] as const,
 };
 
 export const appFileKeys = {

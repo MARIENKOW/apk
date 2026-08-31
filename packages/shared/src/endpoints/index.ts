@@ -117,6 +117,8 @@ export const ENDPOINT = {
             resend: { path: "resend" },
             view: { path: "view" },
         },
+        // Лог визитов доступа: кто заходил (глобально), устройство/гео/время.
+        visits: { path: "visits" },
     },
     file: {
         path: "file",

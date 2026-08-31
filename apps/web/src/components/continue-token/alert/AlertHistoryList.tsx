@@ -20,6 +20,7 @@ import { StyledTypography } from "@/components/ui/StyledTypography";
 import { ClientDate } from "@/components/common/ClientDate";
 import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
 import { IOSNotificationCard } from "@/components/ios-notification/IOSNotificationCard";
+import { OsIcon } from "@/components/common/session/SessionCard";
 import { AlertStatusBadge } from "./AlertStatusBadge";
 import {
     useResendAlert,
@@ -113,19 +114,45 @@ function AlertHistoryItem({ alert }: { alert: AlertDto }) {
                                 sx={{
                                     display: "flex",
                                     justifyContent: "space-between",
+                                    alignItems: "center",
                                     gap: 1,
                                 }}
                             >
-                                <StyledTypography
-                                    variant="body2"
-                                    fontFamily="monospace"
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 1,
+                                        minWidth: 0,
+                                    }}
                                 >
-                                    {v.ip}
-                                </StyledTypography>
+                                    <OsIcon icon={v.device.icon} size={16} />
+                                    <Box sx={{ minWidth: 0 }}>
+                                        <StyledTypography
+                                            variant="body2"
+                                            noWrap
+                                        >
+                                            {v.device.browser} · {v.device.os}
+                                        </StyledTypography>
+                                        <StyledTypography
+                                            variant="caption"
+                                            color="text.secondary"
+                                            noWrap
+                                        >
+                                            {[
+                                                v.location.city,
+                                                v.location.country,
+                                            ]
+                                                .filter(Boolean)
+                                                .join(", ") || v.location.ip}
+                                        </StyledTypography>
+                                    </Box>
+                                </Box>
                                 <ClientDate
                                     date={v.shownAt}
-                                    variant="body2"
+                                    variant="caption"
                                     color="text.secondary"
+                                    sx={{ flexShrink: 0 }}
                                     format={(d, locale) =>
                                         smartDate({ date: d, locale })
                                     }

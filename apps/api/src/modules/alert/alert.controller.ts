@@ -18,7 +18,9 @@ import { Auth } from "@/modules/auth/decorators/auth.decorator";
 import { Public } from "@/modules/auth/decorators/public.decorator";
 import { ZodValidationPipe } from "@/common/pipe/zod-validation";
 import { AlertService } from "@/modules/alert/alert.service";
-import { AlertDto, AlertHistoryDto } from "@myorg/shared/dto";
+import { VisitService } from "@/modules/alert/visit.service";
+import { RequestContextService } from "@/common/request-context/request-context.service";
+import { AlertDto, AlertHistoryDto, VisitHistoryDto } from "@myorg/shared/dto";
 import { SendAlertDtoOutput, SendAlertSchema } from "@myorg/shared/form";
 import { ENDPOINT, FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
 import { env } from "@/config";
@@ -38,7 +40,11 @@ const seenCookieOptions: CookieOptions = {
 
 @Controller(path)
 export class AlertController {
-    constructor(private alert: AlertService) {}
+    constructor(
+        private alert: AlertService,
+        private visits: VisitService,
+        private requestContext: RequestContextService,
+    ) {}
 
     // ── Публичный стрим посетителя (SSE) ─────────────────────────────
     @Sse(`${alert.path}/${alert.stream.path}/:token`)
@@ -48,7 +54,10 @@ export class AlertController {
         @Req() req: Request,
     ): Observable<MessageEvent> {
         const seen = req.cookies?.[`alert_seen_${token}`] as string | undefined;
-        return this.alert.streamForVisitor(token, seen);
+        // ip/userAgent — из request-context (учитывает X-Forwarded-For за nginx).
+        const ip = this.requestContext.ip ?? "unknown";
+        const userAgent = this.requestContext.userAgent ?? null;
+        return this.alert.streamForVisitor(token, seen, ip, userAgent);
     }
 
     // ── Публично: посетитель подтвердил показ ────────────────────────
@@ -78,6 +87,17 @@ export class AlertController {
         @Query("limit", new DefaultValuePipe(20), ParseIntPipe) limit: number,
     ): Promise<AlertHistoryDto> {
         return this.alert.list(id, page, limit);
+    }
+
+    // ── Админ: лог визитов доступа (кто заходил) ─────────────────────
+    @Get(`:id/${ENDPOINT.token.visits.path}`)
+    @Auth("ADMIN")
+    async visitList(
+        @Param("id") id: string,
+        @Query("page", new DefaultValuePipe(1), ParseIntPipe) page: number,
+        @Query("limit", new DefaultValuePipe(20), ParseIntPipe) limit: number,
+    ): Promise<VisitHistoryDto> {
+        return this.visits.list(id, page, limit);
     }
 
     // ── Админ: отправить ─────────────────────────────────────────────

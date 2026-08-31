@@ -2,6 +2,7 @@ export * from "./admin";
 export * from "./api";
 export * from "./session";
 export * from "./session/admin";
+export * from "./deviceGeo";
 export * from "./ChangePasswordDto";
 export * from "./ImageDto";
 export * from "./VideoDto";

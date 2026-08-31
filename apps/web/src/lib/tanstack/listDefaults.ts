@@ -42,6 +42,12 @@ export const defaultAlertParams: AlertParams = {
     page: 1,
 };
 
+// --- Visit (лог визитов доступа: только пагинация) ---
+export type VisitParams = Pagination;
+export const defaultVisitParams: VisitParams = {
+    page: 1,
+};
+
 // --- Invitation ---
 type InvitationFilters = {
     status: "all" | "active" | "expired" | "revoked";

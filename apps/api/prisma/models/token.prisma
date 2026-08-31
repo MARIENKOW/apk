@@ -10,6 +10,7 @@ model Token {
     createdAt    DateTime          @default(now())
 
     alerts Alert[]
+    visits AccessVisit[]
 
     @@index([isSecondPart])
     @@map("tokens")

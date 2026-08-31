@@ -1,0 +1,22 @@
+// Визит на доступ = одно пребывание посетителя (одно SSE-подключение).
+// Пишется на connect стрима посетителя, обновляется по heartbeat, закрывается
+// на disconnect. Даёт глобальный лог «кто заходил на доступ»: устройство (по UA),
+// гео (по IP), «зашёл/вышел», и онлайн ли сейчас.
+//
+// Реконнекты в пределах VISIT_COALESCE_MS склеиваются в ту же запись (сеть моргнула).
+// disconnectedAt = null → соединение ещё живо. Онлайн = null && свежий lastSeenAt.
+model AccessVisit {
+    id             String    @id @default(uuid())
+    ip             String
+    userAgent      String?
+    connectedAt    DateTime  @default(now())
+    lastSeenAt     DateTime  @default(now())
+    disconnectedAt DateTime?
+
+    tokenId String
+    token   Token  @relation(fields: [tokenId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@index([tokenId])
+    @@index([tokenId, connectedAt])
+    @@map("access_visits")
+}

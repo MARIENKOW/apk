@@ -17,12 +17,17 @@ import {
 import { PrismaService } from "@/infrastructure/prisma/prisma.service";
 import { RequestContextService } from "@/common/request-context/request-context.service";
 import { AlertBusService } from "@/modules/alert/alert-bus.service";
+import { VisitService } from "@/modules/alert/visit.service";
+import { deviceFromUa, locationFromIp } from "@/common/device/device-geo";
 import { AlertDto, AlertHistoryDto } from "@myorg/shared/dto";
 import { SendAlertDtoOutput } from "@myorg/shared/form";
 import { Alert, AlertView } from "@/generated/prisma";
 
 // Интервал heartbeat-события SSE — держит соединение живым через прокси/мобильную сеть.
 const HEARTBEAT_MS = 25_000;
+// Запись lastSeenAt визита в БД — реже пинга (он нужен лишь как страховка от
+// «грязного» обрыва без close). Должен быть меньше ONLINE_STALE_MS в VisitService.
+const VISIT_DB_HEARTBEAT_MS = 60_000;
 
 type AlertWithViews = Alert & { views: AlertView[] };
 
@@ -32,6 +37,7 @@ export class AlertService {
         private prisma: PrismaService,
         private requestContext: RequestContextService,
         private bus: AlertBusService,
+        private visits: VisitService,
     ) {}
 
     private map(a: AlertWithViews): AlertDto {
@@ -45,8 +51,10 @@ export class AlertService {
             viewCount: a.views.length,
             views: a.views.map((v) => ({
                 id: v.id,
-                ip: v.ip,
+                ip: v.ip.replace(/^::ffff:/, ""),
                 shownAt: v.shownAt.toISOString(),
+                device: deviceFromUa(v.userAgent),
+                location: locationFromIp(v.ip),
             })),
             type: a.type === "IPHONE" ? "iphone" : "android",
         };
@@ -159,7 +167,8 @@ export class AlertService {
         if (!alert) throw new NotFoundException();
 
         const ip = this.requestContext.ip ?? "unknown";
-        await this.prisma.alertView.create({ data: { alertId, ip } });
+        const userAgent = this.requestContext.userAgent ?? null;
+        await this.prisma.alertView.create({ data: { alertId, ip, userAgent } });
         this.bus.emitAdminChanged(alert.tokenId);
 
         return {
@@ -175,6 +184,8 @@ export class AlertService {
     streamForVisitor(
         token: string,
         seenAlertId: string | undefined,
+        ip: string,
+        userAgent: string | null,
     ): Observable<MessageEvent> {
         return defer(() =>
             from(this.prisma.token.findUnique({ where: { token } })),
@@ -215,10 +226,30 @@ export class AlertService {
                     map((): MessageEvent => ({ type: "ping", data: "" })),
                 );
 
-                // Никогда не эмитит — только держит presence на время подписки.
+                // Никогда не эмитит. Держит presence (онлайн) и персистит визит:
+                // open на подписку, heartbeat пока живо, close на отписку.
                 const presence$ = new Observable<MessageEvent>(() => {
+                    // Онлайн-индикатор — через presence-события (не через changed).
                     this.bus.addClient(id);
-                    return () => this.bus.removeClient(id);
+
+                    // open async; teardown может успеть раньше — поэтому chain по промису.
+                    const openP = this.visits
+                        .open(id, ip, userAgent)
+                        .catch(() => null);
+
+                    const hb = setInterval(() => {
+                        void openP.then((visitId) => {
+                            if (visitId) void this.visits.heartbeat(visitId);
+                        });
+                    }, VISIT_DB_HEARTBEAT_MS);
+
+                    return () => {
+                        clearInterval(hb);
+                        this.bus.removeClient(id);
+                        void openP.then((visitId) => {
+                            if (visitId) void this.visits.close(visitId);
+                        });
+                    };
                 });
 
                 return merge(concat(replay$, live$), heartbeat$, presence$);

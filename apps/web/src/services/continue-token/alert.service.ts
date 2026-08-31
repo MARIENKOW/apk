@@ -1,10 +1,10 @@
-import { AlertDto, AlertHistoryDto } from "@myorg/shared/dto";
+import { AlertDto, AlertHistoryDto, VisitHistoryDto } from "@myorg/shared/dto";
 import { ENDPOINT, FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
 import { SendAlertDtoOutput } from "@myorg/shared/form";
 import { FetchCustom, FetchCustomReturn } from "@/utils/api";
 import { API_CLIENT_BASE_URL } from "@/utils/api/urls.client";
 import { toSearchParams } from "@/utils/toSearchParams";
-import { AlertParams } from "@/lib/tanstack/listDefaults";
+import { AlertParams, VisitParams } from "@/lib/tanstack/listDefaults";
 
 const basePath = FULL_PATH_ENDPOINT.token.path;
 const { alert } = ENDPOINT.token;
@@ -40,6 +40,12 @@ export default class AlertService {
     // Админ: отправить заново (новая активная запись с тем же текстом).
     resend: (alertId: string) => FetchCustomReturn<AlertDto>;
 
+    // Админ: лог визитов доступа (кто заходил: устройство/гео/время/онлайн).
+    visits: (
+        continueTokenId: string,
+        params: VisitParams,
+    ) => FetchCustomReturn<VisitHistoryDto>;
+
     constructor(api: FetchCustom) {
         this.view = (alertId) =>
             api<void>(
@@ -73,5 +79,13 @@ export default class AlertService {
                 `${basePath}/${alert.path}/${alertId}/${alert.resend.path}`,
                 { method: "POST" },
             );
+
+        this.visits = (continueTokenId, params) => {
+            const query = toSearchParams(params);
+            return api<VisitHistoryDto>(
+                `${basePath}/${continueTokenId}/${ENDPOINT.token.visits.path}?${query}`,
+                { method: "GET" },
+            );
+        };
     }
 }

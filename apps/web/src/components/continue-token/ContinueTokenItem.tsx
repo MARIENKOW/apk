@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Box, Card, CardContent } from "@mui/material";
 import { TokenDto, ContinueTokenType } from "@myorg/shared/dto";
 import { useTranslations } from "next-intl";
@@ -17,8 +18,10 @@ import {
 import { useConfirm } from "@/hooks/useConfirm";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { StyledIconButton } from "@/components/ui/StyledIconButton";
 import { StyledTooltip } from "@/components/ui/StyledTooltip";
+import { VisitorsModal } from "@/components/continue-token/visit/VisitorsModal";
 import { Link } from "@/i18n/navigation";
 import { FULL_PATH_ROUTE } from "@myorg/shared/route";
 
@@ -27,6 +30,7 @@ export default function ContinueTokenItem({ token }: { token: TokenDto }) {
     const deleteToken = useDeleteToken();
     const updateType = useUpdateTokenType();
     const { confirm, confirmDialog } = useConfirm();
+    const [visitorsOpen, setVisitorsOpen] = useState(false);
 
     const handleDelete = async () => {
         const ok = await confirm();
@@ -58,6 +62,12 @@ export default function ContinueTokenItem({ token }: { token: TokenDto }) {
             }}
         >
             {confirmDialog}
+            <VisitorsModal
+                continueTokenId={token.id}
+                note={token.note}
+                open={visitorsOpen}
+                onClose={() => setVisitorsOpen(false)}
+            />
             <CardContent
                 sx={{
                     flex: 1,
@@ -83,7 +93,44 @@ export default function ContinueTokenItem({ token }: { token: TokenDto }) {
                             })
                         }
                     />
-                    <OnlineDot online={token.online} />
+                    {/* Статус кликабелен — открывает лог визитов (кто заходил). */}
+                    <StyledTooltip
+                        title={t(
+                            "pages.admin.bank.continueToken.visits.actions.open",
+                        )}
+                        placement="top"
+                    >
+                        <Box
+                            component="button"
+                            type="button"
+                            onClick={() => setVisitorsOpen(true)}
+                            sx={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: 0.75,
+                                px: 1,
+                                py: 0.25,
+                                borderRadius: 5,
+                                border: "1px solid",
+                                borderColor: "divider",
+                                bgcolor: "transparent",
+                                cursor: "pointer",
+                                color: "inherit",
+                                font: "inherit",
+                                transition:
+                                    "background-color .15s ease, border-color .15s ease",
+                                "&:hover": {
+                                    bgcolor: "action.hover",
+                                    borderColor: "text.disabled",
+                                },
+                            }}
+                        >
+                            <OnlineDot online={token.online} />
+                            <PeopleAltIcon
+                                sx={{ fontSize: 15, color: "text.disabled" }}
+                            />
+                        </Box>
+                    </StyledTooltip>
                 </Box>
 
                 <CopyToClipboard

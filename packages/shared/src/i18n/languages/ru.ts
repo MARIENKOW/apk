@@ -505,6 +505,16 @@ export const ru = {
               resent: "Отправлено заново",
             },
           },
+          visits: {
+            name: "Посетители",
+            title: "Кто заходил на доступ",
+            empty: "Заходов пока нет",
+            online: "На сайте",
+            entered: "зашёл",
+            actions: {
+              open: "Посетители",
+            },
+          },
         },
       },
       file: {

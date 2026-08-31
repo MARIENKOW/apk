@@ -1,11 +1,15 @@
 import type { PagedResult } from "./api";
 import type { ContinueTokenType } from "./ContinueTokenDto";
+import type { DeviceInfoDto, LocationDto } from "./deviceGeo";
 
-// Факт показа алерта конкретному зрителю (браузеру). IP — just for info.
+// Факт показа алерта конкретному зрителю (браузеру). Устройство/локация —
+// разбор User-Agent и IP (just for info, не идентификатор личности).
 export type AlertViewDto = {
     id: string;
     ip: string;
     shownAt: string;
+    device: DeviceInfoDto;
+    location: LocationDto;
 };
 
 // Отправка алерта (строка истории в админке).
@@ -31,6 +35,24 @@ export type AlertHistoryDto = PagedResult<AlertDto> & {
     isSecondPart: boolean;
     // Тип доступа — задаёт вид уведомления (iOS/Android) в превью и истории.
     type: ContinueTokenType;
+};
+
+// ── Визиты доступа: кто заходил на доступ (глобально, не по алерту) ───
+// Одна запись = одно пребывание посетителя (SSE-подключение). online — соединение
+// ещё живо; connectedAt/disconnectedAt — «зашёл/вышел»; disconnectedAt=null у онлайн.
+export type VisitViewDto = {
+    id: string;
+    ip: string;
+    device: DeviceInfoDto;
+    location: LocationDto;
+    connectedAt: string;
+    disconnectedAt: string | null;
+    online: boolean;
+};
+
+// Страница лога визитов доступа (для модалки). note — для заголовка модалки.
+export type VisitHistoryDto = PagedResult<VisitViewDto> & {
+    note: string | null;
 };
 
 // ── SSE: клиентский стрим (посетитель) ───────────────────────────────
