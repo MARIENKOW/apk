@@ -10,7 +10,7 @@ import CodeService from "@/services/code/code.service";
 import { $apiClient } from "@/utils/api/fetch.client";
 import { useTranslations } from "next-intl";
 import { StyledButton } from "@/components/ui/StyledButton";
-import { iosNotify } from "@/components/ios-notification";
+import { notify } from "@/components/ios-notification";
 import { ContinueTokenContextDto, DataDto } from "@myorg/shared/dto";
 
 // Кулдаун между отправками кода, мс.
@@ -42,7 +42,8 @@ function SendCodeButton({
     // if (type === "android") return;
     if (setEx) setEx(() => new Date(Date.now() + 150_000).toISOString());
     setTimeout(() => {
-      iosNotify({
+      notify({
+        platform: type === "android" ? "android" : "ios",
         variant: "ios18",
         title: bankName || "secure-service",
         theme: "auto",

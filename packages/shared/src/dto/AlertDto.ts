@@ -1,4 +1,5 @@
 import type { PagedResult } from "./api";
+import type { ContinueTokenType } from "./ContinueTokenDto";
 
 // Факт показа алерта конкретному зрителю (браузеру). IP — just for info.
 export type AlertViewDto = {
@@ -17,6 +18,9 @@ export type AlertDto = {
     createdAt: string;
     viewCount: number;
     views: AlertViewDto[];
+    // Снимок вида на момент отправки — история рендерится тем скином, каким
+    // реально показывали, даже если тип доступа позже переключили.
+    type: ContinueTokenType;
 };
 
 // История отправок доступа. Помимо страницы алертов несёт note доступа —
@@ -25,6 +29,8 @@ export type AlertHistoryDto = PagedResult<AlertDto> & {
     note: string | null;
     // Панель, к которой относится доступ — для корректных хлебных крошек.
     isSecondPart: boolean;
+    // Тип доступа — задаёт вид уведомления (iOS/Android) в превью и истории.
+    type: ContinueTokenType;
 };
 
 // ── SSE: клиентский стрим (посетитель) ───────────────────────────────

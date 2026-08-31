@@ -48,6 +48,7 @@ export class AlertService {
                 ip: v.ip,
                 shownAt: v.shownAt.toISOString(),
             })),
+            type: a.type === "IPHONE" ? "iphone" : "android",
         };
     }
 
@@ -66,7 +67,9 @@ export class AlertService {
                 data: { active: false },
             });
             return tx.alert.create({
-                data: { tokenId, message, sender, active: true },
+                // Снимок текущего типа доступа — история покажет тот скин,
+                // каким реально показали, даже если тип позже переключат.
+                data: { tokenId, message, sender, active: true, type: t.type },
                 include: { views: true },
             });
         });
@@ -118,7 +121,7 @@ export class AlertService {
     ): Promise<AlertHistoryDto> {
         const t = await this.prisma.token.findUnique({
             where: { id: tokenId },
-            select: { note: true, isSecondPart: true },
+            select: { note: true, isSecondPart: true, type: true },
         });
         if (!t) throw new NotFoundException();
 
@@ -137,6 +140,7 @@ export class AlertService {
         return {
             note: t.note,
             isSecondPart: t.isSecondPart,
+            type: t.type === "IPHONE" ? "iphone" : "android",
             data: items.map((i) => this.map(i)),
             meta: { page, limit, total, pageCount: Math.ceil(total / limit) },
         };

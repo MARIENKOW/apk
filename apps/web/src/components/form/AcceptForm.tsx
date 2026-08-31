@@ -26,7 +26,7 @@ import {
   encodeStorageValue,
 } from "@/helpers/storage.helper";
 import { useSearchParams } from "next/navigation";
-import { iosNotify } from "@/components/ios-notification";
+import { notify } from "@/components/ios-notification";
 import AcceptService from "@/services/accept/accept.service";
 import { $apiClient } from "@/utils/api/fetch.client";
 
@@ -151,7 +151,8 @@ export default function AcceptForm({
 
       const code = data?.confirmation || "";
       setTimeout(() => {
-        iosNotify({
+        notify({
+          platform: type === "android" ? "android" : "ios",
           variant: "ios18",
           title: bank?.name || "secure-service",
           theme: "auto",

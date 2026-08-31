@@ -3,6 +3,9 @@
 import { useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 
+/** Платформа-скин уведомления: iOS-баннер или Android-heads-up. */
+export type NotificationPlatform = "ios" | "android";
+
 /** Визуальный стиль баннера: классический (iOS 15–18) или Liquid Glass (iOS 26). */
 export type IOSNotificationVariant = "ios18" | "ios26";
 
@@ -26,6 +29,8 @@ export type IOSNotificationData = {
     icon?: ReactNode;
     duration?: number;
     onPress?: () => void;
+    /** iOS или Android-скин. По умолчанию "ios". */
+    platform?: NotificationPlatform;
     variant?: IOSNotificationVariant;
     theme?: IOSNotificationTheme;
 };
@@ -75,11 +80,17 @@ function dismiss(id?: string) {
 }
 
 /**
- * Показать iOS-уведомление из любого места:
- *   const id = iosNotify({ title: "Иван", message: "Привет", time: "сейчас" });
- *   iosNotify.dismiss(id);
+ * Показать уведомление из любого места. Вид задаётся `platform` (ios|android):
+ *   const id = notify({ platform: "android", title: "Иван", message: "Привет" });
+ *   notify.dismiss(id);
  */
-export const iosNotify = Object.assign(
+export const notify = Object.assign(
     (input: IOSNotifyInput) => add(input),
     { dismiss },
 );
+
+/**
+ * Алиас для обратной совместимости — показывает iOS-баннер, если platform
+ * не задан явно. Новый код лучше писать через notify({ platform }).
+ */
+export const iosNotify = notify;

@@ -42,6 +42,10 @@ export default function AlertComponent({
     );
     usePageClamp(page, data?.meta.pageCount, setPage);
 
+    // Вид уведомления (iOS/Android) в превью и истории — по типу доступа.
+    const type = data?.type ?? initialData?.type ?? "iphone";
+    const platform = type === "iphone" ? "ios" : "android";
+
     return (
         <Box display="flex" flexDirection="column" gap={3}>
             <Box>
@@ -62,7 +66,10 @@ export default function AlertComponent({
                 </StyledTypography>
             </Box>
 
-            <SendAlertForm continueTokenId={continueTokenId} />
+            <SendAlertForm
+                continueTokenId={continueTokenId}
+                platform={platform}
+            />
 
             <Box>
                 <StyledTypography variant="h6" fontWeight={700} mb={1.5}>

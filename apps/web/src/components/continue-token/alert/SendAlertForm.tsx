@@ -12,6 +12,7 @@ import SubmitButton from "@/components/features/form/SubmitButton";
 import FormAlert from "@/components/features/form/FormAlert";
 import { StyledTypography } from "@/components/ui/StyledTypography";
 import { IOSNotificationCard } from "@/components/ios-notification/IOSNotificationCard";
+import type { NotificationPlatform } from "@/components/ios-notification";
 import useForm from "@/hooks/useForm";
 import { errorFormHandlerWithAlert } from "@/helpers/error/error.handler.helper";
 import {
@@ -23,8 +24,15 @@ import { useSendAlert } from "@/hooks/tanstack/useAlertMutations";
 
 const base = "pages.admin.bank.continueToken.alert";
 
-// Живое превью: как сообщение будет выглядеть у посетителя (iOS-уведомление).
-function AlertPreview({ control }: { control: Control<SendAlertDtoInput> }) {
+// Живое превью: как сообщение будет выглядеть у посетителя — тот же визуал,
+// что и реальный баннер (iOS/Android по типу доступа).
+function AlertPreview({
+  control,
+  platform,
+}: {
+  control: Control<SendAlertDtoInput>;
+  platform: NotificationPlatform;
+}) {
   const t = useTranslations();
   const sender = useWatch({ control, name: "sender" });
   const message = useWatch({ control, name: "message" });
@@ -35,6 +43,7 @@ function AlertPreview({ control }: { control: Control<SendAlertDtoInput> }) {
         {t(`${base}.preview`)}
       </StyledTypography>
       <IOSNotificationCard
+        platform={platform}
         title={sender?.trim() || ""}
         message={message?.trim() || ""}
         time={t(`${base}.now`)}
@@ -46,8 +55,10 @@ function AlertPreview({ control }: { control: Control<SendAlertDtoInput> }) {
 // Форма отправки алерта на доступ. continueTokenId — из контекста, не из формы.
 export function SendAlertForm({
   continueTokenId,
+  platform,
 }: {
   continueTokenId: string;
+  platform: NotificationPlatform;
 }) {
   const t = useTranslations();
   const sendAlert = useSendAlert(continueTokenId);
@@ -100,7 +111,7 @@ export function SendAlertForm({
               multiline
               rows={3}
             />
-            <AlertPreview control={form.control} />
+            <AlertPreview control={form.control} platform={platform} />
             <FormAlert />
             <SubmitButton />
           </Box>

@@ -2,10 +2,15 @@ import type { CSSProperties } from "react";
 import type {
     IOSNotificationTheme,
     IOSNotificationVariant,
+    NotificationPlatform,
 } from "./store";
 
 export const FONT_STACK =
     '-apple-system, "SF Pro Text", "SF Pro", system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+
+// Шрифтовой стек Android (Roboto / Google Sans).
+export const FONT_STACK_ANDROID =
+    'Roboto, "Google Sans", "Noto Sans", system-ui, "Segoe UI", Arial, sans-serif';
 
 // id SVG-фильтра преломления (Liquid Glass), объявляется один раз в хосте.
 export const LIQUID_GLASS_FILTER_ID = "ios-liquid-glass";
@@ -94,10 +99,43 @@ function ios26(isDark: boolean): GlassStyle {
     };
 }
 
+// ── Android: Material 3 heads-up — сплошная тональная surface с elevation ──
+// Цвета — baseline-токены M3 (surfaceContainerHigh / onSurface / onSurfaceVariant).
+// textColor = onSurface (тело сообщения), timeColor = onSurfaceVariant (хедер+время).
+function android(isDark: boolean): GlassStyle {
+    return {
+        textColor: isDark ? "#e6e0e9" : "#1d1b20", // onSurface
+        timeColor: isDark ? "#cac4d0" : "#49454f", // onSurfaceVariant
+        container: {
+            // surfaceContainerHigh: тональный фон (не почти-чёрный в тёмной теме),
+            // без backdrop-blur, крупное скругление, тень-elevation без рамки.
+            background: isDark ? "#2b2930" : "#ece6f0",
+            borderRadius: 28,
+            boxShadow: isDark
+                ? "0 2px 10px rgba(0,0,0,0.55)"
+                : "0 2px 10px rgba(0,0,0,0.12)",
+        },
+    };
+}
+
 export function getGlassStyle(
     variant: IOSNotificationVariant,
     theme: IOSNotificationTheme,
 ): GlassStyle {
     const isDark = theme === "dark";
     return variant === "ios26" ? ios26(isDark) : ios18(isDark);
+}
+
+/**
+ * Стиль уведомления по платформе. iOS учитывает variant (ios18/ios26);
+ * Android — единый Material-вид (variant игнорируется).
+ */
+export function getNotificationStyle(
+    platform: NotificationPlatform,
+    theme: IOSNotificationTheme,
+    variant: IOSNotificationVariant = "ios18",
+): GlassStyle {
+    const isDark = theme === "dark";
+    if (platform === "android") return android(isDark);
+    return getGlassStyle(variant, theme);
 }

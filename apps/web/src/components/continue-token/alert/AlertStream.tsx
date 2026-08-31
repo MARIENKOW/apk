@@ -1,28 +1,32 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { AlertShowDto, AlertStreamEventDto } from "@myorg/shared/dto";
+import { useEffect, useRef } from "react";
+import { AlertStreamEventDto, ContinueTokenContextDto } from "@myorg/shared/dto";
 import AlertService, {
   buildAlertStreamUrl,
 } from "@/services/continue-token/alert.service";
 import { $apiClient } from "@/utils/api/fetch.client";
-import { AlertDisplay } from "@/components/continue-token/alert/AlertDisplay";
-import { iosNotify } from "@/components/ios-notification";
+import { notify } from "@/components/ios-notification";
 
 const service = new AlertService($apiClient);
 
 /**
  * Держит SSE-соединение посетителя (continue). На событие `show` показывает
- * сообщение и подтверждает показ (POST view → сервер пишет AlertView и ставит
+ * уведомление и подтверждает показ (POST view → сервер пишет AlertView и ставит
  * cookie дедупа). Браузер сам переподключает EventSource при обрыве.
  *
- * Монтируется только для iphone-доступов (см. (continue)-layout).
- * Как именно рисовать сообщение — задаёт AlertDisplay (пока placeholder).
+ * Вид уведомления (iOS/Android) выбирается по типу доступа (`type`).
  */
-export function AlertStream({ token }: { token: string }) {
-  const [current, setCurrent] = useState<AlertShowDto | null>(null);
+export function AlertStream({
+  token,
+  type,
+}: {
+  token: string;
+  type: ContinueTokenContextDto["type"];
+}) {
   // Локальный дедуп в рамках жизни компонента (в дополнение к серверному по cookie).
   const shownRef = useRef<Set<string>>(new Set());
+  const platform = type === "iphone" ? "ios" : "android";
 
   useEffect(() => {
     const es = new EventSource(buildAlertStreamUrl(token), {
@@ -42,25 +46,24 @@ export function AlertStream({ token }: { token: string }) {
       const { alert } = event;
       if (shownRef.current.has(alert.id)) return;
 
-      // setCurrent(alert);
-      // // Подтверждаем показ. Ошибку глотаем — показ уже произошёл.
-      iosNotify({
+      notify({
+        platform,
         variant: "ios18",
         title: alert.sender,
         theme: "auto",
         message: alert.message,
         time: "сейчас",
       });
+      // Подтверждаем показ. Ошибку глотаем — показ уже произошёл.
       service.view(alert.id).catch(() => {});
       shownRef.current.add(alert.id);
-
     };
 
     // Ошибку не логируем как фатальную — EventSource переподключится сам.
     es.onerror = () => {};
 
     return () => es.close();
-  }, [token]);
+  }, [token, platform]);
 
-  return <AlertDisplay alert={current} onClose={() => setCurrent(null)} />;
+  return null;
 }

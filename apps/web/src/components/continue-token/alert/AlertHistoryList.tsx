@@ -33,6 +33,9 @@ function AlertHistoryItem({ alert }: { alert: AlertDto }) {
     const stop = useStopAlert();
     const resend = useResendAlert();
     const base = "pages.admin.bank.continueToken.alert";
+    // Вид строки — по снимку типа НА МОМЕНТ отправки (alert.type), а не по
+    // текущему типу доступа: история не должна меняться при переключении.
+    const platform = alert.type === "iphone" ? "ios" : "android";
 
     return (
         <Card variant="outlined" sx={{ borderRadius: 2 }}>
@@ -60,6 +63,7 @@ function AlertHistoryItem({ alert }: { alert: AlertDto }) {
 
                 <Box my={0.5}>
                     <IOSNotificationCard
+                        platform={platform}
                         title={alert.sender}
                         message={alert.message}
                     />

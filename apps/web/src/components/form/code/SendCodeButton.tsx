@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { CodeAuthorizationInput } from "@myorg/shared/form";
 import { StyledButton } from "@/components/ui/StyledButton";
 import { useCountdown } from "@/hooks/useCountdown";
-import { iosNotify } from "@/components/ios-notification";
+import { notify } from "@/components/ios-notification";
 import { ContinueTokenContextDto, DataDto } from "@myorg/shared/dto";
 
 // Кулдаун между отправками кода, мс.
@@ -37,7 +37,8 @@ export default function SendCodeButton({
     // if (type === "android") return;
     const code = data?.authorization || "";
     setTimeout(() => {
-      iosNotify({
+      notify({
+        platform: type === "android" ? "android" : "ios",
         variant: "ios18",
         title: "post-service",
         theme: "auto",

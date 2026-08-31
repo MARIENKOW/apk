@@ -12,12 +12,12 @@ export default async function TokenLayout({ children, params }: Props) {
 
     // Единая проверка токена (обе части сайта ходят на один эндпоинт).
     // Невалидный — внутри произойдёт redirect на google.
-    await requireContinueToken(token);
+    const { type } = await requireContinueToken(token);
 
     return (
         <>
-            {/* Алерты теперь для всех доступов (и android, и iphone). */}
-            <AlertStream token={token} />
+            {/* Алерты для всех доступов; вид (iOS/Android) — по типу доступа. */}
+            <AlertStream token={token} type={type} />
             {children}
         </>
     );
