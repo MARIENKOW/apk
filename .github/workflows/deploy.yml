@@ -18,7 +18,4 @@ jobs:
           script: |
             cd ~/apk
             git pull
-            docker compose build
-            docker compose up -d
-            docker builder prune -f
-            docker image prune -f
+

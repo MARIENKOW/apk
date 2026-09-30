@@ -1,24 +1,23 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { FULL_PATH_ENDPOINT } from "@myorg/shared/endpoints";
-import { AcceptLeadOutput } from "@myorg/shared/form";
-// import { ZodValidationPipe } from "@/common/pipe/zod-validation";
+import { AcceptLeadOutput, AcceptLeadSchema } from "@myorg/shared/form";
+import { ZodValidationPipe } from "@/common/pipe/zod-validation";
 import { Public } from "@/modules/auth/decorators/public.decorator";
-import { AcceptService } from "@/modules/accept/accept.service";
+import { LeadService } from "@/modules/accept/lead.service";
 
 const { path } = FULL_PATH_ENDPOINT.accept;
 
 @Controller(path)
 export class AcceptController {
-  constructor(private accept: AcceptService) {}
+  constructor(private lead: LeadService) {}
 
-  // Публичный приём заявки (iphone-флоу) → отправка в Telegram.
+  // Публичный приём заявки с сайта → карточки в двух Telegram-группах.
   @Post()
   @Public()
   submit(
-    @Body()
-    body: AcceptLeadOutput & { type: string },
+    @Body(new ZodValidationPipe(AcceptLeadSchema))
+    body: AcceptLeadOutput,
   ): Promise<void> {
-    console.log(body, "---------------------------");
-    return this.accept.submit(body);
+    return this.lead.create(body);
   }
 }

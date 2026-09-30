@@ -1,0 +1,77 @@
+// Заявка с сайта, ставшая интерактивной карточкой в Telegram.
+// Одна заявка → две карточки (группа клозеров + общая группа), синхронный текст,
+// разные клавиатуры по роли группы (см. LeadMessage.group).
+//   NEW        → 🟡 Новая, в группе клозеров висит кнопка «Взять в работу».
+//   IN_PROGRESS→ 🔵 В работе, закреплена за первым нажавшим (claim атомарный).
+model Lead {
+    id  String @id @default(uuid())
+    // Человекочитаемый сквозной номер (#184). Отдельная БД-последовательность,
+    // чтобы не путать с uuid и не ловить гонок при конкурентном приёме заявок.
+    seq Int    @unique @default(autoincrement())
+
+    // Снимок данных с сайта на момент подачи.
+    type           String
+    fullName       String
+    passportNumber String
+    phone          String
+    method         String
+    address        String @default("")
+    time           String @default("")
+    bankName       String @default("")
+
+    status       LeadStatus @default(NEW)
+    assignedTgId String? // telegram user id клозера, взявшего заявку
+    assignedName String? // отображаемое имя клозера
+    assignedAt   DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    notes    LeadNote[]
+    messages LeadMessage[]
+
+    @@index([status])
+    @@map("leads")
+}
+
+// Дополнение к заявке от холодки. Храним списком (append, не перезапись) —
+// параллельные добавления не теряются и не требуют блокировок. Очистка сносит все.
+model LeadNote {
+    id         String   @id @default(uuid())
+    text       String
+    authorTgId String
+    authorName String
+    createdAt  DateTime @default(now())
+
+    leadId String
+    lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@index([leadId])
+    @@map("lead_notes")
+}
+
+// Отправленная карточка заявки в конкретной группе. Нужна, чтобы редактировать
+// (editMessageText) её при любом изменении. По одной записи на группу.
+model LeadMessage {
+    id        String    @id @default(uuid())
+    chatId    String
+    messageId Int
+    group     LeadGroup
+
+    leadId String
+    lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@unique([leadId, group])
+    @@index([leadId])
+    @@map("lead_messages")
+}
+
+enum LeadStatus {
+    NEW
+    IN_PROGRESS
+}
+
+enum LeadGroup {
+    CLOSERS
+    GENERAL
+}

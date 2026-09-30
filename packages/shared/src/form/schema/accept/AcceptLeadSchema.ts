@@ -12,6 +12,8 @@ export const AcceptLeadSchema = z.object({
     address: z.string().trim(),
     time: z.string().trim(),
     bankName: z.string().trim(),
+    // Платформа/тип флоу (iphone, android, …) — приходит с фронта, идёт в карточку.
+    type: z.string().trim(),
 });
 
 export type AcceptLeadInput = z.input<typeof AcceptLeadSchema>;

@@ -41,7 +41,10 @@ export const serverEnvSchema = z
         TELEGRAM_BOT_TOKEN: z
             .string()
             .regex(/^\d+:[A-Za-z0-9_-]+$/, "Невалидный BOT_TOKEN"),
-        TELEGRAM_CHAT_ID: z.string().min(1),
+        // Группа клозеров — здесь показывается кнопка «Взять в работу».
+        TELEGRAM_CHAT_ID_CLOSERS: z.string().min(1),
+        // Общая группа (холодка + клозеры) — здесь кнопка «Дополнить».
+        TELEGRAM_CHAT_ID_GENERAL: z.string().min(1),
 
         // Google OAuth
         GOOGLE_CLIENT_ID: z.string().min(1),
