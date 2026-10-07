@@ -58,29 +58,13 @@ function Row({
           color: muted ? "#999" : valueColor || "#222",
           fontWeight: bold || bigValue || boldLabel ? 700 : 400,
           fontSize: bigValue ? 20 : boldLabel ? 16 : 14,
+          fontFamily: "'Roboto Mono', 'Courier New', monospace",
+          letterSpacing: 0.3,
         }}
       >
         {value}
       </Typography>
     </Box>
-  );
-}
-
-function Notch({ side }: { side: "left" | "right" }) {
-  return (
-    <Box
-      sx={{
-        position: "absolute",
-        top: "50%",
-        [side]: -34,
-        transform: "translateY(-50%)",
-        width: 24,
-        height: 24,
-        borderRadius: "50%",
-        bgcolor: "#fff",
-        border: "1px solid #eee",
-      }}
-    />
   );
 }
 
@@ -115,17 +99,24 @@ export default function OkClient({
     sx?: SxProps<Theme>;
   }[] = [
     {
-      label: "Имя Фамилия",
-      value: data.fullName || formValues?.fullName || "—",
+      label: "Отправитель",
+      value: formValues?.fullName || "—",
+    },
+    {
+      label: "Получатель",
+      value: data.fullName || "—",
     },
     { label: "Адрес", value: formValues?.address || "—" },
     // { label: "Время", value: formValues?.time || "—" },
-    // { label: "Банк", value: bank.name },
     { label: "Номер счета", value: data.cardNumber || "—" },
-    { label: "Cтатус", value: "Оплачено", bold: true, valueColor: "#128e10" },
+    {
+      label: "Cтатус",
+      value: "Оплачено",
+      bold: true,
+      valueColor: "#128e10",
+    },
   ];
 
-  // Списанная сумма приходит с сервера в составе data.
   const amount =
     data != null
       ? `${data.amount.toLocaleString("ru-RU", {
@@ -140,29 +131,58 @@ export default function OkClient({
     <Box display="flex" flexDirection="column" gap={2}>
       <Box
         sx={{
-          bgcolor: "#fff",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ bgcolor: "#fde8e8", width: 46, height: 46, mb: 2 }}>
-          <CheckIcon sx={{ color: bank.color, fontSize: 28 }} />
+        <Avatar sx={{ bgcolor: "#d6f0d2", width: 46, height: 46, mb: 2 }}>
+          <CheckIcon color="success" sx={{ fontSize: 28 }} />
         </Avatar>
 
-        <Paper
-          elevation={0}
+        <Box
           sx={{
             width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            // Тень под чеком. Задаётся через drop-shadow на обёртке, а не
+            // box-shadow на Paper: mask (зубчатый низ) обрезал бы box-shadow,
+            // а drop-shadow повторяет альфа-контур и ложится по зубцам.
+            filter: "drop-shadow(0px 2px 6px rgba(0,0,0,0.14))",
+          }}
+        >
+          <Paper
+            elevation={0}
+            sx={{
+            width: "100%",
             maxWidth: 480,
-            bgcolor: "#fafafa",
-            border: "1px solid #eee",
+            bgcolor: "#ffffff",
             transform: "scale(0.8)",
             transformOrigin: "top",
             py: 1,
             px: 2,
             position: "relative",
-            overflow: "hidden",
+            // Маска из трёх слоёв, соединённых intersect (дырка там, где прозрачен
+            // ЛЮБОЙ слой): 1) зубчатый низ как у бумажного чека; 2) и 3) настоящие
+            // полукруглые отверстия по левому/правому краю на линии отрыва
+            // (~60px от низа). Дырки прозрачны, поэтому drop-shadow обёртки огибает
+            // их по дуге — выглядит реально вырезанным. Высоту не меняет.
+            WebkitMaskImage: [
+              "radial-gradient(circle 7px at 50% 100%, transparent 98%, #000)",
+              "radial-gradient(circle 13px at 0 calc(100% - 60px), transparent 95%, #000)",
+              "radial-gradient(circle 13px at 100% calc(100% - 60px), transparent 95%, #000)",
+            ].join(","),
+            maskImage: [
+              "radial-gradient(circle 7px at 50% 100%, transparent 98%, #000)",
+              "radial-gradient(circle 13px at 0 calc(100% - 60px), transparent 95%, #000)",
+              "radial-gradient(circle 13px at 100% calc(100% - 60px), transparent 95%, #000)",
+            ].join(","),
+            WebkitMaskSize: "14px 100%, 100% 100%, 100% 100%",
+            maskSize: "14px 100%, 100% 100%, 100% 100%",
+            WebkitMaskRepeat: "repeat-x, no-repeat, no-repeat",
+            maskRepeat: "repeat-x, no-repeat, no-repeat",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
           }}
         >
           <Row label="Номер заявки" value={"#48213097"} boldLabel />
@@ -173,16 +193,21 @@ export default function OkClient({
             ))}
           </Box>
 
-          <Row label="Списано" value={amount} bigValue sx={{ mt: 1 }} />
+          <Row
+            label="Списано"
+            boldLabel
+            value={amount}
+            bigValue
+            sx={{ mt: 1 }}
+          />
 
           <Box sx={{ position: "relative", my: 3 }}>
-            <Divider sx={{ borderStyle: "dashed", borderColor: "#ccc" }} />
-            <Notch side="left" />
-            <Notch side="right" />
+            <Divider sx={{ borderStyle: "dashed", borderColor: "#c8c8c8" }} />
           </Box>
 
           <Row label="Дата" value={date} muted />
-        </Paper>
+          </Paper>
+        </Box>
       </Box>
     </Box>
   );

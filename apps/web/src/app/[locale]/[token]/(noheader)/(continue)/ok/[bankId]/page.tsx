@@ -46,7 +46,7 @@ export default async function Page({
   if (!bank || !data) notFound();
 
   return (
-    <>
+    <Box minHeight={"100vh"} bgcolor={"#edecec"}>
       <Box
         sx={{ display: "flex" }}
         fontFamily={"sans-serif"}
@@ -92,10 +92,10 @@ export default async function Page({
         <Box
           sx={{
             position: "fixed",
-            left:10,
+            left: 10,
             right: 0,
             bottom: 20,
-            width:'calc(100% - 20px)',
+            width: "calc(100% - 20px)",
             zIndex: 1200,
             // отступ снизу с учётом «безопасной зоны» на iPhone (вырез/жестовая полоса)
             paddingBottom: "env(safe-area-inset-bottom)",
@@ -127,6 +127,6 @@ export default async function Page({
           </Box>
         </Box>
       )}
-    </>
+    </Box>
   );
 }
