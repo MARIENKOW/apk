@@ -21,6 +21,7 @@ import {
     DATA_AMOUNT_MAX,
     ALERT_MESSAGE_MAX_LENGTH,
     ALERT_SENDER_MAX_LENGTH,
+    ALERT_BUTTON_LABEL_MAX_LENGTH,
 } from "./constants";
 import z from "zod";
 
@@ -193,3 +194,17 @@ export const AlertSender = z
     .trim()
     .normalize()
     .max(ALERT_SENDER_MAX_LENGTH, getMessageKey("form.alert.sender.max"));
+
+// Название кнопки алерта. Обязательность проверяется в схеме (только при
+// kind=alert && useCustomButton) — здесь ограничиваем только длину.
+export const AlertButtonLabel = z
+    .string()
+    .trim()
+    .normalize()
+    .max(ALERT_BUTTON_LABEL_MAX_LENGTH, getMessageKey("form.alert.buttonLabel.max"));
+
+// Ссылка кнопки — произвольный текст, пусто допустимо, ограничиваем длину.
+export const AlertButtonUrl = z
+    .string()
+    .trim()
+    .max(LINK_MAX_LENGTH, getMessageKey("form.alert.buttonUrl.max"));

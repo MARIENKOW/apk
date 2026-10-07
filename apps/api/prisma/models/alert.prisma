@@ -14,6 +14,15 @@ model Alert {
     // всегда показывался iOS-вид.
     type ContinueTokenType @default(IPHONE)
 
+    // Вид подачи (снимок на момент отправки). SMS — пуш-баннер (прежнее поведение),
+    // ALERT — модалка-диалог с кнопкой. Старым записям миграция ставит SMS (их реальный вид).
+    kind AlertKind @default(SMS)
+
+    // Кастомная кнопка (только для kind=ALERT). buttonLabel=null → дефолтная «Понятно».
+    // buttonUrl=null/пусто → кнопка просто закрывает алерт; иначе переход по ссылке (тот же таб).
+    buttonLabel String?
+    buttonUrl   String?
+
     tokenId String
     token   Token  @relation(fields: [tokenId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 

@@ -12,6 +12,9 @@ export type AlertViewDto = {
     location: LocationDto;
 };
 
+// Вид подачи алерта: sms — пуш-баннер, alert — модалка с кнопкой.
+export type AlertKind = "sms" | "alert";
+
 // Отправка алерта (строка истории в админке).
 export type AlertDto = {
     id: string;
@@ -25,6 +28,10 @@ export type AlertDto = {
     // Снимок вида на момент отправки — история рендерится тем скином, каким
     // реально показывали, даже если тип доступа позже переключили.
     type: ContinueTokenType;
+    // Вид подачи (sms/alert) и кастомная кнопка — снимок на момент отправки.
+    kind: AlertKind;
+    buttonLabel: string | null;
+    buttonUrl: string | null;
 };
 
 // История отправок доступа. Помимо страницы алертов несёт note доступа —
@@ -61,6 +68,10 @@ export type AlertShowDto = {
     id: string;
     message: string;
     sender: string;
+    // Вид подачи и кастомная кнопка — визитёр по ним выбирает рендер.
+    kind: AlertKind;
+    buttonLabel: string | null;
+    buttonUrl: string | null;
 };
 
 // Событие клиентского стрима. Пока только "show" (вариант B: скрытия нет).

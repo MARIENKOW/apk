@@ -28,6 +28,7 @@ import {
   FORM_DATA_CHECKBOX_TEXT_MAX_LENGTH,
   ALERT_MESSAGE_MAX_LENGTH,
   ALERT_SENDER_MAX_LENGTH,
+  ALERT_BUTTON_LABEL_MAX_LENGTH,
 } from "../../form/constants";
 import { formatBytes } from "../../utils";
 
@@ -242,6 +243,15 @@ export const ru = {
         label: "От кого",
         required: "укажите отправителя",
         max: `максимум ${ALERT_SENDER_MAX_LENGTH} символов`,
+      },
+      buttonLabel: {
+        label: "Название кнопки",
+        required: "введите название кнопки",
+        max: `максимум ${ALERT_BUTTON_LABEL_MAX_LENGTH} символов`,
+      },
+      buttonUrl: {
+        label: "Ссылка",
+        max: `максимум ${LINK_MAX_LENGTH} символов`,
       },
     },
     codeAuth: {
@@ -477,9 +487,20 @@ export const ru = {
               "Отправьте сообщение — оно появится у человека, если он сейчас на сайте.",
             online: "Онлайн",
             offline: "Оффлайн",
+            kind: {
+              label: "Вид",
+              sms: "SMS",
+              alert: "Алерт",
+            },
             form: {
               message: "Сообщение",
               sender: "От кого",
+              customButton: "Кастомная кнопка",
+              buttonLabel: "Название кнопки",
+              buttonUrl: "Ссылка (необязательно)",
+            },
+            button: {
+              default: "Понятно",
             },
             actions: {
               open: "Алерт",

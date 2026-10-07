@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -21,6 +22,7 @@ import { ClientDate } from "@/components/common/ClientDate";
 import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
 import { IOSNotificationCard } from "@/components/ios-notification/IOSNotificationCard";
 import { OsIcon } from "@/components/common/session/SessionCard";
+import { AlertDialogCard } from "./AlertDialogCard";
 import { AlertStatusBadge } from "./AlertStatusBadge";
 import {
     useResendAlert,
@@ -63,11 +65,23 @@ function AlertHistoryItem({ alert }: { alert: AlertDto }) {
                 </Box>
 
                 <Box my={0.5}>
-                    <IOSNotificationCard
-                        platform={platform}
-                        title={alert.sender}
-                        message={alert.message}
-                    />
+                    {alert.kind === "alert" ? (
+                        <AlertDialogCard
+                            platform={platform}
+                            title={alert.sender}
+                            message={alert.message}
+                            buttonLabel={
+                                alert.buttonLabel?.trim() ||
+                                t(`${base}.button.default`)
+                            }
+                        />
+                    ) : (
+                        <IOSNotificationCard
+                            platform={platform}
+                            title={alert.sender}
+                            message={alert.message}
+                        />
+                    )}
                 </Box>
 
                 <Box display="flex" gap={1} mt={1.5} flexWrap="wrap">

@@ -10,3 +10,4 @@ export { IOSNotificationHost } from "./IOSNotificationHost";
 export { IOSNotificationCard } from "./IOSNotificationCard";
 export { NotificationBody } from "./NotificationBody";
 export type { NotificationBodyProps } from "./NotificationBody";
+export { FONT_STACK } from "./styles";

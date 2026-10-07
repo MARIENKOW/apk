@@ -57,16 +57,32 @@ export class AlertService {
                 location: locationFromIp(v.ip),
             })),
             type: a.type === "IPHONE" ? "iphone" : "android",
+            kind: a.kind === "ALERT" ? "alert" : "sms",
+            buttonLabel: a.buttonLabel,
+            buttonUrl: a.buttonUrl,
         };
     }
 
     // ── Админ: отправить / остановить / переотправить / история ──────
     async send(
         tokenId: string,
-        { message, sender }: SendAlertDtoOutput,
+        {
+            message,
+            sender,
+            kind,
+            useCustomButton,
+            buttonLabel,
+            buttonUrl,
+        }: SendAlertDtoOutput,
     ): Promise<AlertDto> {
         const t = await this.prisma.token.findUnique({ where: { id: tokenId } });
         if (!t) throw new NotFoundException();
+
+        // Кнопка — только для режима алерта с включённой кастомной кнопкой.
+        const custom = kind === "alert" && useCustomButton;
+        const label = custom ? buttonLabel?.trim() || null : null;
+        const url = custom ? buttonUrl?.trim() || null : null;
+        const dbKind = kind === "alert" ? "ALERT" : "SMS";
 
         // Инвариант «один активный»: гасим прежний активный и создаём новый.
         const alert = await this.prisma.$transaction(async (tx) => {
@@ -77,7 +93,16 @@ export class AlertService {
             return tx.alert.create({
                 // Снимок текущего типа доступа — история покажет тот скин,
                 // каким реально показали, даже если тип позже переключат.
-                data: { tokenId, message, sender, active: true, type: t.type },
+                data: {
+                    tokenId,
+                    message,
+                    sender,
+                    active: true,
+                    type: t.type,
+                    kind: dbKind,
+                    buttonLabel: label,
+                    buttonUrl: url,
+                },
                 include: { views: true },
             });
         });
@@ -86,6 +111,9 @@ export class AlertService {
             id: alert.id,
             message: alert.message,
             sender: alert.sender,
+            kind: alert.kind === "ALERT" ? "alert" : "sms",
+            buttonLabel: alert.buttonLabel,
+            buttonUrl: alert.buttonUrl,
         });
         this.bus.emitAdminChanged(tokenId);
 
@@ -115,10 +143,15 @@ export class AlertService {
         });
         if (!existing) throw new NotFoundException();
 
-        // «Отправить заново» = новая активная запись с теми же данными.
+        // «Отправить заново» = новая активная запись с теми же данными (включая
+        // вид и кастомную кнопку). custom восстанавливаем по сохранённому label.
         return this.send(existing.tokenId, {
             message: existing.message,
             sender: existing.sender,
+            kind: existing.kind === "ALERT" ? "alert" : "sms",
+            useCustomButton: existing.buttonLabel !== null,
+            buttonLabel: existing.buttonLabel ?? undefined,
+            buttonUrl: existing.buttonUrl ?? undefined,
         });
     }
 
@@ -211,6 +244,12 @@ export class AlertService {
                                           id: active.id,
                                           message: active.message,
                                           sender: active.sender,
+                                          kind:
+                                              active.kind === "ALERT"
+                                                  ? "alert"
+                                                  : "sms",
+                                          buttonLabel: active.buttonLabel,
+                                          buttonUrl: active.buttonUrl,
                                       },
                                   },
                               })
